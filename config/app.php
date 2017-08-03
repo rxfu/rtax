@@ -182,6 +182,7 @@ return [
 		 */
 		Barryvdh\Debugbar\ServiceProvider::class,
 		Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+		Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class,
 
 	],
 
@@ -236,6 +237,7 @@ return [
 		 * Plugin Facades...
 		 */
 		'Debugbar'     => Barryvdh\Debugbar\Facade::class,
+		'JavaScript'   => Laracasts\Utilities\JavaScript\JavaScriptFacade::class,
 
 	],
 
