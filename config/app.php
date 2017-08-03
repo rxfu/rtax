@@ -182,6 +182,7 @@ return [
 		 */
 		Barryvdh\Debugbar\ServiceProvider::class,
 		Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+		Barryvdh\Snappy\ServiceProvider::class,
 		Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class,
 		Maatwebsite\Excel\ExcelServiceProvider::class,
 		Yajra\Datatables\DatatablesServiceProvider::class,
@@ -239,6 +240,8 @@ return [
 		 * Plugin Facades...
 		 */
 		'Debugbar'     => Barryvdh\Debugbar\Facade::class,
+		'PDF'          => Barryvdh\Snappy\Facades\SnappyPdf::class,
+		'SnappyImage'  => Barryvdh\Snappy\Facades\SnappyImage::class,
 		'JavaScript'   => Laracasts\Utilities\JavaScript\JavaScriptFacade::class,
 		'Excel'        => Maatwebsite\Excel\Facades\Excel::class,
 		'Datatables'   => Yajra\Datatables\Facades\Datatables::class,
