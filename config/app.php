@@ -184,6 +184,7 @@ return [
 		Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 		Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class,
 		Maatwebsite\Excel\ExcelServiceProvider::class,
+		Yajra\Datatables\DatatablesServiceProvider::class,
 
 	],
 
@@ -240,6 +241,7 @@ return [
 		'Debugbar'     => Barryvdh\Debugbar\Facade::class,
 		'JavaScript'   => Laracasts\Utilities\JavaScript\JavaScriptFacade::class,
 		'Excel'        => Maatwebsite\Excel\Facades\Excel::class,
+		'Datatables'   => Yajra\Datatables\Facades\Datatables::class,
 
 	],
 
