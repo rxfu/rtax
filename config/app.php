@@ -181,6 +181,7 @@ return [
 		 * Plugin Service Providers...
 		 */
 		Barryvdh\Debugbar\ServiceProvider::class,
+		Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
 	],
 
