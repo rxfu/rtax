@@ -7,6 +7,8 @@
     "require": {
         "php": ">=5.6.4",
         "barryvdh/laravel-snappy": "^0.3.3",
+        "h4cc/wkhtmltoimage-amd64": "^0.12.3",
+        "h4cc/wkhtmltopdf-amd64": "^0.12.3",
         "laracasts/presenter": "^0.2.1",
         "laracasts/utilities": "^2.1",
         "laravel/framework": "5.4.*",
