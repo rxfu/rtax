@@ -6,26 +6,37 @@
 <div class="login_wrapper">
     <div class="animate form login_form">
         <section class="login_content">
-            <form method="post" action="{{ route('login') }}">
+            <form class="form-horizontal" method="post" action="{{ route('login') }}">
                 {{ csrf_field() }}
 
                 <h1>登录系统</h1>
                 <div>
-                    <input type="text" class="form-control" placeholder="用户名" required>
+                    <input id="username" name="username" type="text" class="form-control" placeholder="用户名" value="{{ old('username') }}" required autofocus>
                 </div>
                 <div>
-                    <input type="password" class="form-control" placeholder="密码" required>
+                    <input id="password" name="password" type="password" class="form-control" placeholder="密码" required>
                 </div>
+
+                @if (session('status'))
+                    <div class="alert alert-success">
+                        {{ session('status') }}
+                    </div>
+                @endif
+
+                @if (!$errors->isEmpty())
+                    <div class="alert alert-danger" role="alert">
+                        {{ $errors->first() }}
+                    </div>
+                @endif
                 <div>
                     <button class="btn btn-default submit" type="submit">登录</button>
-                    <a class="reset_pass" href="{{ route('password.request') }}">忘记密码？</a>
                 </div>
 
                 <div class="clearfix"></div>
 
                 <div class="separator">
                     <div>
-                        <p>&copy; 2017 Admin Boilerplate. All rights reserved.<br>Powered By FuRongxin.</p>
+                        <p>&copy; {{ date('Y') }} <a href="{{ route('home') }}">{{ config('setting.name') }}</a>. All rights reserved.<br>Powered By {{ config('setting.author') }}.</p>
                     </div>
                 </div>
             </form>
