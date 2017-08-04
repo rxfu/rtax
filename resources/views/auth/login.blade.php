@@ -1,6 +1,38 @@
 @extends('layouts.app')
 
+@section('body_class','login')
+
 @section('content')
+<div class="login_wrapper">
+    <div class="animate form login_form">
+        <section class="login_content">
+            <form method="post" action="{{ route('login') }}">
+                {{ csrf_field() }}
+
+                <h1>登录系统</h1>
+                <div>
+                    <input type="text" class="form-control" placeholder="用户名" required>
+                </div>
+                <div>
+                    <input type="password" class="form-control" placeholder="密码" required>
+                </div>
+                <div>
+                    <button class="btn btn-default submit" type="submit">登录</button>
+                    <a class="reset_pass" href="{{ route('password.request') }}">忘记密码？</a>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div class="separator">
+                    <div>
+                        <p>&copy; 2017 Admin Boilerplate. All rights reserved.<br>Powered By FuRongxin.</p>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
+<!--
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
@@ -65,4 +97,5 @@
         </div>
     </div>
 </div>
+-->
 @endsection

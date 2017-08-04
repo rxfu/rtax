@@ -16,8 +16,8 @@
     <link href="{{ asset('css/custom.min.css') }}" rel="stylesheet">
     @stack('styles')
 </head>
-<body>
-    <div id="app">
+<body class="@yield('body_class')">
+    @if (Auth::check())
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container">
                 <div class="navbar-header">
@@ -73,9 +73,9 @@
                 </div>
             </div>
         </nav>
+    @endif
 
-        @yield('content')
-    </div>
+    @yield('content')
 
     <!-- Scripts -->
     <script src="{{ asset('js/jquery.min.js') }}"></script>
