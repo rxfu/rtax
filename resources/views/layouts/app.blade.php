@@ -1,34 +1,50 @@
-<!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.default')
 
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+@section('body_class', 'nav-md')
 
-    <title>{{ $title or 'Default' }} | {{ config('app.name', 'Laravel') }}</title>
+@section('page')
+<div class="container body">
+    <div class="main_container">
 
-    <!-- Styles -->
-    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('fonts/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/custom.min.css') }}" rel="stylesheet">
-    @stack('styles')
+        <!-- Sidebar left -->
+        @include('partials.sidebar')
+        <!-- /Sidebar left -->
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="{{ asset('html5shiv.min.js') }}"></script>
-      <script src="{{ asset('respond.min.js') }}"></script>
-    <![endif]-->
-</head>
-<body class="@yield('body_class')">
-    @yield('content')
+        <!-- Top navigation -->
+        @include('partials.navigation')
+        <!-- /Top navigation -->
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/jquery.min.js') }}"></script>
-    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('js/custom.min.js') }}"></script>
-    @stack('scripts')
-</body>
-</html>
+        <!-- Page content -->
+        <div class="right_col" role="main">
+            <div class="page-title">
+                <div class="title_left">
+                    <h3>@yield('title', 'Homepage')</h3>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>@yield('title', 'Homepage')</h2>
+
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="x_content">
+                            @yield('content')
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Page content -->
+
+        <!-- Footer content -->
+        @include('partials.footer')
+        <!-- /Footer content -->
+    </div>
+</div>
+@stop
