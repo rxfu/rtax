@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('body_class','login')
+@section('body_class', 'login')
 
 @section('content')
 <div class="login_wrapper">
