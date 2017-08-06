@@ -33,7 +33,7 @@
                         </a>
                         <ul class="nav child_menu">
                             <li>
-                                <a href="#">用户列表</a>
+                                <a href="{{ route('user.list') }}">用户列表</a>
                             </li>
                             <li>
                                 <a href="#">添加用户</a>

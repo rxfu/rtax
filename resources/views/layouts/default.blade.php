@@ -13,8 +13,10 @@
     <!-- Styles -->
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('fonts/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/custom.min.css') }}" rel="stylesheet">
     @stack('styles')
+
+    <!-- Custom theme styles -->
+    <link href="{{ asset('css/custom.min.css') }}" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -28,7 +30,9 @@
     <!-- Scripts -->
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('js/custom.min.js') }}"></script>
     @stack('scripts')
+
+    <!-- Custom theme scripts -->
+    <script src="{{ asset('js/custom.min.js') }}"></script>
 </body>
 </html>
