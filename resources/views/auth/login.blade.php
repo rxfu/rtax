@@ -2,6 +2,8 @@
 
 @section('body_class', 'login')
 
+@section('title','登录')
+
 @section('page')
 <div class="login_wrapper">
     <div class="animate form login_form">
@@ -35,9 +37,7 @@
                 <div class="clearfix"></div>
 
                 <div class="separator">
-                    <div>
-                        <p>&copy; {{ date('Y') }} <a href="{{ route('home') }}">{{ config('setting.name') }}</a>. All rights reserved.<br>Powered By {{ config('setting.author') }}.</p>
-                    </div>
+                    @include('partials.footer')
                 </div>
             </form>
         </section>

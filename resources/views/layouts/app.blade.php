@@ -43,7 +43,13 @@
         <!-- /Page content -->
 
         <!-- Footer content -->
-        @include('partials.footer')
+        <footer>
+            <div class="pull-right">
+                @include('partials.footer')
+            </div>
+
+            <div class="clearfix"></div>
+        </footer>
         <!-- /Footer content -->
     </div>
 </div>

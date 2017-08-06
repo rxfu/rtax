@@ -1,8 +1,6 @@
 @extends('layouts.app')
 
-@section('title')
-仪表盘
-@stop
+@section('title', '仪表盘')
 
 @section('content')
 系统首页，关于系统的说明
