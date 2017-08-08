@@ -18,4 +18,12 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('home', 'HomeController@index')->name('home');
-Route::get('list', 'UserController@getList')->name('user.list');
+
+Route::prefix('user')->group(function () {
+	Route::get('list', 'UserController@getList')->name('user.list');
+	Route::get('create', 'UserController@getCreate')->name('user.create');
+	Route::post('create', 'UserController@postCreate');
+	Route::get('edit', 'UserController@getEdit')->name('user.edit');
+	Route::post('{id}/edit', 'UserController@postEdit');
+	Route::post('{id}/delete', 'UserController@postDelete');
+});
