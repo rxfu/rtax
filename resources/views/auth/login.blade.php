@@ -37,7 +37,7 @@
                 <div class="clearfix"></div>
 
                 <div class="separator">
-                    @include('partials.footer')
+                    @include('partials._footer')
                 </div>
             </form>
         </section>

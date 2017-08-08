@@ -7,11 +7,11 @@
     <div class="main_container">
 
         <!-- Sidebar left -->
-        @include('partials.sidebar')
+        @include('partials._sidebar')
         <!-- /Sidebar left -->
 
         <!-- Top navigation -->
-        @include('partials.navigation')
+        @include('partials._navigation')
         <!-- /Top navigation -->
 
         <!-- Page content -->
@@ -45,7 +45,7 @@
         <!-- Footer content -->
         <footer>
             <div class="pull-right">
-                @include('partials.footer')
+                @include('partials._footer')
             </div>
 
             <div class="clearfix"></div>

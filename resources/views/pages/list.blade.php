@@ -7,16 +7,14 @@
 			<th>
 				<input type="checkbox" id="check-all" name="checkall" class="flat">
 			</th>
-			{{ $head }}
+			@yield('thead')
 		</tr>
 	</thead>
 
 	<tbody>
-		@each('partials.row', $items, 'item')
+		@yield('tbody')
 	</tbody>
 </table>
-
-@include('partials.dialog')
 @stop
 
 @push('styles')
