@@ -1,23 +1,23 @@
-@extends('pages.list')
+@extends('layouts.list')
 
 @section('title', '用户列表')
 
-@section('thead')
-	<th>ID</th>
-	<th>用户名</th>
-	<th>Email</th>
-	<th>真实姓名</th>
-	<th>创建时间</th>
-	<th>编辑</th>
-	<th>删除</th>
-@stop
+@section('content')
+<thead>
+	<tr>
+		<th>ID</th>
+		<th>用户名</th>
+		<th>Email</th>
+		<th>真实姓名</th>
+		<th>创建时间</th>
+		<th>编辑</th>
+		<th>删除</th>
+	</tr>
+</thead>
 
-@section('tbody')
+<tbody>
 	@foreach ($users as $item)
 		<tr>
-			<td>
-				<input type="checkbox" id="checkthis" name="checkthis" class="flat">
-			</td>
 			<td>{{ $item->id }}</td>
 			<td>{{ $item->username }}</td>
 			<td>{{ $item->email }}</td>
@@ -39,4 +39,13 @@
 			</td>
 		</tr>
 	@endforeach
+</tbody>
+
+<tfoot>
+	<tr>
+		<td colspan="7">
+			<a href="{{ route('user.create') }}" class="btn btn-success"><i class="fa fa-plus"></i> 新增</a>
+		</td>
+	</tr>
+</tfoot>
 @stop
