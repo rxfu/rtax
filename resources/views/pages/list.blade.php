@@ -19,12 +19,18 @@
 
 @push('styles')
 	<link href="{{ asset('css/dataTables.bootstrap.min.css') }}" rel="stylesheet">
+	<link href="{{ asset('css/buttons.bootstrap.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('css/icheck/skins/all.css') }}" rel="stylesheet">
 @endpush
 
 @push('scripts')
 	<script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
 	<script src="{{ asset('js/dataTables.bootstrap.min.js') }}"></script>
+	<script src="{{ asset('js/dataTables.buttons.min.js') }}"></script>
+	<script src="{{ asset('js/buttons.bootstrap.min.js') }}"></script>
+	<script src="{{ asset('js/buttons.flash.min.js') }}"></script>
+	<script src="{{ asset('js/buttons.html5.min.js') }}"></script>
+	<script src="{{ asset('js/buttons.print.min.js') }}"></script>
 	<script src="{{ asset('js/icheck.min.js') }}"></script>
 	<script>
 		$('#datagrid').dataTable({
