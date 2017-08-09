@@ -34,8 +34,15 @@
 	<script src="{{ asset('js/icheck.min.js') }}"></script>
 	<script>
 		$('#datagrid').dataTable({
-			"language": {
-				"url": "{{ asset('js/i18n/Chinese.json') }}"
+			dom: 'Bfrtip',
+			buttons: [{
+				text: '新增',
+				action: function(e, dt, node, config) {
+					dt.ajax('add');
+				}
+			}]
+			language: {
+				url: "{{ asset('js/i18n/Chinese.json') }}"
 			}
 		});
 	</script>
