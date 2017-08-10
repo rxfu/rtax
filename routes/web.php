@@ -23,7 +23,7 @@ Route::prefix('user')->group(function () {
 	Route::name('user.list')->get('list', 'UserController@getList');
 	Route::name('user.create')->get('create', 'UserController@getCreate');
 	Route::name('user.save')->post('save', 'UserController@postSave');
-	Route::name('user.edit')->get('edit', 'UserController@getEdit');
+	Route::name('user.edit')->get('{id}/edit', 'UserController@getEdit');
 	Route::name('user.update')->post('{id}/update', 'UserController@postUpdate');
-	Route::post('{id}/delete', 'UserController@postDelete');
+	Route::name('user.delete')->post('{id}/delete', 'UserController@postDelete');
 });

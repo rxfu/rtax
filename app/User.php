@@ -26,4 +26,23 @@ class User extends Authenticatable {
 	protected $hidden = [
 		'password', 'remember_token',
 	];
+
+	/**
+	 * The attributes that should be cast to native types.
+	 *
+	 * @var array
+	 */
+	protected $casts = [
+		'is_admin' => 'boolean',
+	];
+
+	/**
+	 * Set the user's password.
+	 *
+	 * @param  string  $value
+	 * @return void
+	 */
+	public function setPasswordAttribute($value) {
+		$this->attributes['password'] = bcrypt($value);
+	}
 }

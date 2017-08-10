@@ -25,7 +25,7 @@ class UserController extends Controller {
 			$user->fill($inputs);
 			$user->save();
 
-			return redirect('user.list');
+			return redirect()->route('user.list');
 		}
 	}
 
@@ -43,7 +43,7 @@ class UserController extends Controller {
 			$user->fill($inputs);
 			$user->save();
 
-			return redirect('user.list');
+			return redirect()->route('user.list');
 		}
 	}
 
@@ -52,7 +52,7 @@ class UserController extends Controller {
 			$user = User::find($id);
 			$user->delete();
 
-			return redirect('user.list');
+			return redirect()->route('user.list');
 		}
 	}
 }

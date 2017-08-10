@@ -25,16 +25,19 @@
 			<td>{{ $item->created_at }}</td>
 			<td>
 				<p data-placement="top" data-toggle="tooltip" title="编辑">
-					<button class="btn btn-primary btn-xs" data-title="编辑" data-toggle="modal" data-target="#edit">
+					<a href="{{ route('user.edit', $item->id) }}" class="btn btn-primary btn-xs" role="button">
 						<span class="fa fa-pencil"></span>
-					</button>
+					</a>
 				</p>
 			</td>
 			<td>
 				<p data-placement="top" data-toggle="tooltip" title="删除">
-					<button class="btn btn-danger btn-xs" data-title="删除" data-toggle="modal" data-target="#delete">
+					<a href="#" class="btn btn-danger btn-xs" role="button" onclick="confirm('你确定要删除这条记录？') ? document.getElementById('delete-{{ $item->id }}-form').submit() : false">
 						<span class="fa fa-trash"></span>
-					</button>
+					</a>
+					<form id="delete-{{ $item->id }}-form" method="post" action="{{ route('user.delete', $item->id) }}" style="display: none">
+						{{ csrf_field() }}
+					</form>
 				</p>
 			</td>
 		</tr>

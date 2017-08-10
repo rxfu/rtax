@@ -12,8 +12,11 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success"><i class="fa fa-check"></i>是</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i>否</button>
+                <form id="delete-form" name="delete-form" action="{{ route('user.delete') }}" method="post" style="display: none">
+                    {{ csrf_field() }}
+                    <button type="button" class="btn btn-success"><i class="fa fa-check"></i> 是</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> 否</button>
+                </form>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
