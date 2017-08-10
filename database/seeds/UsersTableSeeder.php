@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class UsersTableSeeder extends Seeder {
@@ -14,11 +15,13 @@ class UsersTableSeeder extends Seeder {
 		DB::statement('TRUNCATE TABLE users');
 
 		DB::table('users')->insert([
-			'username' => 'admin',
-			'email'    => 'admin@test.com',
-			'password' => bcrypt('123456'),
-			'name'     => '系统管理员',
-			'is_admin' => true,
+			'username'   => 'admin',
+			'email'      => 'admin@test.com',
+			'password'   => bcrypt('123456'),
+			'name'       => '系统管理员',
+			'is_admin'   => true,
+			'created_at' => Carbon::now(),
+			'updated_at' => Carbon::now(),
 		]);
 
 		DB::statement('SET FOREIGN_KEY_CHECKS=1');
