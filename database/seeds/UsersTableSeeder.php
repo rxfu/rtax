@@ -1,6 +1,5 @@
 <?php
 
-use App\User;
 use Illuminate\Database\Seeder;
 
 class UsersTableSeeder extends Seeder {
@@ -11,14 +10,17 @@ class UsersTableSeeder extends Seeder {
 	 * @return void
 	 */
 	public function run() {
+		DB::statement('SET FOREIGN_KEY_CHECKS=0');
 		DB::statement('TRUNCATE TABLE users');
 
-		User::create([
+		DB::table('users')->insert([
 			'username' => 'admin',
 			'email'    => 'admin@test.com',
 			'password' => bcrypt('123456'),
 			'name'     => '系统管理员',
 			'is_admin' => true,
 		]);
+
+		DB::statement('SET FOREIGN_KEY_CHECKS=1');
 	}
 }
