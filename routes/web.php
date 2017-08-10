@@ -20,10 +20,10 @@ Auth::routes();
 Route::get('home', 'HomeController@index')->name('home');
 
 Route::prefix('user')->group(function () {
-	Route::get('list', 'UserController@getList')->name('user.list');
-	Route::get('create', 'UserController@getCreate')->name('user.create');
-	Route::post('create', 'UserController@postCreate');
-	Route::get('edit', 'UserController@getEdit')->name('user.edit');
-	Route::post('{id}/edit', 'UserController@postEdit');
+	Route::name('user.list')->get('list', 'UserController@getList');
+	Route::name('user.create')->get('create', 'UserController@getCreate');
+	Route::name('user.save')->post('save', 'UserController@postSave');
+	Route::name('user.edit')->get('edit', 'UserController@getEdit');
+	Route::name('user.update')->post('{id}/update', 'UserController@postUpdate');
 	Route::post('{id}/delete', 'UserController@postDelete');
 });

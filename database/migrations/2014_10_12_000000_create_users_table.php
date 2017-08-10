@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration {
 			$table->string('username', 50)->unique()->comment('用户名');
 			$table->string('email', 50)->unique()->comment('Email邮箱');
 			$table->string('password', 128)->comment('密码');
-			$table->string('name', 50)->comment('真实姓名');
+			$table->string('name', 50)->nullable()->comment('真实姓名');
 			$table->boolean('is_admin')->default(false)->comment('是否系统管理员');
 			$table->rememberToken();
 			$table->timestamps();

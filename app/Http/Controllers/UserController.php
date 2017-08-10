@@ -17,7 +17,7 @@ class UserController extends Controller {
 		return view('user.create');
 	}
 
-	public function postCreate(Request $request) {
+	public function postSave(Request $request) {
 		$inputs = $request->all();
 
 		if ($request->isMethod('post')) {
@@ -35,7 +35,7 @@ class UserController extends Controller {
 		return view('user.edit', compact('user'));
 	}
 
-	public function postEdit(Request $request, $id) {
+	public function postUpdate(Request $request, $id) {
 		$inputs = $request->all();
 
 		if ($request->isMethod('post')) {
