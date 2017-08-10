@@ -12,32 +12,41 @@
 		<th>创建时间</th>
 		<th>编辑</th>
 		<th>删除</th>
+		<th>重置密码</th>
 	</tr>
 </thead>
 
 <tbody>
-	@foreach ($users as $item)
+	@foreach ($users as $user)
 		<tr>
-			<td>{{ $item->id }}</td>
-			<td>{{ $item->username }}</td>
-			<td>{{ $item->email }}</td>
-			<td>{{ $item->name }}</td>
-			<td>{{ $item->created_at }}</td>
+			<td>{{ $user->id }}</td>
+			<td>{{ $user->username }}</td>
+			<td>{{ $user->email }}</td>
+			<td>{{ $user->name }}</td>
+			<td>{{ $user->created_at }}</td>
 			<td>
 				<p data-placement="top" data-toggle="tooltip" title="编辑">
-					<a href="{{ route('user.edit', $item->id) }}" class="btn btn-primary btn-xs" role="button">
+					<a href="{{ route('user.edit', $user->id) }}" class="btn btn-primary btn-xs" role="button">
 						<span class="fa fa-pencil"></span>
 					</a>
 				</p>
 			</td>
 			<td>
 				<p data-placement="top" data-toggle="tooltip" title="删除">
-					<a href="#" class="btn btn-danger btn-xs" role="button" onclick="confirm('你确定要删除这条记录？') ? document.getElementById('delete-{{ $item->id }}-form').submit() : false">
+					<a href="#" class="btn btn-danger btn-xs" role="button" onclick="confirm('你确定要删除这条记录？') ? document.getElementById('delete-{{ $user->id }}-form').submit() : false">
 						<span class="fa fa-trash"></span>
 					</a>
-					<form id="delete-{{ $item->id }}-form" method="post" action="{{ route('user.delete', $item->id) }}" style="display: none">
+					<form id="delete-{{ $user->id }}-form" method="post" action="{{ route('user.delete', $user->id) }}" style="display: none">
+						{{ method_field('delete') }}
 						{{ csrf_field() }}
 					</form>
+				</p>
+			</td>
+			<td>
+				<p data-placement="top" data-toggle="tooltip" title="重置密码">
+					<a href="{{ route('user.rstpwd', $user->id) }}" class="btn btn-warning btn-xs" role="button">
+						<span class="fa fa-unlock-alt"></span>
+					</a>
 				</p>
 			</td>
 		</tr>

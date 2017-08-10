@@ -4,6 +4,7 @@
 
 @section('content')
 <form method="post" action="{{ route('user.update', $user->id) }}" class="form-horizontal form-label-left">
+	{{ method_field('put') }}
 	{{ csrf_field() }}
 
 	<div class="form-group">

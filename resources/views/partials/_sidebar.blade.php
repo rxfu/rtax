@@ -36,10 +36,7 @@
                                 <a href="{{ route('user.list') }}">用户列表</a>
                             </li>
                             <li>
-                                <a href="#">添加用户</a>
-                            </li>
-                            <li>
-                                <a href="#">重置密码</a>
+                                <a href="{{ route('user.create') }}">新增用户</a>
                             </li>
                         </ul>
                     </li>
@@ -51,7 +48,7 @@
                         </a>
                         <ul class="nav child_menu">
                             <li>
-                                <a href="#">修改密码</a>
+                                <a href="{{ route('user.chgpwd') }}">修改密码</a>
                             </li>
                         </ul>
                     </li>

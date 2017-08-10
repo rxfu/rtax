@@ -24,6 +24,10 @@ Route::prefix('user')->group(function () {
 	Route::name('user.create')->get('create', 'UserController@getCreate');
 	Route::name('user.save')->post('save', 'UserController@postSave');
 	Route::name('user.edit')->get('{id}/edit', 'UserController@getEdit');
-	Route::name('user.update')->post('{id}/update', 'UserController@postUpdate');
-	Route::name('user.delete')->post('{id}/delete', 'UserController@postDelete');
+	Route::name('user.update')->put('{id}/update', 'UserController@putUpdate');
+	Route::name('user.delete')->delete('{id}/delete', 'UserController@deleteDelete');
+	Route::name('user.chgpwd')->get('change-password', 'UserController@getChangePassword');
+	Route::name('user.change')->put('change', 'UserController@putChangePassword');
+	Route::name('user.rstpwd')->get('{id}/reset-password', 'UserController@getResetPassword');
+	Route::name('user.reset')->put('{id}/reset', 'UserController@putResetPassword');
 });

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use Auth;
 use Illuminate\Http\Request;
 
 class UserController extends Controller {
@@ -35,10 +36,10 @@ class UserController extends Controller {
 		return view('user.edit', compact('user'));
 	}
 
-	public function postUpdate(Request $request, $id) {
+	public function putUpdate(Request $request, $id) {
 		$inputs = $request->all();
 
-		if ($request->isMethod('post')) {
+		if ($request->isMethod('put')) {
 			$user = User::find($id);
 			$user->fill($inputs);
 			$user->save();
@@ -47,10 +48,55 @@ class UserController extends Controller {
 		}
 	}
 
-	public function postDelete(Request $request, $id) {
-		if ($request->isMethod('post')) {
+	public function deleteDelete(Request $request, $id) {
+		if ($request->isMethod('delete')) {
 			$user = User::find($id);
 			$user->delete();
+
+			return redirect()->route('user.list');
+		}
+	}
+
+	public function getChangePassword() {
+		return view('user.change');
+	}
+
+	public function putChangePassword(Request $request) {
+		$this->validate($request, [
+			'password' => 'required|confirmed|min:6',
+		]);
+
+		if ($request->isMethod('put')) {
+			$credentials = [
+				'username' => Auth::user()->username,
+				'password' => $request->input('old_password'),
+			];
+
+			if (Auth::attempt($credentials)) {
+				$user           = Auth::user();
+				$user->password = $request->input('password');
+				$user->save();
+
+				return redirect()->route('user.chgpwd');
+			}
+		}
+	}
+
+	public function getResetPassword($id) {
+		$user = User::find($id);
+
+		return view('user.reset', compact('user'));
+	}
+
+	public function putResetPassword(Request $request, $id) {
+		$this->validate($request, [
+			'password' => 'required|confirmed|min:6',
+		]);
+
+		if ($request->isMethod('put')) {
+			$user           = User::find($id);
+			$user->password = $request->input('password');
+			$user->save();
 
 			return redirect()->route('user.list');
 		}
