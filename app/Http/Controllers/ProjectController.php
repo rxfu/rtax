@@ -43,6 +43,7 @@ class ProjectController extends Controller {
 		if ($request->isMethod('put')) {
 			$project = Project::find($id);
 			$project->fill($inputs);
+			$project->user_id = Auth::user()->id;
 			$project->save();
 
 			return redirect()->route('project.list');

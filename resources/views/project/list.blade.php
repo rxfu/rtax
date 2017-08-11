@@ -45,7 +45,7 @@
 
 <tfoot>
 	<tr>
-		<td colspan="7">
+		<td colspan="6">
 			<a href="{{ route('project.create') }}" class="btn btn-success"><i class="fa fa-plus"></i> 新增</a>
 		</td>
 	</tr>

@@ -51,7 +51,7 @@
 
 <tfoot>
 	<tr>
-		<td colspan="7">
+		<td colspan="9">
 			<a href="{{ route('tax.create') }}" class="btn btn-success"><i class="fa fa-plus"></i> 新增</a>
 		</td>
 	</tr>
