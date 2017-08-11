@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Declaration;
+use App\Paid;
 use App\Project;
 use App\Rate;
 use App\Tax;
@@ -11,9 +13,11 @@ use Illuminate\Http\Request;
 class TaxController extends Controller {
 
 	public function getList() {
-		$taxes = Tax::all();
+		$taxes        = Tax::all();
+		$paids        = Paid::all();
+		$declarations = Declaration::all();
 
-		return view('tax.list', compact('taxes'));
+		return view('tax.list', compact('taxes', 'paids', 'declarations'));
 	}
 
 	public function getCreate() {
