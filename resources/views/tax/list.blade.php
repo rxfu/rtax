@@ -1,6 +1,6 @@
 @extends('layouts.list')
 
-@section('title', '税项列表')
+@section('title', '评估项目')
 
 @section('content')
 <thead>
@@ -10,8 +10,9 @@
 		<th>标段名称</th>
 		<th>标段类型</th>
 		<th>税目</th>
-		<th>课税单位</th>
+		<th>课税单价</th>
 		<th>课税数量</th>
+		<th>应纳税额</th>
 		<th>编辑</th>
 		<th>删除</th>
 	</tr>
@@ -25,8 +26,9 @@
 			<td>{{ $tax->lot_name }}</td>
 			<td>{{ $tax->lot_type }}</td>
 			<td>{{ $tax->tax_name }}</td>
-			<td>{{ $tax->unit }}</td>
+			<td>{{ $tax->unit_price }}</td>
 			<td>{{ $tax->total_amount }}</td>
+			<td>{{ $tax->total }}</td>
 			<td>
 				<p data-placement="top" data-toggle="tooltip" title="编辑">
 					<a href="{{ route('tax.edit', $tax->id) }}" class="btn btn-primary btn-xs" role="button">
