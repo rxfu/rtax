@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Project;
+use Auth;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller {
@@ -23,6 +24,7 @@ class ProjectController extends Controller {
 		if ($request->isMethod('post')) {
 			$project = new Project();
 			$project->fill($inputs);
+			$project->user_id = Auth::user()->id;
 			$project->save();
 
 			return redirect()->route('project.list');

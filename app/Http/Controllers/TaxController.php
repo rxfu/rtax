@@ -8,9 +8,9 @@ use Illuminate\Http\Request;
 class TaxController extends Controller {
 
 	public function getList() {
-		$taxs = Tax::all();
+		$taxes = Tax::all();
 
-		return view('tax.list', compact('taxs'));
+		return view('tax.list', compact('taxes'));
 	}
 
 	public function getCreate() {

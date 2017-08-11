@@ -1,42 +1,43 @@
 @extends('layouts.app')
 
-@section('title', '新增税率')
+@section('title', '编辑税率')
 
 @section('content')
-<form method="post" action="{{ route('rate.save') }}" class="form-horizontal form-label-left">
+<form method="post" action="{{ route('rate.update', $rate->id) }}" class="form-horizontal form-label-left">
+	{{ method_field('put') }}
 	{{ csrf_field() }}
 
 	<div class="form-group">
 		<label for="category" class="control-label col-md-3 col-sm-3 col-xs-12">税种 <span class="required">*</span></label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
-			<input type="text" class="form-control col-md-7 col-xs-12" id="category" name="category" placeholder="税种" value="{{ old('category') }}" required>
+			<input type="text" class="form-control col-md-7 col-xs-12" id="category" name="category" placeholder="税种" value="{{ $rate->category }}" required>
 		</div>
 	</div>
 	<div class="form-group">
 		<label for="flag" class="control-label col-md-3 col-sm-3 col-xs-12">资源税改革标记 <span class="required">*</span></label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
 			<select id="flag" name="flag" class="form-control col-md-7 col-xs-12">
-				<option value="前" selected>前</option>
-				<option value="后">后</option>
+				<option value="前"{{ '前' === $rate->flag ? ' selected' : '' }}>前</option>
+				<option value="后"{{ '后' === $rate->flag ? ' selected' : '' }}>后</option>
 			</select>
 		</div>
 	</div>
 	<div class="form-group">
 		<label for="name" class="control-label col-md-3 col-sm-3 col-xs-12">税目 <span class="required">*</label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
-			<input type="text" class="form-control col-md-7 col-xs-12" id="name" name="name" value="{{ old('name') }}"  placeholder="税目" required>
+			<input type="text" class="form-control col-md-7 col-xs-12" id="name" name="name" value="{{ $rate->name }}"  placeholder="税目" required>
 		</div>
 	</div>
 	<div class="form-group">
 		<label for="unit" class="control-label col-md-3 col-sm-3 col-xs-12">计量单位 <span class="required">*</label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
-			<input type="text" class="form-control col-md-7 col-xs-12" id="unit" name="unit" value="{{ old('unit') }}"  placeholder="计量单位" required>
+			<input type="text" class="form-control col-md-7 col-xs-12" id="unit" name="unit" value="{{ $rate->unit }}"  placeholder="计量单位" required>
 		</div>
 	</div>
 	<div class="form-group">
 		<label for="rate" class="control-label col-md-3 col-sm-3 col-xs-12">税率 <span class="required">*</label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
-			<input type="text" class="form-control col-md-7 col-xs-12" id="rate" name="rate" value="{{ old('rate') }}"  placeholder="税率" required>
+			<input type="text" class="form-control col-md-7 col-xs-12" id="rate" name="rate" value="{{ $rate->rate }}"  placeholder="税率" required>
 		</div>
 	</div>
 	<div class="ln_solid"></div>
