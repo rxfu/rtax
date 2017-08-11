@@ -50,10 +50,10 @@
 								</td>
 								<td>
 									<p data-placement="top" data-toggle="tooltip" title="删除">
-										<a href="#" class="btn btn-danger btn-xs" role="button" onclick="confirm('你确定要删除这条记录？') ? document.getElementById('delete-{{ $tax->id }}-form').submit() : false">
+										<a href="#" class="btn btn-danger btn-xs" role="button" onclick="confirm('你确定要删除这条记录？') ? document.getElementById('delete-tax{{ $tax->id }}-form').submit() : false">
 											<span class="fa fa-trash"></span>
 										</a>
-										<form id="delete-{{ $tax->id }}-form" method="post" action="{{ route('tax.delete', $tax->id) }}" style="display: none">
+										<form id="delete-tax{{ $tax->id }}-form" method="post" action="{{ route('tax.delete', $tax->id) }}" style="display: none">
 											{{ method_field('delete') }}
 											{{ csrf_field() }}
 										</form>
@@ -124,10 +124,10 @@
 								</td>
 								<td>
 									<p data-placement="top" data-toggle="tooltip" title="删除">
-										<a href="#" class="btn btn-danger btn-xs" role="button" onclick="confirm('你确定要删除这条记录？') ? document.getElementById('delete-{{ $paid->id }}-form').submit() : false">
+										<a href="#" class="btn btn-danger btn-xs" role="button" onclick="confirm('你确定要删除这条记录？') ? document.getElementById('delete-paid{{ $paid->id }}-form').submit() : false">
 											<span class="fa fa-trash"></span>
 										</a>
-										<form id="delete-{{ $paid->id }}-form" method="post" action="{{ route('paid.delete', $paid->id) }}" style="display: none">
+										<form id="delete-paid{{ $paid->id }}-form" method="post" action="{{ route('paid.delete', $paid->id) }}" style="display: none">
 											{{ method_field('delete') }}
 											{{ csrf_field() }}
 										</form>
@@ -192,10 +192,10 @@
 								</td>
 								<td>
 									<p data-placement="top" data-toggle="tooltip" title="删除">
-										<a href="#" class="btn btn-danger btn-xs" role="button" onclick="confirm('你确定要删除这条记录？') ? document.getElementById('delete-{{ $declaration->id }}-form').submit() : false">
+										<a href="#" class="btn btn-danger btn-xs" role="button" onclick="confirm('你确定要删除这条记录？') ? document.getElementById('delete-declaration{{ $declaration->id }}-form').submit() : false">
 											<span class="fa fa-trash"></span>
 										</a>
-										<form id="delete-{{ $declaration->id }}-form" method="post" action="{{ route('declaration.delete', $declaration->id) }}" style="display: none">
+										<form id="delete-declaration{{ $declaration->id }}-form" method="post" action="{{ route('declaration.delete', $declaration->id) }}" style="display: none">
 											{{ method_field('delete') }}
 											{{ csrf_field() }}
 										</form>
