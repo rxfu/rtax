@@ -15,7 +15,7 @@ class CreateDeclarationsTable extends Migration {
 		Schema::create('declarations', function (Blueprint $table) {
 			$table->increments('id');
 			$table->integer('project_id')->unsigned()->comment('项目ID');
-			$table->decimal('total', 5, 2)->comment('金额');
+			$table->decimal('total', 15, 2)->comment('金额');
 			$table->integer('user_id')->unsigned()->comment('用户ID');
 			$table->timestamps();
 

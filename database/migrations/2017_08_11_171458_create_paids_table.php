@@ -16,10 +16,10 @@ class CreatePaidsTable extends Migration {
 			$table->increments('id');
 			$table->integer('project_id')->unsigned()->comment('项目ID');
 			$table->integer('amount')->unsigned()->comment('数量');
-			$table->decimal('total', 5, 2)->comment('金额');
-			$table->string('name', 100)->comment('文件名');
-			$table->string('pathname', 100)->comment('文件路径');
-			$table->string('ext', 10)->comment('文件扩展名');
+			$table->decimal('total', 15, 2)->comment('金额');
+			$table->string('name', 100)->nullable()->comment('文件名');
+			$table->string('pathname', 100)->nullable()->comment('文件路径');
+			$table->string('ext', 10)->nullable()->comment('文件扩展名');
 			$table->integer('user_id')->unsigned()->comment('用户ID');
 			$table->timestamps();
 
