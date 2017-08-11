@@ -44,7 +44,7 @@ class PaidController extends Controller {
 				$filename       = time() . '.' . $file->getClientOriginalExtension();
 				$paid->name     = $file->getClientOriginalName();
 				$paid->ext      = $file->getClientOriginalExtension();
-				$paid->pathname = $this->upload . $filename;
+				$paid->pathname = $this->upload . '/' . $filename;
 				$file->storeAs('public/' . $this->upload, $filename);
 			}
 
