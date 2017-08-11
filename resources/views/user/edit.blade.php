@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', '新增用户')
+@section('title', '编辑用户')
 
 @section('content')
 <form method="post" action="{{ route('user.update', $user->id) }}" class="form-horizontal form-label-left">
