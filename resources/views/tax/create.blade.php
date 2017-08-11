@@ -45,7 +45,11 @@
 	<div class="form-group">
 		<label for="tax_name" class="control-label col-md-3 col-sm-3 col-xs-12">税目 <span class="required">*</span></label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
-			<input type="text" class="form-control col-md-7 col-xs-12" id="tax_name" name="tax_name" placeholder="税目" value="{{ old('tax_name') }}" required>
+			<select id="tax_name" name="tax_name" class="form-control col-md-7 col-xs-12">
+				@foreach ($rates as $rate)
+					<option value="{{ $rate->name }}">{{ $rate->name }}</option>
+				@endforeach
+			</select>
 		</div>
 	</div>
 	<div class="form-group">

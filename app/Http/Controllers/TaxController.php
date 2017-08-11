@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Project;
+use App\Rate;
 use App\Tax;
 use Illuminate\Http\Request;
 
@@ -16,8 +17,9 @@ class TaxController extends Controller {
 
 	public function getCreate() {
 		$projects = Project::all();
+		$rates    = Rate::select('name')->distinct()->get();
 
-		return view('tax.create', compact('projects'));
+		return view('tax.create', compact('projects', 'rates'));
 	}
 
 	public function postSave(Request $request) {
