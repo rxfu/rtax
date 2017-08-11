@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', '新增评估项目')
+@section('title', '新增已缴资源税项目')
 
 @section('content')
 <form method="post" action="{{ route('paid.save') }}" class="form-horizontal form-label-left" enctype="multipart/form-data">

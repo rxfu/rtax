@@ -14,4 +14,8 @@ class Paid extends Model {
 	protected $fillable = [
 		'project_id', 'amount', 'total', 'name', 'pathname', 'ext',
 	];
+
+	public function project() {
+		return $this->belongsTo('App\Project');
+	}
 }

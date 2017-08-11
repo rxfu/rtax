@@ -9,10 +9,12 @@ use Illuminate\Http\Request;
 
 class PaidController extends Controller {
 
+	private $upload = 'files';
+
 	public function getList() {
 		$paids = Paid::all();
 
-		return view('paid.list', compact('paids'));
+		return view('tax.list', compact('paids'));
 	}
 
 	public function getCreate() {
@@ -37,16 +39,26 @@ class PaidController extends Controller {
 			$paid->project_id = $project->id;
 			$paid->user_id    = Auth::user()->id;
 
+			if ($request->hasFile('file') && $request->file('file')->isValid()) {
+				$file           = $request->file('file');
+				$filename       = time() . '.' . $file->getClientOriginalExtension();
+				$paid->name     = $file->getClientOriginalName();
+				$paid->ext      = $file->getClientOriginalExtension();
+				$paid->pathname = $this->upload . $filename;
+				$file->storeAs('public/' . $this->upload, $filename);
+			}
+
 			$paid->save();
 
-			return redirect()->route('paid.list');
+			return redirect()->route('tax.list');
 		}
 	}
 
 	public function getEdit($id) {
-		$paid = Paid::find($id);
+		$paid     = Paid::find($id);
+		$projects = Project::all();
 
-		return view('paid.edit', compact('paid'));
+		return view('paid.edit', compact('paid', 'projects'));
 	}
 
 	public function putUpdate(Request $request, $id) {
@@ -65,9 +77,18 @@ class PaidController extends Controller {
 			$paid->project_id = $project->id;
 			$paid->user_id    = Auth::user()->id;
 
+			if ($request->hasFile('file') && $request->file('file')->isValid()) {
+				$file           = $request->file('file');
+				$filename       = time() . '.' . $file->getClientOriginalExtension();
+				$paid->name     = $file->getClientOriginalName();
+				$paid->ext      = $file->getClientOriginalExtension();
+				$paid->pathname = $this->upload . '/' . $filename;
+				$file->storeAs('public/' . $this->upload, $filename);
+			}
+
 			$paid->save();
 
-			return redirect()->route('paid.list');
+			return redirect()->route('tax.list');
 		}
 	}
 
@@ -76,7 +97,7 @@ class PaidController extends Controller {
 			$paid = Paid::find($id);
 			$paid->delete();
 
-			return redirect()->route('paid.list');
+			return redirect()->route('tax.list');
 		}
 	}
 }

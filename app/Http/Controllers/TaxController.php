@@ -14,7 +14,7 @@ class TaxController extends Controller {
 
 	public function getList() {
 		$taxes        = Tax::all();
-		$paids        = Paid::all();
+		$paids        = Paid::with('project')->get();
 		$declarations = Declaration::all();
 
 		return view('tax.list', compact('taxes', 'paids', 'declarations'));
