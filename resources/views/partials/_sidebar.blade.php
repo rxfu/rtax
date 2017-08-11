@@ -30,14 +30,14 @@
                 <ul class="nav side-menu">
                     <li>
                         <a>
-                            <i class="fa fa-money"></i> 税项管理 <span class="fa fa-chevron-down"></span></i>
+                            <i class="fa fa-money"></i> 评估项目管理 <span class="fa fa-chevron-down"></span></i>
                         </a>
                         <ul class="nav child_menu">
                             <li>
-                                <a href="{{ route('tax.list') }}">税项列表</a>
+                                <a href="{{ route('tax.list') }}">评估项目列表</a>
                             </li>
                             <li>
-                                <a href="{{ route('tax.create') }}">新增税项</a>
+                                <a href="{{ route('tax.create') }}">新增评估项目</a>
                             </li>
                         </ul>
                     </li>

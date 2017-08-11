@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', '新增税项')
+@section('title', '新增评估项目')
 
 @section('content')
 <form method="post" action="{{ route('tax.save') }}" class="form-horizontal form-label-left">
