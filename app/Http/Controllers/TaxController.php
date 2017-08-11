@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Project;
 use App\Tax;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,9 @@ class TaxController extends Controller {
 	}
 
 	public function getCreate() {
-		return view('tax.create');
+		$projects = Project::all();
+
+		return view('tax.create', compact('projects'));
 	}
 
 	public function postSave(Request $request) {
