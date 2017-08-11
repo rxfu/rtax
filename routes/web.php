@@ -58,3 +58,21 @@ Route::prefix('tax')->group(function () {
 	Route::name('tax.update')->put('{id}/update', 'TaxController@putUpdate');
 	Route::name('tax.delete')->delete('{id}/delete', 'TaxController@deleteDelete');
 });
+
+Route::prefix('paid')->group(function () {
+	Route::name('paid.list')->get('list', 'PaidController@getList');
+	Route::name('paid.create')->get('create', 'PaidController@getCreate');
+	Route::name('paid.save')->post('save', 'PaidController@postSave');
+	Route::name('paid.edit')->get('{id}/edit', 'PaidController@getEdit');
+	Route::name('paid.update')->put('{id}/update', 'PaidController@putUpdate');
+	Route::name('paid.delete')->delete('{id}/delete', 'PaidController@deleteDelete');
+});
+
+Route::prefix('declaration')->group(function () {
+	Route::name('declaration.list')->get('list', 'DeclarationController@getList');
+	Route::name('declaration.create')->get('create', 'DeclarationController@getCreate');
+	Route::name('declaration.save')->post('save', 'DeclarationController@postSave');
+	Route::name('declaration.edit')->get('{id}/edit', 'DeclarationController@getEdit');
+	Route::name('declaration.update')->put('{id}/update', 'DeclarationController@putUpdate');
+	Route::name('declaration.delete')->delete('{id}/delete', 'DeclarationController@deleteDelete');
+});
