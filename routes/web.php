@@ -76,3 +76,12 @@ Route::prefix('declaration')->group(function () {
 	Route::name('declaration.update')->put('{id}/update', 'DeclarationController@putUpdate');
 	Route::name('declaration.delete')->delete('{id}/delete', 'DeclarationController@deleteDelete');
 });
+
+Route::prefix('policy')->group(function () {
+	Route::name('policy.list')->get('list', 'PolicyController@getList');
+	Route::name('policy.create')->get('create', 'PolicyController@getCreate');
+	Route::name('policy.save')->post('save', 'PolicyController@postSave');
+	Route::name('policy.edit')->get('{id}/edit', 'PolicyController@getEdit');
+	Route::name('policy.update')->put('{id}/update', 'PolicyController@putUpdate');
+	Route::name('policy.delete')->delete('{id}/delete', 'PolicyController@deleteDelete');
+});

@@ -30,7 +30,7 @@
                 <ul class="nav side-menu">
                     <li>
                         <a>
-                            <i class="fa fa-money"></i> 评估项目管理 <span class="fa fa-chevron-down"></span></i>
+                            <i class="fa fa-money"></i> 评估项目管理 <span class="fa fa-chevron-down"></span>
                         </a>
                         <ul class="nav child_menu">
                             <li>
@@ -51,7 +51,7 @@
                 <ul class="nav side-menu">
                     <li>
                         <a>
-                            <i class="fa fa-road"></i> 标段管理 <span class="fa fa-chevron-down"></span></i>
+                            <i class="fa fa-road"></i> 标段管理 <span class="fa fa-chevron-down"></span>
                         </a>
                         <ul class="nav child_menu">
                             <li>
@@ -66,7 +66,7 @@
                 <ul class="nav side-menu">
                     <li>
                         <a>
-                            <i class="fa fa-user"></i> 税率管理 <span class="fa fa-chevron-down"></span></i>
+                            <i class="fa fa-user"></i> 税率管理 <span class="fa fa-chevron-down"></span>
                         </a>
                         <ul class="nav child_menu">
                             <li>
@@ -74,6 +74,21 @@
                             </li>
                             <li>
                                 <a href="{{ route('rate.create') }}">新增税率</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav side-menu">
+                    <li>
+                        <a>
+                            <i class="fa fa-file"></i> 政策管理 <span class="fa fa-chevron-down"></span>
+                        </a>
+                        <ul class="nav child_menu">
+                            <li>
+                                <a href="{{ route('policy.list') }}">政策支持</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('policy.create') }}">新增政策</a>
                             </li>
                         </ul>
                     </li>
@@ -87,7 +102,7 @@
                 <ul class="nav side-menu">
                     <li>
                         <a>
-                            <i class="fa fa-user"></i> 用户管理 <span class="fa fa-chevron-down"></span></i>
+                            <i class="fa fa-user"></i> 用户管理 <span class="fa fa-chevron-down"></span>
                         </a>
                         <ul class="nav child_menu">
                             <li>
@@ -102,13 +117,20 @@
                 <ul class="nav side-menu">
                     <li>
                         <a>
-                            <i class="fa fa-cog"></i> 系统管理 <span class="fa fa-chevron-down"></span></i>
+                            <i class="fa fa-cog"></i> 系统管理 <span class="fa fa-chevron-down"></span>
                         </a>
                         <ul class="nav child_menu">
                             <li>
                                 <a href="{{ route('user.chgpwd') }}">修改密码</a>
                             </li>
                         </ul>
+                    </li>
+                </ul>
+                <ul class="nav side-menu">
+                    <li>
+                        <a href="{{ route('home') }}">
+                            <i class="fa fa-home"></i> 系统说明
+                        </a>
                     </li>
                 </ul>
             </div>

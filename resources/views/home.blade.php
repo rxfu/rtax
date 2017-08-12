@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', '仪表盘')
+@section('title', '系统说明')
 
 @section('content')
-仪表盘
+系统说明
 @stop
