@@ -32,12 +32,14 @@
 
 			<tbody>
 				@foreach ($results as $result)
+				<tr>
 					<td>{{ $result->project_name }}</td>
 					<td>{{ $result->lot_name }}</td>
 					<td>{{ $result->lot_type}}</td>
 					<td>{{ $result->specification_name }}</td>
 					<td>{{ $result->tax_name }}</td>
 					<td>{{ $result->total }}</td>
+				</tr>
 				@endforeach
 			</tbody>
 
@@ -53,9 +55,36 @@
 				</tr>
 			</tfoot>
 		</table>
+
+		<canvas id="bar-chart"></canvas>
 	@endif
 @stop
 
 @push('scripts')
+	@if ($searched)
 	<script src="{{ asset('js/Chart.min.js') }}"></script>
+
+	<script>
+	if ($('#bar-chart').length) {
+		var ctx = document.getElementById("bar-chart");
+		var mybarChart = new Chart(ctx, {
+			type: 'bar',
+			data: {
+				labels: tax_names,
+				datasets: datasets
+			},
+
+			options: {
+				scales: {
+					yAxes: [{
+						 ticks: {
+						 	beginAtZero: true
+						 }
+						}]
+					}
+				}
+			});
+		}
+	</script>
+	@endif
 @endpush

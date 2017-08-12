@@ -27,6 +27,8 @@
 <body class="@yield('body_class')">
     @yield('page')
 
+    @include('footer')
+
     <!-- Scripts -->
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>

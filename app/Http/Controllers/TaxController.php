@@ -9,6 +9,7 @@ use App\Rate;
 use App\Tax;
 use Auth;
 use Illuminate\Http\Request;
+use JavaScript;
 
 class TaxController extends Controller {
 
@@ -89,6 +90,23 @@ class TaxController extends Controller {
 			$paid        = Paid::whereIn('project_id', $results->pluck('project_id')->all())->sum('total');
 			$declaration = Declaration::whereIn('project_id', $results->pluck('project_id')->all())->sum('total');
 		}
+
+		$tax_names = $results->pluck('tax_name')->all();
+		$datasets  = [];
+
+		foreach ($tax_names as $name) {
+			$label      = $results->where('tax_name', $name)->pluck('lot_name');
+			$data       = $results->where('tax_name', $name)->pluck('total');
+			$datasets[] = [
+				'label' => $label,
+				'data'  => $data,
+			];
+		}
+
+		JavaScript::put([
+			'tax_names' => $tax_names,
+			'datasets'  => $datasets,
+		]);
 
 		return view('tax.search', compact('searched', 'results', 'payable', 'paid', 'declaration'));
 	}
