@@ -58,6 +58,8 @@ Route::prefix('tax')->group(function () {
 	Route::name('tax.update')->put('{id}/update', 'TaxController@putUpdate');
 	Route::name('tax.delete')->delete('{id}/delete', 'TaxController@deleteDelete');
 	Route::name('tax.search')->get('search', 'TaxController@getSearch');
+	Route::name('tax.excel')->get('import', 'TaxController@getImport');
+	Route::name('tax.import')->post('import', 'TaxController@postImport');
 });
 
 Route::prefix('paid')->group(function () {

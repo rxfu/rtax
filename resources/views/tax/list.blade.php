@@ -67,6 +67,7 @@
 						<tr>
 							<td colspan="10">
 								<a href="{{ route('tax.create') }}" class="btn btn-success"><i class="fa fa-plus"></i> 新增</a>
+								<a href="{{ route('tax.excel') }}" class="btn btn-info"><i class="fa fa-upload"></i> 导入</a>
 							</td>
 						</tr>
 					</tfoot>

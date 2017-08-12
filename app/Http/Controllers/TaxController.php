@@ -8,10 +8,13 @@ use App\Project;
 use App\Rate;
 use App\Tax;
 use Auth;
+use Excel;
 use Illuminate\Http\Request;
 use JavaScript;
 
 class TaxController extends Controller {
+
+	private $upload = 'files';
 
 	public function getList() {
 		$taxes        = Tax::all();
@@ -55,7 +58,7 @@ class TaxController extends Controller {
 		if ($request->isMethod('put')) {
 			$tax = Tax::find($id);
 			$tax->fill($inputs);
-			$this->caculateTax($tax, $inputs);
+			$this->caculateTax($tax);
 			$tax->save();
 
 			return redirect()->route('tax.list');
@@ -140,43 +143,83 @@ class TaxController extends Controller {
 		return view('tax.search', compact('searched', 'results', 'payable', 'paid', 'declaration'));
 	}
 
-	private function caculateTax(&$tax, $inputs) {
+	public function getImport() {
+		return view('tax.import');
+	}
+
+	public function postImport(Request $request) {
+		if ($request->isMethod('post')) {
+
+			if ($request->hasFile('file') && $request->file('file')->isValid()) {
+				$file     = $request->file('file');
+				$filename = time() . '.' . $file->getClientOriginalExtension();
+				$path     = $file->storeAs($this->upload, $filename);
+
+				Excel::selectSheetsByIndex(0)->load(storage_path('app') . '/' . $path, function ($excel) {
+					$results = $excel->all()->toArray();
+					dd($results);
+					foreach ($results as $result) {
+						dd($result);
+						$tax                     = new Tax();
+						$tax->project_name       = $result[0];
+						$tax->lot_name           = $result[1];
+						$tax->lot_type           = $result[2];
+						$tax->specification_name = $result[3];
+						$tax->tax_name           = $result[4];
+						$tax->unit               = $result[5];
+						$tax->unit_price         = $result[6];
+						$tax->total_amount       = $result[7];
+						$tax->flag               = $result[8];
+						$tax->completion_before  = $result[9];
+						$tax->completion_after   = $result[10];
+						dd($result);
+						$this->caculateTax($tax);
+						$tax->save();
+					}
+				}, 'utf-8');
+			}
+
+			return redirect()->route('tax.excel');
+		}
+	}
+
+	private function caculateTax(&$tax) {
 
 		// 获取项目ID
-		$project = Project::whereProjectName($inputs['project_name'])
-			->whereLotName($inputs['lot_name'])
-			->whereLotType($inputs['lot_type'])
+		$project = Project::whereProjectName($tax->project_name)
+			->whereLotName($tax->lot_name)
+			->whereLotType($tax->lot_type)
 			->first();
 
 		$tax->project_id = $project->id;
 
 		// 获取税率
-		$rates  = Rate::whereName($inputs['tax_name'])->get();
+		$rates  = Rate::whereName($tax->tax_name)->get();
 		$rates  = $rates->keyBy('flag')->all();
 		$before = $rates['前'];
 		$after  = $rates['后'];
 
-		if (str_contains($inputs['tax_name'], '建筑用砂')) {
+		if (str_contains($tax->tax_name, '建筑用砂')) {
 
 			// 改革前数量
-			$tax->taxamount_before = $inputs['total_amount'] * 1.5;
+			$tax->taxamount_before = $tax->total_amount * 1.5;
 
 			// 改革后数量
-			$tax->taxamount_after = $inputs['total_amount'];
-		} elseif (str_contains($inputs['tax_name'], '其他粘土')) {
+			$tax->taxamount_after = $tax->total_amount;
+		} elseif (str_contains($tax->tax_name, '其他粘土')) {
 
 			// 改革前数量
-			$tax->taxamount_before = $inputs['total_amount'] * 1.8;
+			$tax->taxamount_before = $tax->total_amount * 1.8;
 
 			// 改革后数量
-			$tax->taxamount_after = $inputs['total_amount'];
-		} elseif (str_contains($inputs['tax_name'], '石灰石')) {
+			$tax->taxamount_after = $tax->total_amount;
+		} elseif (str_contains($tax->tax_name, '石灰石')) {
 
 			// 改革前数量
-			$tax->taxamount_before = $inputs['total_amount'] * 1.5;
+			$tax->taxamount_before = $tax->total_amount * 1.5;
 
 			// 改革后数量
-			$tax->taxamount_after = $inputs['total_amount'] * $inputs['unit_price'];
+			$tax->taxamount_after = $tax->total_amount * $tax->unit_price;
 		}
 
 		// 改革前税额计算
