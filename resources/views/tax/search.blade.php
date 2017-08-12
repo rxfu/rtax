@@ -44,11 +44,11 @@
 			<tfoot>
 				<tr>
 					<td colspan="6">
-						<strong>合计</strong>
-						应纳资源税：
-						已缴资源税：
-						自行申报缴纳资源税：
-						应补资源税：
+						<strong>合计</strong>&nbsp;&nbsp;
+						应纳资源税：{{ $results->sum('total') }}&nbsp;&nbsp;
+						已缴资源税：{{ $paid }}&nbsp;&nbsp;
+						自行申报缴纳资源税：{{ $declaration }}&nbsp;&nbsp;
+						应补资源税：{{ $payable - $paid - $declaration }}
 					</td>
 				</tr>
 			</tfoot>

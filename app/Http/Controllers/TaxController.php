@@ -71,8 +71,11 @@ class TaxController extends Controller {
 	}
 
 	public function getSearch(Request $request) {
-		$searched = false;
-		$results  = [];
+		$searched    = false;
+		$results     = [];
+		$payable     = 0;
+		$paid        = 0;
+		$declaration = 0;
 
 		if ($request->isMethod('get')) {
 			$searched = $request->input('flag');
@@ -82,9 +85,12 @@ class TaxController extends Controller {
 			} else {
 				$results = Tax::where('project_name', 'like', '%' . $request->input('keywords') . '%')->get();
 			}
+			$payable     = $results->sum('total');
+			$paid        = Paid::whereIn('project_id', $results->pluck('project_id')->all())->sum('total');
+			$declaration = Declaration::whereIn('project_id', $results->pluck('project_id')->all())->sum('total');
 		}
 
-		return view('tax.search', compact('searched', 'results'));
+		return view('tax.search', compact('searched', 'results', 'payable', 'paid', 'declaration'));
 	}
 
 	private function caculateTax(&$tax, $inputs) {
