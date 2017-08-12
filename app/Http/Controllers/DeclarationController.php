@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Declaration;
+use App\Project;
+use Auth;
 use Illuminate\Http\Request;
 
 class DeclarationController extends Controller {
@@ -9,11 +12,13 @@ class DeclarationController extends Controller {
 	public function getList() {
 		$declarations = Declaration::all();
 
-		return view('declaration.list', compact('declarations'));
+		return view('tax.list', compact('declarations'));
 	}
 
 	public function getCreate() {
-		return view('declaration.create');
+		$projects = Project::all();
+
+		return view('declaration.create', compact('projects'));
 	}
 
 	public function postSave(Request $request) {
@@ -22,16 +27,27 @@ class DeclarationController extends Controller {
 		if ($request->isMethod('post')) {
 			$declaration = new Declaration();
 			$declaration->fill($inputs);
+
+			// 获取项目ID
+			$project = Project::whereProjectName($inputs['project_name'])
+				->whereLotName($inputs['lot_name'])
+				->whereLotType($inputs['lot_type'])
+				->first();
+
+			$declaration->project_id = $project->id;
+			$declaration->user_id    = Auth::user()->id;
+
 			$declaration->save();
 
-			return redirect()->route('declaration.list');
+			return redirect()->route('tax.list');
 		}
 	}
 
 	public function getEdit($id) {
 		$declaration = Declaration::find($id);
+		$projects    = Project::all();
 
-		return view('declaration.edit', compact('declaration'));
+		return view('declaration.edit', compact('declaration', 'projects'));
 	}
 
 	public function putUpdate(Request $request, $id) {
@@ -40,9 +56,19 @@ class DeclarationController extends Controller {
 		if ($request->isMethod('put')) {
 			$declaration = Declaration::find($id);
 			$declaration->fill($inputs);
+
+			// 获取项目ID
+			$project = Project::whereProjectName($inputs['project_name'])
+				->whereLotName($inputs['lot_name'])
+				->whereLotType($inputs['lot_type'])
+				->first();
+
+			$declaration->project_id = $project->id;
+			$declaration->user_id    = Auth::user()->id;
+
 			$declaration->save();
 
-			return redirect()->route('declaration.list');
+			return redirect()->route('tax.list');
 		}
 	}
 
@@ -51,7 +77,7 @@ class DeclarationController extends Controller {
 			$declaration = Declaration::find($id);
 			$declaration->delete();
 
-			return redirect()->route('declaration.list');
+			return redirect()->route('tax.list');
 		}
 	}
 }

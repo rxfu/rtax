@@ -14,4 +14,8 @@ class Declaration extends Model {
 	protected $fillable = [
 		'project_id', 'total',
 	];
+
+	public function project() {
+		return $this->belongsTo('App\Project');
+	}
 }
