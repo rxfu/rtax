@@ -57,6 +57,8 @@
 		</table>
 
 		<canvas id="bar-chart"></canvas>
+
+		<canvas id="pie-chart"></canvas>
 	@endif
 @stop
 
@@ -65,12 +67,13 @@
 	<script src="{{ asset('js/Chart.min.js') }}"></script>
 
 	<script>
+	// Bar chart
 	if ($('#bar-chart').length) {
 		var ctx = document.getElementById("bar-chart");
 		var mybarChart = new Chart(ctx, {
 			type: 'bar',
 			data: {
-				labels: tax_names,
+				labels: lot_names,
 				datasets: datasets
 			},
 
@@ -80,11 +83,28 @@
 						 ticks: {
 						 	beginAtZero: true
 						 }
-						}]
-					}
+					}]
 				}
-			});
-		}
+			}
+		});
+	}
+
+	// Pie chart
+	if ($('#pie-chart').length ){
+		var ctx = document.getElementById("pie-chart");
+		var data = {
+			labels: lot_names,
+			datasets: datasets
+		};
+
+		var pieChart = new Chart(ctx, {
+			data: data,
+			type: 'pie',
+			options: {
+				legend: true
+			}
+		});
+	}
 	</script>
 	@endif
 @endpush

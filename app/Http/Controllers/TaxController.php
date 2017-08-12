@@ -91,20 +91,21 @@ class TaxController extends Controller {
 			$declaration = Declaration::whereIn('project_id', $results->pluck('project_id')->all())->sum('total');
 		}
 
-		$tax_names = $results->pluck('tax_name')->all();
+		$lot_names = $results->pluck('lot_name')->all();
 		$datasets  = [];
 
-		foreach ($tax_names as $name) {
-			$label      = $results->where('tax_name', $name)->pluck('lot_name');
-			$data       = $results->where('tax_name', $name)->pluck('total');
+		foreach ($lot_names as $name) {
+			$label      = $results->where('lot_name', $name)->pluck('tax_name');
+			$data       = $results->where('lot_name', $name)->pluck('total');
 			$datasets[] = [
-				'label' => $label,
-				'data'  => $data,
+				'label'           => $label,
+				'data'            => $data,
+				'backgroundColor' => 'fillPattern',
 			];
 		}
 
 		JavaScript::put([
-			'tax_names' => $tax_names,
+			'lot_names' => $lot_names,
 			'datasets'  => $datasets,
 		]);
 
