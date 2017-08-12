@@ -11,8 +11,8 @@
 		<label for="project_name" class="control-label col-md-3 col-sm-3 col-xs-12">项目名称 <span class="required">*</span></label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
 			<select id="project_name" name="project_name" class="form-control col-md-7 col-xs-12">
-				@foreach ($projects as $project)
-					<option value="{{ $project->project_name }}"{{ $project->project_name === $paid->project_name ? ' selected' : ''}}>{{ $project->project_name }}</option>
+				@foreach ($projects->pluck('project_name')->unique() as $project_name)
+					<option value="{{ $project_name }}"{{ $project_name === $paid->project_name ? ' selected' : ''}}>{{ $project_name }}</option>
 				@endforeach
 			</select>
 		</div>
@@ -21,8 +21,8 @@
 		<label for="lot_name" class="control-label col-md-3 col-sm-3 col-xs-12">标段名称 <span class="required">*</span></label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
 			<select id="lot_name" name="lot_name" class="form-control col-md-7 col-xs-12">
-				@foreach ($projects as $project)
-					<option value="{{ $project->lot_name }}"{{ $project->lot_name === $paid->lot_name ? ' selected' : ''}}>{{ $project->lot_name }}</option>
+				@foreach ($projects->pluck('lot_name')->unique() as $lot_name)
+					<option value="{{ $lot_name }}"{{ $lot_name === $paid->lot_name ? ' selected' : ''}}>{{ $lot_name }}</option>
 				@endforeach
 			</select>
 		</div>
@@ -31,8 +31,8 @@
 		<label for="lot_type" class="control-label col-md-3 col-sm-3 col-xs-12">标段类型 <span class="required">*</span></label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
 			<select id="lot_type" name="lot_type" class="form-control col-md-7 col-xs-12">
-				@foreach ($projects as $project)
-					<option value="{{ $project->lot_type }}"{{ $project->lot_type === $paid->lot_type ? ' selected' : ''}}>{{ $project->lot_type }}</option>
+				@foreach ($projects->pluck('lot_type')->unique() as $lot_type)
+					<option value="{{ $lot_type }}"{{ $lot_type === $paid->lot_type ? ' selected' : ''}}>{{ $lot_type }}</option>
 				@endforeach
 			</select>
 		</div>
