@@ -91,22 +91,50 @@ class TaxController extends Controller {
 			$declaration = Declaration::whereIn('project_id', $results->pluck('project_id')->all())->sum('total');
 		}
 
-		$lot_names = $results->pluck('lot_name')->all();
-		$datasets  = [];
+		$lot_names = $results->pluck('lot_name')->unique()->values();
+		$tax_names = $results->pluck('tax_name')->unique()->values();
+		$bardata   = [];
+		$piedata   = [];
 
-		foreach ($lot_names as $name) {
-			$label      = $results->where('lot_name', $name)->pluck('tax_name');
-			$data       = $results->where('lot_name', $name)->pluck('total');
-			$datasets[] = [
-				'label'           => $label,
+		// Bar chart
+		foreach ($tax_names as $name) {
+			$taxRecords = $results->where('tax_name', $name);
+
+			$data = [];
+			foreach ($results->pluck('lot_name')->unique() as $lotName) {
+				$data[] = $taxRecords->where('lot_name', $lotName)->sum('total');
+			}
+
+			$bardata[] = [
+				'label'           => $name,
 				'data'            => $data,
-				'backgroundColor' => 'fillPattern',
+				'backgroundColor' => '#' . dechex(rand(0x000000, 0xffffff)),
+			];
+		}
+
+		// Pie chart
+		foreach ($lot_names as $name) {
+			$lotRecords = $results->where('lot_name', $name);
+
+			$data     = [];
+			$bgcolors = [];
+			foreach ($lotRecords->groupBy('tax_name') as $tax) {
+				$data[]     = $tax->sum('total');
+				$bgcolors[] = '#' . dechex(rand(0x000000, 0xffffff));
+			}
+
+			$piedata[] = [
+				'data'            => $data,
+				'backgroundColor' => $bgcolors,
+				'label'           => $name,
 			];
 		}
 
 		JavaScript::put([
 			'lot_names' => $lot_names,
-			'datasets'  => $datasets,
+			'tax_names' => $tax_names,
+			'bardata'   => $bardata,
+			'piedata'   => $piedata,
 		]);
 
 		return view('tax.search', compact('searched', 'results', 'payable', 'paid', 'declaration'));
@@ -153,13 +181,11 @@ class TaxController extends Controller {
 
 		// 改革前税额计算
 		$tax->taxunit_before    = $before['unit'];
-		$tax->taxamount_before  = $inputs['total_amount'] * 1.5;
 		$tax->unittax_before    = $before['rate'];
 		$tax->payabletax_before = $tax->taxamount_before * $tax->unittax_before;
 
 		// 改革后税额计算
 		$tax->taxunit_after    = $after['unit'];
-		$tax->taxamount_after  = $inputs['total_amount'];
 		$tax->unittax_after    = $after['rate'];
 		$tax->payabletax_after = $tax->taxamount_after * $tax->unittax_after;
 

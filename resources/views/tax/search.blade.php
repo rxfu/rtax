@@ -21,6 +21,7 @@
 		<table class="table table-striped">
 			<thead>
 				<tr>
+					<th><i>#</i></th>
 					<th>项目名称</th>
 					<th>标段名称</th>
 					<th>标段类型</th>
@@ -31,8 +32,12 @@
 			</thead>
 
 			<tbody>
+				@php
+					$i = 0
+				@endphp
 				@foreach ($results as $result)
 				<tr>
+					<td><i>{{ ++$i }}</i></td>
 					<td>{{ $result->project_name }}</td>
 					<td>{{ $result->lot_name }}</td>
 					<td>{{ $result->lot_type}}</td>
@@ -56,9 +61,14 @@
 			</tfoot>
 		</table>
 
-		<canvas id="bar-chart"></canvas>
-
-		<canvas id="pie-chart"></canvas>
+		<div class="row">
+			<div class="col-md-6 col-sm-6 col-xs-12">
+				<canvas id="bar-chart"></canvas>
+			</div>
+			<div class="col-md-6 col-sm-6 col-xs-12">
+				<canvas id="pie-chart"></canvas>
+			</div>
+		</div>
 	@endif
 @stop
 
@@ -71,10 +81,10 @@
 	if ($('#bar-chart').length) {
 		var ctx = document.getElementById("bar-chart");
 		var mybarChart = new Chart(ctx, {
-			type: 'bar',
+			type: 'horizontalBar',
 			data: {
 				labels: lot_names,
-				datasets: datasets
+				datasets: bardata
 			},
 
 			options: {
@@ -93,8 +103,8 @@
 	if ($('#pie-chart').length ){
 		var ctx = document.getElementById("pie-chart");
 		var data = {
-			labels: lot_names,
-			datasets: datasets
+			labels: tax_names,
+			datasets: piedata
 		};
 
 		var pieChart = new Chart(ctx, {
