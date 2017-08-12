@@ -70,6 +70,23 @@ class TaxController extends Controller {
 		}
 	}
 
+	public function getSearch(Request $request) {
+		$searched = false;
+		$results  = [];
+
+		if ($request->isMethod('get')) {
+			$searched = $request->input('flag');
+
+			if (empty($request->input('keywords'))) {
+				$results = Tax::all();
+			} else {
+				$results = Tax::where('project_name', 'like', '%' . $request->input('keywords') . '%')->get();
+			}
+		}
+
+		return view('tax.search', compact('searched', 'results'));
+	}
+
 	private function caculateTax(&$tax, $inputs) {
 
 		// 获取项目ID

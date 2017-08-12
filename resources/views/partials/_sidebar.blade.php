@@ -45,6 +45,9 @@
                             <li>
                                 <a href="{{ route('declaration.create') }}">新增自行申报税项目</a>
                             </li>
+                            <li>
+                                <a href="{{ route('tax.search') }}">成果查询</a>
+                            </li>
                         </ul>
                     </li>
                 </ul>

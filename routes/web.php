@@ -57,6 +57,7 @@ Route::prefix('tax')->group(function () {
 	Route::name('tax.edit')->get('{id}/edit', 'TaxController@getEdit');
 	Route::name('tax.update')->put('{id}/update', 'TaxController@putUpdate');
 	Route::name('tax.delete')->delete('{id}/delete', 'TaxController@deleteDelete');
+	Route::name('tax.search')->get('search', 'TaxController@getSearch');
 });
 
 Route::prefix('paid')->group(function () {
