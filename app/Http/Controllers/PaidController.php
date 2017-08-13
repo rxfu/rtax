@@ -12,7 +12,11 @@ class PaidController extends Controller {
 	private $upload = 'files';
 
 	public function getList() {
-		$paids = Paid::all();
+		if (Auth::user()->is_admin) {
+			$paids = Paid::all();
+		} else {
+			$paids = Paid::whereUserId(Auth::user()->id)->get();
+		}
 
 		return view('tax.list', compact('paids'));
 	}

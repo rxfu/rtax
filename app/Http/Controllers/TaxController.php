@@ -17,9 +17,15 @@ class TaxController extends Controller {
 	private $upload = 'files';
 
 	public function getList() {
-		$taxes        = Tax::all();
-		$paids        = Paid::with('project')->get();
-		$declarations = Declaration::with('project')->get();
+		if (Auth::user()->is_admin) {
+			$taxes        = Tax::all();
+			$paids        = Paid::with('project')->get();
+			$declarations = Declaration::with('project')->get();
+		} else {
+			$taxes        = Tax::whereUserId(Auth::user()->id)->get();
+			$paids        = Paid::with('project')->whereUserId(Auth::user()->id)->get();
+			$declarations = Declaration::with('project')->whereUserId(Auth::user()->id)->get();
+		}
 
 		return view('tax.list', compact('taxes', 'paids', 'declarations'));
 	}
@@ -85,10 +91,21 @@ class TaxController extends Controller {
 			$searched = $request->input('flag');
 
 			if (empty($request->input('keywords'))) {
-				$results = Tax::all();
+				if (Auth::user()->is_admin) {
+					$results = Tax::all();
+				} else {
+					$results = Tax::whereUserId(Auth::user()->id)->get();
+				}
 			} else {
-				$results = Tax::where('project_name', 'like', '%' . $request->input('keywords') . '%')->get();
+				if (Auth::user()->is_admin) {
+					$results = Tax::where('project_name', 'like', '%' . $request->input('keywords') . '%')->get();
+				} else {
+					$results = Tax::where('project_name', 'like', '%' . $request->input('keywords') . '%')
+						->whereUserId(Auth::user()->id)
+						->get();
+				}
 			}
+
 			$payable     = $results->sum('total');
 			$paid        = Paid::whereIn('project_id', $results->pluck('project_id')->all())->sum('total');
 			$declaration = Declaration::whereIn('project_id', $results->pluck('project_id')->all())->sum('total');

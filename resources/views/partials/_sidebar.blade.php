@@ -51,6 +51,7 @@
                         </ul>
                     </li>
                 </ul>
+                @if (Auth::user()->is_admin)
                 <ul class="nav side-menu">
                     <li>
                         <a>
@@ -96,12 +97,14 @@
                         </ul>
                     </li>
                 </ul>
+                @endif
             </div>
             <!-- /Menu section -->
 
             <!-- Menu section -->
             <div class="menu_section">
                 <h3>系统管理</h3>
+                @if (Auth::user()->is_admin)
                 <ul class="nav side-menu">
                     <li>
                         <a>
@@ -117,6 +120,7 @@
                         </ul>
                     </li>
                 </ul>
+                @endif
                 <ul class="nav side-menu">
                     <li>
                         <a>
@@ -132,7 +136,7 @@
                 <ul class="nav side-menu">
                     <li>
                         <a href="{{ route('home') }}">
-                            <i class="fa fa-home"></i> 系统说明
+                            <i class="fa fa-home"></i> 政策文件
                         </a>
                     </li>
                 </ul>

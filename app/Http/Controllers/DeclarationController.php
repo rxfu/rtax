@@ -10,7 +10,11 @@ use Illuminate\Http\Request;
 class DeclarationController extends Controller {
 
 	public function getList() {
-		$declarations = Declaration::all();
+		if (Auth::user()->is_admin) {
+			$declarations = Declaration::all();
+		} else {
+			$declarations = Declaration::whereUserId(Auth::user()->id)->get();
+		}
 
 		return view('tax.list', compact('declarations'));
 	}
