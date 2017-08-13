@@ -156,11 +156,45 @@ class TaxController extends Controller {
 				$path     = $file->storeAs($this->upload, $filename);
 
 				Excel::selectSheetsByIndex(0)->load(storage_path('app') . '/' . $path, function ($excel) {
-					$results = $excel->all()->toArray();
-					dd($results);
+					$excel->noHeading();
+
+					$results = $excel->skip(1)->all();
+
 					foreach ($results as $result) {
-						dd($result);
-						$tax                     = new Tax();
+						$exist = Tax::whereProjectName($result[0])
+							->whereLotName($result[1])
+							->whereLotType($result[2])
+							->whereSpecificationName($result[3])
+							->whereTaxName($result[4])
+							->exists();
+
+						if ($exist) {
+							$tax = Tax::whereProjectName($result[0])
+								->whereLotName($result[1])
+								->whereLotType($result[2])
+								->whereSpecificationName($result[3])
+								->whereTaxName($result[4])
+								->first();
+						} else {
+							$existProject = Project::whereProjectName($result[0])
+								->whereLotName($result[1])
+								->whereLotType($result[2])
+								->exists();
+
+							if (!$existProject) {
+								$project = new Project();
+
+								$project->project_name = $result[0];
+								$project->lot_name     = $result[1];
+								$project->lot_type     = $result[2];
+								$project->user_id      = Auth::user()->id;
+
+								$project->save();
+							}
+
+							$tax = new Tax();
+						}
+
 						$tax->project_name       = $result[0];
 						$tax->lot_name           = $result[1];
 						$tax->lot_type           = $result[2];
@@ -172,7 +206,7 @@ class TaxController extends Controller {
 						$tax->flag               = $result[8];
 						$tax->completion_before  = $result[9];
 						$tax->completion_after   = $result[10];
-						dd($result);
+
 						$this->caculateTax($tax);
 						$tax->save();
 					}

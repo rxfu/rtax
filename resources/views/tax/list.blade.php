@@ -21,6 +21,7 @@
 							<th>项目名称</th>
 							<th>标段名称</th>
 							<th>标段类型</th>
+							<th>税种</th>
 							<th>税目</th>
 							<th>课税单价</th>
 							<th>课税数量</th>
@@ -37,6 +38,7 @@
 								<td>{{ $tax->project_name }}</td>
 								<td>{{ $tax->lot_name }}</td>
 								<td>{{ $tax->lot_type }}</td>
+								<td>{{ $tax->specification_name }}</td>
 								<td>{{ $tax->tax_name }}</td>
 								<td>{{ $tax->unit_price }}</td>
 								<td>{{ $tax->total_amount }}</td>
