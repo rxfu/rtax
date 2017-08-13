@@ -29,7 +29,7 @@ class PolicyController extends Controller {
 			if ($request->hasFile('file') && $request->file('file')->isValid()) {
 				$file             = $request->file('file');
 				$filename         = time() . '.' . $file->getClientOriginalExtension();
-				$policy->name     = $file->getClientOriginalName();
+				$policy->name     = $inputs['name'];
 				$policy->ext      = $file->getClientOriginalExtension();
 				$policy->pathname = $this->upload . '/' . $filename;
 				$file->storeAs('public/' . $this->upload, $filename);
@@ -57,7 +57,7 @@ class PolicyController extends Controller {
 			if ($request->hasFile('file') && $request->file('file')->isValid()) {
 				$file             = $request->file('file');
 				$filename         = time() . '.' . $file->getClientOriginalExtension();
-				$policy->name     = $file->getClientOriginalName();
+				$policy->name     = $inputs['name'];
 				$policy->ext      = $file->getClientOriginalExtension();
 				$policy->pathname = $this->upload . '/' . $filename;
 				$file->storeAs('public/' . $this->upload, $filename);

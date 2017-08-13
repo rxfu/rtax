@@ -7,9 +7,15 @@
 	{{ csrf_field() }}
 
 	<div class="form-group">
-		<label for="file" class="control-label col-md-3 col-sm-3 col-xs-12">政策文件</label>
+		<label for="name" class="control-label col-md-3 col-sm-3 col-xs-12">文件名称 <span class="required">*</label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
-			<input type="file" class="form-control col-md-7 col-xs-12" id="file" name="file" placeholder="政策文件">
+			<input type="text" class="form-control col-md-7 col-xs-12" id="name" name="name" value="{{ old('name') }}"  placeholder="文件名称" required>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="file" class="control-label col-md-3 col-sm-3 col-xs-12">政策文件 <span class="required">*</label>
+		<div class="col-md-6 col-sm-6 col-xs-12">
+			<input type="file" class="form-control col-md-7 col-xs-12" id="file" name="file" placeholder="政策文件" required>
 		</div>
 	</div>
 	<div class="ln_solid"></div>
