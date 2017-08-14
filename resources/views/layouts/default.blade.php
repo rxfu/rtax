@@ -13,6 +13,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('fonts/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('fonts/font-awesome/css/pnofity.css') }}" rel="stylesheet">
     @stack('styles')
 
     <!-- Custom theme styles -->
@@ -32,9 +33,22 @@
     <!-- Scripts -->
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('js/pnofity.js') }}"></script>
     @stack('scripts')
 
     <!-- Custom theme scripts -->
     <script src="{{ asset('js/custom.min.js') }}"></script>
+    @if (session('status'))
+    <script>
+        @if (session('status.success'))
+        new PNotify({
+            title: '成功',
+            text: {{ session('status.success') }},
+            type: 'success',
+            styling: 'bootstrap3'
+        });
+        @endif
+    </script>
+    @endif
 </body>
 </html>
