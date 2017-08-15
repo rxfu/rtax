@@ -19,16 +19,29 @@ class ProjectController extends Controller {
 	}
 
 	public function postSave(Request $request) {
+		$this->validate($request, [
+			'project_name' => 'required',
+			'lot_name'     => 'required',
+			'lot_type'     => 'required',
+		]);
+
 		$inputs = $request->all();
 
 		if ($request->isMethod('post')) {
 			$project = new Project();
 			$project->fill($inputs);
 			$project->user_id = Auth::user()->id;
-			$project->save();
+
+			if ($project->save()) {
+				$request->session()->flash('success', '标段更新成功');
+			} else {
+				$request->session()->flash('error', '标段更新失败');
+			}
 
 			return redirect()->route('project.list');
 		}
+
+		return back()->withErrors();
 	}
 
 	public function getEdit($id) {
@@ -38,24 +51,49 @@ class ProjectController extends Controller {
 	}
 
 	public function putUpdate(Request $request, $id) {
+		$this->validate($request, [
+			'project_name' => 'required',
+			'lot_name'     => 'required',
+			'lot_type'     => 'required',
+		]);
+
 		$inputs = $request->all();
 
 		if ($request->isMethod('put')) {
 			$project = Project::find($id);
 			$project->fill($inputs);
 			$project->user_id = Auth::user()->id;
-			$project->save();
+
+			if ($project->save()) {
+				$request->session()->flash('success', '标段更新成功');
+			} else {
+				$request->session()->flash('error', '标段更新失败');
+			}
 
 			return redirect()->route('project.list');
 		}
+
+		return back()->withErrors();
 	}
 
 	public function deleteDelete(Request $request, $id) {
 		if ($request->isMethod('delete')) {
 			$project = Project::find($id);
-			$project->delete();
+
+			if (is_null($project)) {
+				$request->session()->flash('error', '该标段不存在');
+
+				return back();
+			} elseif (
+				$project->delete()) {
+				$request->session()->flash('success', '标段' . $project->id . '删除成功');
+			} else {
+				$request->session()->flash('error', '标段' . $project->id . '删除失败');
+			}
 
 			return redirect()->route('project.list');
 		}
+
+		return back()->withErrors();
 	}
 }
