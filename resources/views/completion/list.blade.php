@@ -21,8 +21,8 @@
 			<td>{{ $completion->id }}</td>
 			<td>{{ $completion->project->project_name }}</td>
 			<td>{{ $completion->project->lot_name }}</td>
-			<td>{{ $completion->completion_before }}</td>
-			<td>{{ $completion->completion_after }}</td>
+			<td>{{ $completion->completion_before }}%</td>
+			<td>{{ $completion->completion_after }}%</td>
 			<td>
 				<p data-placement="top" data-toggle="tooltip" title="编辑">
 					<a href="{{ route('completion.edit', $completion->id) }}" class="btn btn-primary btn-xs" role="button">

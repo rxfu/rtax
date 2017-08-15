@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Completion;
+use App\Project;
 use Illuminate\Http\Request;
 
 class CompletionController extends Controller {
@@ -90,7 +92,6 @@ class CompletionController extends Controller {
 			}
 
 			$completion->project_id = $project->id;
-			$completion->user_id    = Auth::user()->id;
 
 			if ($completion->save()) {
 				$request->session()->flash('success', '完工进度更新成功');

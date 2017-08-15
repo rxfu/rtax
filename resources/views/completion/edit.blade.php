@@ -31,7 +31,7 @@
 		<label for="completion_before" class="control-label col-md-3 col-sm-3 col-xs-12">改革前完工比例 <span class="required">*</label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
 			<div class="input-group">
-				<input type="text" class="form-control col-md-7 col-xs-12" id="completion_before" name="completion_before" value="{{ $tax->completion_before }}"  placeholder="改革前完工比例" required>
+				<input type="text" class="form-control col-md-7 col-xs-12" id="completion_before" name="completion_before" value="{{ $completion->completion_before }}"  placeholder="改革前完工比例" required>
 				<span class="input-group-addon">%</span>
 			</div>
 		</div>
@@ -40,7 +40,7 @@
 		<label for="completion_after" class="control-label col-md-3 col-sm-3 col-xs-12">改革后完工比例 <span class="required">*</label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
 			<div class="input-group">
-				<input type="text" class="form-control col-md-7 col-xs-12" id="completion_after" name="completion_after" value="{{ $tax->completion_after }}"  placeholder="改革后完工比例" required>
+				<input type="text" class="form-control col-md-7 col-xs-12" id="completion_after" name="completion_after" value="{{ $completion->completion_after }}"  placeholder="改革后完工比例" required>
 				<span class="input-group-addon">%</span>
 			</div>
 		</div>
