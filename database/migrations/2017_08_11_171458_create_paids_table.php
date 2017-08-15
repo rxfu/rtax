@@ -21,6 +21,7 @@ class CreatePaidsTable extends Migration {
 			$table->string('pathname', 100)->nullable()->comment('文件路径');
 			$table->string('ext', 10)->nullable()->comment('文件扩展名');
 			$table->integer('user_id')->unsigned()->comment('用户ID');
+			$table->string('year', 4)->comment('年度');
 			$table->timestamps();
 
 			$table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade')->onUpdate('cascade');

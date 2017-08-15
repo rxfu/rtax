@@ -8,6 +8,7 @@ use App\Project;
 use App\Rate;
 use App\Tax;
 use Auth;
+use Carbon\Carbon;
 use Excel;
 use Illuminate\Http\Request;
 use JavaScript;
@@ -58,6 +59,8 @@ class TaxController extends Controller {
 			$tax = new Tax();
 			$tax->fill($inputs);
 			$this->caculateTax($tax, $inputs);
+
+			$tax->year = Carbon::year();
 
 			if ($tax->save()) {
 				$request->session()->flash('success', '评估项目新增成功');

@@ -35,6 +35,7 @@ class CreateTaxesTable extends Migration {
 			$table->decimal('completion_after', 5, 2)->comment('改革后完工比例%');
 			$table->decimal('total', 15, 2)->comment('应纳资源税合计');
 			$table->integer('user_id')->unsigned()->comment('用户ID');
+			$table->string('year', 4)->comment('年度');
 			$table->timestamps();
 
 			$table->foreign('user_id')->references('id')->on('users');
