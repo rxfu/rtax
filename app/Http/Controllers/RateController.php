@@ -33,9 +33,9 @@ class RateController extends Controller {
 			$rate->fill($inputs);
 
 			if ($rate->save()) {
-				$request->session()->flash('success', '税率更新成功');
+				$request->session()->flash('success', '税率新增成功');
 			} else {
-				$request->session()->flash('error', '税率更新失败');
+				$request->session()->flash('error', '税率新增失败');
 			}
 
 			return redirect()->route('rate.list');
@@ -85,8 +85,7 @@ class RateController extends Controller {
 				$request->session()->flash('error', '该税率不存在');
 
 				return back();
-			} elseif (
-				$rate->delete()) {
+			} elseif ($rate->delete()) {
 				$request->session()->flash('success', '税率' . $rate->id . '删除成功');
 			} else {
 				$request->session()->flash('error', '税率' . $rate->id . '删除失败');

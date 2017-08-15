@@ -33,9 +33,9 @@ class ProjectController extends Controller {
 			$project->user_id = Auth::user()->id;
 
 			if ($project->save()) {
-				$request->session()->flash('success', '标段更新成功');
+				$request->session()->flash('success', '标段新增成功');
 			} else {
-				$request->session()->flash('error', '标段更新失败');
+				$request->session()->flash('error', '标段新增失败');
 			}
 
 			return redirect()->route('project.list');
@@ -84,8 +84,7 @@ class ProjectController extends Controller {
 				$request->session()->flash('error', '该标段不存在');
 
 				return back();
-			} elseif (
-				$project->delete()) {
+			} elseif ($project->delete()) {
 				$request->session()->flash('success', '标段' . $project->id . '删除成功');
 			} else {
 				$request->session()->flash('error', '标段' . $project->id . '删除失败');

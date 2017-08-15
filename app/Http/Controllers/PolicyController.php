@@ -99,8 +99,7 @@ class PolicyController extends Controller {
 				$request->session()->flash('error', '该政策文件不存在');
 
 				return back();
-			} elseif (
-				$policy->delete()) {
+			} elseif ($policy->delete()) {
 				$request->session()->flash('success', '政策文件' . $policy->id . '删除成功');
 			} else {
 				$request->session()->flash('error', '政策文件' . $policy->id . '删除失败');

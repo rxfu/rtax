@@ -112,8 +112,7 @@ class DeclarationController extends Controller {
 				$request->session()->flash('error', '该自行申报项目不存在');
 
 				return back();
-			} elseif (
-				$declaration->delete()) {
+			} elseif ($declaration->delete()) {
 				$request->session()->flash('success', '自行申报项目' . $declaration->id . '删除成功');
 			} else {
 				$request->session()->flash('error', '自行申报项目' . $declaration->id . '删除失败');

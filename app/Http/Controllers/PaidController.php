@@ -136,8 +136,7 @@ class PaidController extends Controller {
 				$request->session()->flash('error', '该已缴税项目不存在');
 
 				return back();
-			} elseif (
-				$paid->delete()) {
+			} elseif ($paid->delete()) {
 				$request->session()->flash('success', '已缴税项目' . $paid->id . '删除成功');
 			} else {
 				$request->session()->flash('error', '已缴税项目' . $paid->id . '删除失败');

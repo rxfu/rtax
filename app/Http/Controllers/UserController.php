@@ -19,15 +19,29 @@ class UserController extends Controller {
 	}
 
 	public function postSave(Request $request) {
+		$this->validate($request, [
+			'username' => 'required|string|max:255|unique:username',
+			'email'    => 'required|string|email|max:255|unique:users',
+			'password' => 'required|string|min:6',
+			'is_admin' => 'required',
+		]);
+
 		$inputs = $request->all();
 
 		if ($request->isMethod('post')) {
 			$user = new User();
 			$user->fill($inputs);
-			$user->save();
+
+			if ($user->save()) {
+				$request->session()->flash('success', '用户新增成功');
+			} else {
+				$request->session()->flash('error', '用户新增失败');
+			}
 
 			return redirect()->route('user.list');
 		}
+
+		return back()->withErrors();
 	}
 
 	public function getEdit($id) {
@@ -37,24 +51,48 @@ class UserController extends Controller {
 	}
 
 	public function putUpdate(Request $request, $id) {
+		$this->validate($request, [
+			'username' => 'required|string|max:255|unique:username',
+			'email'    => 'required|string|email|max:255|unique:users',
+			'is_admin' => 'required',
+		]);
+
 		$inputs = $request->all();
 
 		if ($request->isMethod('put')) {
 			$user = User::find($id);
 			$user->fill($inputs);
-			$user->save();
+
+			if ($user->save()) {
+				$request->session()->flash('success', '用户更新成功');
+			} else {
+				$request->session()->flash('error', '用户更新失败');
+			}
 
 			return redirect()->route('user.list');
 		}
+
+		return back()->withErrors();
 	}
 
 	public function deleteDelete(Request $request, $id) {
 		if ($request->isMethod('delete')) {
 			$user = User::find($id);
-			$user->delete();
+
+			if (is_null($user)) {
+				$request->session()->flash('error', '该用户不存在');
+
+				return back();
+			} elseif ($user->delete()) {
+				$request->session()->flash('success', '用户' . $user->id . '删除成功');
+			} else {
+				$request->session()->flash('error', '用户' . $user->id . '删除失败');
+			}
 
 			return redirect()->route('user.list');
 		}
+
+		return back()->withErrors();
 	}
 
 	public function getChangePassword() {
@@ -63,7 +101,8 @@ class UserController extends Controller {
 
 	public function putChangePassword(Request $request) {
 		$this->validate($request, [
-			'password' => 'required|confirmed|min:6',
+			'old_password' => 'required|string',
+			'password'     => 'required|string|confirmed|min:6',
 		]);
 
 		if ($request->isMethod('put')) {
@@ -75,11 +114,18 @@ class UserController extends Controller {
 			if (Auth::attempt($credentials)) {
 				$user           = Auth::user();
 				$user->password = $request->input('password');
-				$user->save();
+
+				if ($user->save()) {
+					$request->session()->flash('success', '用户密码修改成功');
+				} else {
+					$request->session()->flash('error', '用户密码修改失败');
+				}
 
 				return redirect()->route('user.chgpwd');
 			}
 		}
+
+		return back()->withErrors();
 	}
 
 	public function getResetPassword($id) {
@@ -96,9 +142,16 @@ class UserController extends Controller {
 		if ($request->isMethod('put')) {
 			$user           = User::find($id);
 			$user->password = $request->input('password');
-			$user->save();
+
+			if ($user->save()) {
+				$request->session()->flash('success', '用户密码重置成功');
+			} else {
+				$request->session()->flash('error', '用户密码重置失败');
+			}
 
 			return redirect()->route('user.list');
 		}
+
+		return back()->withErrors();
 	}
 }
