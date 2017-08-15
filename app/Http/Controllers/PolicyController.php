@@ -20,6 +20,11 @@ class PolicyController extends Controller {
 	}
 
 	public function postSave(Request $request) {
+		$this->validate($request, [
+			'name' => 'required',
+			'file' => 'required|file|mimes:doc,docx,zip,rar',
+		]);
+
 		$inputs = $request->all();
 
 		if ($request->isMethod('post')) {
@@ -35,10 +40,16 @@ class PolicyController extends Controller {
 				$file->storeAs('public/' . $this->upload, $filename);
 			}
 
-			$policy->save();
+			if ($policy->save()) {
+				$request->session()->flash('success', '政策文件新增成功');
+			} else {
+				$request->session()->flash('error', '政策文件新增失败');
+			}
 
 			return redirect()->route('policy.list');
 		}
+
+		return back()->withErrors();
 	}
 
 	public function getEdit($id) {

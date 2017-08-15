@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', '新增政策文件项目')
+@section('title', '新增政策文件')
 
 @section('content')
 <form method="post" action="{{ route('policy.save') }}" class="form-horizontal form-label-left" enctype="multipart/form-data">

@@ -13,7 +13,8 @@
     <!-- Styles -->
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('fonts/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('fonts/font-awesome/css/pnofity.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/pnotify.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/pnotify.nonblock.css') }}" rel="stylesheet">
     @stack('styles')
 
     <!-- Custom theme styles -->
@@ -33,22 +34,55 @@
     <!-- Scripts -->
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('js/pnofity.js') }}"></script>
+    <script src="{{ asset('js/pnotify.js') }}"></script>
+    <script src="{{ asset('js/pnotify.nonblock.js') }}"></script>
     @stack('scripts')
 
     <!-- Custom theme scripts -->
     <script src="{{ asset('js/custom.min.js') }}"></script>
-    @if (session('status'))
     <script>
-        @if (session('status.success'))
+    $(function(){
+        PNotify.removeAll();
+
+        @if (session('success'))
         new PNotify({
             title: '成功',
-            text: {{ session('status.success') }},
+            text: {{ session('success') }},
             type: 'success',
-            styling: 'bootstrap3'
+            styling: 'bootstrap3',
+            addClass: 'stack-bar-top',
+            cornerclass: '',
+            width: '100%',
+            stack: stack_bar_top
         });
         @endif
+
+        @if (session('error'))
+        new PNotify({
+            title: '出错啦',
+            text: {{ session('error') }},
+            type: 'error',
+            styling: 'bootstrap3',
+            addClass: 'stack-bar-top',
+            cornerclass: '',
+            width: '100%',
+            stack: stack_bar_top
+        });
+        @endif
+
+        @foreach ($errors->all() as $error)
+        new PNotify({
+            title: '验证错误',
+            text: '{{ $error }}',
+            type: 'error',
+            styling: 'bootstrap3',
+            addclass: 'stack-bar-top',
+            cornerclass: '',
+            width: '100%',
+            stack: stack_bar_top
+        });
+        @endforeach
+    });
     </script>
-    @endif
 </body>
 </html>
