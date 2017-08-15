@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Completion;
 use App\Declaration;
 use App\Paid;
 use App\Project;
@@ -48,8 +49,6 @@ class TaxController extends Controller {
 			'unit_price'         => 'required|numeric',
 			'total_amount'       => 'required|numeric',
 			'flag'               => 'required',
-			'completion_before'  => 'required|numeric',
-			'completion_after'   => 'required|numeric',
 		]);
 
 		$inputs = $request->all();
@@ -92,8 +91,6 @@ class TaxController extends Controller {
 			'unit_price'         => 'required|numeric',
 			'total_amount'       => 'required|numeric',
 			'flag'               => 'required',
-			'completion_before'  => 'required|numeric',
-			'completion_after'   => 'required|numeric',
 		]);
 
 		$inputs = $request->all();
@@ -267,27 +264,6 @@ JavaScript::put([
 								->whereTaxName($result[4])
 								->first();
 						} else {
-							$existProject = Project::whereProjectName($result[0])
-								->whereLotName($result[1])
-								->whereLotType($result[2])
-								->exists();
-
-							if (!$existProject) {
-								$project = new Project();
-
-								$project->project_name = $result[0];
-								$project->lot_name     = $result[1];
-								$project->lot_type     = $result[2];
-								$project->user_id      = Auth::user()->id;
-
-								if ($project->save()) {
-									$request->session()->flash('success', '标段新增成功');
-								} else {
-									$request->session()->flash('error', '标段新增失败');
-								}
-
-							}
-
 							$tax = new Tax();
 						}
 
@@ -300,16 +276,14 @@ JavaScript::put([
 						$tax->unit_price         = $result[6];
 						$tax->total_amount       = $result[7];
 						$tax->flag               = $result[8];
-						$tax->completion_before  = $result[9];
-						$tax->completion_after   = $result[10];
 						$tax->year               = date('Y');
 
 						$this->caculateTax($tax);
 
 						if ($tax->save()) {
-							$request->session()->flash('success', '评估项目新增成功');
+							$request->session()->flash('success', '评估项目导入成功');
 						} else {
-							$request->session()->flash('error', '评估项目新增失败');
+							$request->session()->flash('error', '评估项目导入失败');
 						}
 
 					}
@@ -337,6 +311,11 @@ JavaScript::put([
 		}
 
 		$tax->project_id = $project->id;
+
+		// 获取完工进度
+		$completion             = Completion::whereProjectId($tax->project_id)->first();
+		$tax->completion_before = $completion->completion_before;
+		$tax->completion_after  = $completion->completion_after;
 
 		// 获取税率
 		$rates  = Rate::whereName($tax->tax_name)->get();
