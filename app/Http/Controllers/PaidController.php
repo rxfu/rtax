@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Paid;
 use App\Project;
 use Auth;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class PaidController extends Controller {
@@ -58,7 +57,7 @@ class PaidController extends Controller {
 
 			$paid->project_id = $project->id;
 			$paid->user_id    = Auth::user()->id;
-			$paid->year       = Carbon::year();
+			$paid->year       = date('Y');
 
 			if ($request->hasFile('file') && $request->file('file')->isValid()) {
 				$file           = $request->file('file');

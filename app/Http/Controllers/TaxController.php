@@ -8,7 +8,6 @@ use App\Project;
 use App\Rate;
 use App\Tax;
 use Auth;
-use Carbon\Carbon;
 use Excel;
 use Illuminate\Http\Request;
 use JavaScript;
@@ -60,7 +59,7 @@ class TaxController extends Controller {
 			$tax->fill($inputs);
 			$this->caculateTax($tax, $inputs);
 
-			$tax->year = Carbon::year();
+			$tax->year = date('Y');
 
 			if ($tax->save()) {
 				$request->session()->flash('success', '评估项目新增成功');
@@ -232,7 +231,7 @@ class TaxController extends Controller {
 				$filename = time() . '.' . $file->getClientOriginalExtension();
 				$path     = $file->storeAs($this->upload, $filename);
 
-				Excel::selectSheetsByIndex(0)->load(storage_path('app') . '/' . $path, function ($excel) {
+				Excel::selectSheetsByIndex(0)->load(storage_path('app') . '/' . $path, function ($excel) use ($request) {
 					$excel->noHeading();
 
 					$results = $excel->skip(1)->all();
@@ -288,6 +287,7 @@ class TaxController extends Controller {
 						$tax->flag               = $result[8];
 						$tax->completion_before  = $result[9];
 						$tax->completion_after   = $result[10];
+						$tax->year               = date('Y');
 
 						$this->caculateTax($tax);
 

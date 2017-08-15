@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Declaration;
 use App\Project;
 use Auth;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class DeclarationController extends Controller {
@@ -54,7 +53,7 @@ class DeclarationController extends Controller {
 
 			$declaration->project_id = $project->id;
 			$declaration->user_id    = Auth::user()->id;
-			$declaration->year       = Carbon::year();
+			$declaration->year       = date('Y');
 
 			if ($declaration->save()) {
 				$request->session()->flash('success', '自行申报项目新增成功');
