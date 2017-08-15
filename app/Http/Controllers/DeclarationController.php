@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Declaration;
 use App\Project;
+use App\Rate;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -21,8 +22,9 @@ class DeclarationController extends Controller {
 
 	public function getCreate() {
 		$projects = Project::all();
+		$rates    = Rate::select('name')->distinct()->get();
 
-		return view('declaration.create', compact('projects'));
+		return view('declaration.create', compact('projects', 'rates'));
 	}
 
 	public function postSave(Request $request) {
@@ -70,8 +72,9 @@ class DeclarationController extends Controller {
 	public function getEdit($id) {
 		$declaration = Declaration::find($id);
 		$projects    = Project::all();
+		$rates       = Rate::select('name')->distinct()->get();
 
-		return view('declaration.edit', compact('declaration', 'projects'));
+		return view('declaration.edit', compact('declaration', 'projects', 'rates'));
 	}
 
 	public function putUpdate(Request $request, $id) {

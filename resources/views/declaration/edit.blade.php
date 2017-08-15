@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', '编辑自行申报缴纳资源税项目')
+@section('title', '编辑自行申报资源税项目')
 
 @section('content')
 <form method="post" action="{{ route('declaration.update', $declaration->id) }}" class="form-horizontal form-label-left">
@@ -33,6 +33,16 @@
 			<select id="lot_type" name="lot_type" class="form-control col-md-7 col-xs-12">
 				@foreach ($projects->pluck('lot_type')->unique() as $lot_type)
 					<option value="{{ $lot_type }}"{{ $lot_type === $declaration->lot_type ? ' selected' : ''}}>{{ $lot_type }}</option>
+				@endforeach
+			</select>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="tax_name" class="control-label col-md-3 col-sm-3 col-xs-12">税目 <span class="required">*</span></label>
+		<div class="col-md-6 col-sm-6 col-xs-12">
+			<select id="tax_name" name="tax_name" class="form-control col-md-7 col-xs-12">
+				@foreach ($rates as $rate)
+					<option value="{{ $rate->name }}"{{ $rate->name === $tax->tax_name ? ' selected' : ''}}>{{ $rate->name }}</option>
 				@endforeach
 			</select>
 		</div>

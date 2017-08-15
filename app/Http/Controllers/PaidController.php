@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Paid;
 use App\Project;
+use App\Rate;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -23,8 +24,9 @@ class PaidController extends Controller {
 
 	public function getCreate() {
 		$projects = Project::all();
+		$rates    = Rate::select('name')->distinct()->get();
 
-		return view('paid.create', compact('projects'));
+		return view('paid.create', compact('projects', 'rates'));
 	}
 
 	public function postSave(Request $request) {
@@ -69,9 +71,9 @@ class PaidController extends Controller {
 			}
 
 			if ($paid->save()) {
-				$request->session()->flash('success', '已缴税项目新增成功');
+				$request->session()->flash('success', '可抵税项目新增成功');
 			} else {
-				$request->session()->flash('error', '已缴税项目新增失败');
+				$request->session()->flash('error', '可抵税项目新增失败');
 			}
 
 			return redirect()->route('tax.list');
@@ -83,8 +85,9 @@ class PaidController extends Controller {
 	public function getEdit($id) {
 		$paid     = Paid::find($id);
 		$projects = Project::all();
+		$rates    = Rate::select('name')->distinct()->get();
 
-		return view('paid.edit', compact('paid', 'projects'));
+		return view('paid.edit', compact('paid', 'projects', 'rates'));
 	}
 
 	public function putUpdate(Request $request, $id) {
@@ -128,9 +131,9 @@ class PaidController extends Controller {
 			}
 
 			if ($paid->save()) {
-				$request->session()->flash('success', '已缴税项目更新成功');
+				$request->session()->flash('success', '可抵税项目更新成功');
 			} else {
-				$request->session()->flash('error', '已缴税项目更新失败');
+				$request->session()->flash('error', '可抵税项目更新失败');
 			}
 
 			return redirect()->route('tax.list');
@@ -146,13 +149,13 @@ class PaidController extends Controller {
 				->first();
 
 			if (is_null($paid)) {
-				$request->session()->flash('error', '该已缴税项目不存在');
+				$request->session()->flash('error', '该可抵税项目不存在');
 
 				return back();
 			} elseif ($paid->delete()) {
-				$request->session()->flash('success', '已缴税项目' . $paid->id . '删除成功');
+				$request->session()->flash('success', '可抵税项目' . $paid->id . '删除成功');
 			} else {
-				$request->session()->flash('error', '已缴税项目' . $paid->id . '删除失败');
+				$request->session()->flash('error', '可抵税项目' . $paid->id . '删除失败');
 			}
 
 			return redirect()->route('tax.list');

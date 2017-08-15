@@ -40,7 +40,7 @@
                                 <a href="{{ route('tax.create') }}">新增评估项目</a>
                             </li>
                             <li>
-                                <a href="{{ route('paid.create') }}">新增已缴税项目</a>
+                                <a href="{{ route('paid.create') }}">新增可抵税项目</a>
                             </li>
                             <li>
                                 <a href="{{ route('declaration.create') }}">新增自行申报税项目</a>

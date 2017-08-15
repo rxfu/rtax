@@ -85,7 +85,7 @@
     <div class="col-md-12">
         <div class="x_panel">
             <div class="x_title">
-                <h2>已缴资源税</h2>
+                <h2>可抵资源税</h2>
 
                 <div class="clearfix"></div>
             </div>
@@ -98,6 +98,7 @@
 							<th>项目名称</th>
 							<th>标段名称</th>
 							<th>标段类型</th>
+							<th>税目</th>
 							<th>数量</th>
 							<th>金额</th>
 							<th>证明材料</th>
@@ -113,6 +114,7 @@
 								<td>{{ $paid->project->project_name }}</td>
 								<td>{{ $paid->project->lot_name }}</td>
 								<td>{{ $paid->project->lot_type }}</td>
+								<td>{{ $paid->tax_name }}</td>
 								<td>{{ $paid->amount }}</td>
 								<td>{{ $paid->total }}</td>
 								<td>
@@ -159,7 +161,7 @@
     <div class="col-md-12">
         <div class="x_panel">
             <div class="x_title">
-                <h2>自行申报缴纳资源税</h2>
+                <h2>自行申报资源税</h2>
 
                 <div class="clearfix"></div>
             </div>
@@ -172,6 +174,7 @@
 							<th>项目名称</th>
 							<th>标段名称</th>
 							<th>标段类型</th>
+							<th>税目</th>
 							<th>金额</th>
 							<th>编辑</th>
 							<th>删除</th>
@@ -185,6 +188,7 @@
 								<td>{{ $declaration->project->project_name }}</td>
 								<td>{{ $declaration->project->lot_name }}</td>
 								<td>{{ $declaration->project->lot_type }}</td>
+								<td>{{ $declaration->tax_name }}</td>
 								<td>{{ $declaration->total }}</td>
 								<td>
 									<p data-placement="top" data-toggle="tooltip" title="编辑">

@@ -102,8 +102,8 @@
 								<td colspan="6">
 									<strong>合计</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									应纳资源税：{{ $results->sum('total') }} 元&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									已缴资源税：{{ $paid }} 元&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									自行申报缴纳资源税：{{ $declaration }} 元&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									可抵资源税：{{ $paid }} 元&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									自行申报资源税：{{ $declaration }} 元&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									应补资源税：{{ $payable - $paid - $declaration }} 元
 								</td>
 							</tr>
@@ -184,8 +184,8 @@
 				labels: [
 					'应纳资源税',
 					'应补资源税',
-					'已缴资源税',
-					'自行申报缴纳资源税'
+					'可抵资源税',
+					'自行申报资源税'
 				],
 				datasets: [{
 					label: '资源税',
@@ -222,8 +222,8 @@
 		var data = {
 			labels: [
 				'应补资源税',
-				'已缴资源税',
-				'自行申报缴纳资源税'
+				'可抵资源税',
+				'自行申报资源税'
 			],
 			datasets: [{
 				data: [

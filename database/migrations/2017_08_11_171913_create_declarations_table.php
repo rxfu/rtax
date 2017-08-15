@@ -15,6 +15,7 @@ class CreateDeclarationsTable extends Migration {
 		Schema::create('declarations', function (Blueprint $table) {
 			$table->increments('id');
 			$table->integer('project_id')->unsigned()->comment('项目ID');
+			$table->string('tax_name', 100)->comment('税目');
 			$table->decimal('total', 15, 2)->comment('金额');
 			$table->integer('user_id')->unsigned()->comment('用户ID');
 			$table->string('year', 4)->comment('年度');
