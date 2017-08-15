@@ -26,6 +26,13 @@ class DeclarationController extends Controller {
 	}
 
 	public function postSave(Request $request) {
+		$this->validate($request, [
+			'project_name' => 'required',
+			'lot_name'     => 'required',
+			'lot_type'     => 'required',
+			'total'        => 'required|numeric',
+		]);
+
 		$inputs = $request->all();
 
 		if ($request->isMethod('post')) {
@@ -41,10 +48,16 @@ class DeclarationController extends Controller {
 			$declaration->project_id = $project->id;
 			$declaration->user_id    = Auth::user()->id;
 
-			$declaration->save();
+			if ($declaration->save()) {
+				$request->session()->flash('success', '自行申报项目新增成功');
+			} else {
+				$request->session()->flash('error', '自行申报项目新增失败');
+			}
 
 			return redirect()->route('tax.list');
 		}
+
+		return back()->withErrors();
 	}
 
 	public function getEdit($id) {
@@ -55,6 +68,13 @@ class DeclarationController extends Controller {
 	}
 
 	public function putUpdate(Request $request, $id) {
+		$this->validate($request, [
+			'project_name' => 'required',
+			'lot_name'     => 'required',
+			'lot_type'     => 'required',
+			'total'        => 'required|numeric',
+		]);
+
 		$inputs = $request->all();
 
 		if ($request->isMethod('put')) {
@@ -70,18 +90,38 @@ class DeclarationController extends Controller {
 			$declaration->project_id = $project->id;
 			$declaration->user_id    = Auth::user()->id;
 
-			$declaration->save();
+			if ($declaration->save()) {
+				$request->session()->flash('success', '自行申报项目更新成功');
+			} else {
+				$request->session()->flash('error', '自行申报项目更新失败');
+			}
 
 			return redirect()->route('tax.list');
 		}
+
+		return back()->withErrors();
 	}
 
 	public function deleteDelete(Request $request, $id) {
 		if ($request->isMethod('delete')) {
-			$declaration = Declaration::find($id);
-			$declaration->delete();
+			$declaration = Declaration::whereId($id)
+				->whereUserId(Auth::user()->id)
+				->first();
+
+			if (is_null($declaration)) {
+				$request->session()->flash('error', '该自行申报项目不存在');
+
+				return back();
+			} elseif (
+				$declaration->delete()) {
+				$request->session()->flash('success', '自行申报项目' . $declaration->id . '删除成功');
+			} else {
+				$request->session()->flash('error', '自行申报项目' . $declaration->id . '删除失败');
+			}
 
 			return redirect()->route('tax.list');
 		}
+
+		return back()->withErrors();
 	}
 }
