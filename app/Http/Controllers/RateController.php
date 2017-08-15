@@ -18,15 +18,30 @@ class RateController extends Controller {
 	}
 
 	public function postSave(Request $request) {
+		$this->validate($request, [
+			'category' => 'required',
+			'flag'     => 'required',
+			'name'     => 'required',
+			'unit'     => 'required',
+			'rate'     => 'required|numeric',
+		]);
+
 		$inputs = $request->all();
 
 		if ($request->isMethod('post')) {
 			$rate = new Rate();
 			$rate->fill($inputs);
-			$rate->save();
+
+			if ($rate->save()) {
+				$request->session()->flash('success', '税率更新成功');
+			} else {
+				$request->session()->flash('error', '税率更新失败');
+			}
 
 			return redirect()->route('rate.list');
 		}
+
+		return back()->withErrors();
 	}
 
 	public function getEdit($id) {
@@ -36,23 +51,50 @@ class RateController extends Controller {
 	}
 
 	public function putUpdate(Request $request, $id) {
+		$this->validate($request, [
+			'category' => 'required',
+			'flag'     => 'required',
+			'name'     => 'required',
+			'unit'     => 'required',
+			'rate'     => 'required|numeric',
+		]);
+
 		$inputs = $request->all();
 
 		if ($request->isMethod('put')) {
 			$rate = Rate::find($id);
 			$rate->fill($inputs);
-			$rate->save();
+
+			if ($rate->save()) {
+				$request->session()->flash('success', '税率更新成功');
+			} else {
+				$request->session()->flash('error', '税率更新失败');
+			}
 
 			return redirect()->route('rate.list');
 		}
+
+		return back()->withErrors();
 	}
 
 	public function deleteDelete(Request $request, $id) {
 		if ($request->isMethod('delete')) {
 			$rate = Rate::find($id);
-			$rate->delete();
+
+			if (is_null($rate)) {
+				$request->session()->flash('error', '该税率不存在');
+
+				return back();
+			} elseif (
+				$rate->delete()) {
+				$request->session()->flash('success', '税率' . $rate->id . '删除成功');
+			} else {
+				$request->session()->flash('error', '税率' . $rate->id . '删除失败');
+			}
 
 			return redirect()->route('rate.list');
 		}
+
+		return back()->withErrors();
 	}
 }
