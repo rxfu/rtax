@@ -61,6 +61,7 @@ class PolicyController extends Controller {
 	public function putUpdate(Request $request, $id) {
 		$this->validate($request, [
 			'name' => 'required',
+			'file' => 'file|mimes:doc,docx,pdf,zip,rar',
 		]);
 
 		$inputs = $request->all();

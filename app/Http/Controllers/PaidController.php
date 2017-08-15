@@ -28,6 +28,15 @@ class PaidController extends Controller {
 	}
 
 	public function postSave(Request $request) {
+		$this->validate($request, [
+			'project_name' => 'required',
+			'lot_name'     => 'required',
+			'lot_type'     => 'required',
+			'amount'       => 'required|numeric',
+			'total'        => 'required|numeric',
+			'file'         => 'file|mimes:doc,docx,zip,rar,jpg,png',
+		]);
+
 		$inputs = $request->all();
 
 		if ($request->isMethod('post')) {
@@ -52,10 +61,16 @@ class PaidController extends Controller {
 				$file->storeAs('public/' . $this->upload, $filename);
 			}
 
-			$paid->save();
+			if ($paid->save()) {
+				$request->session()->flash('success', '已缴税项目新增成功');
+			} else {
+				$request->session()->flash('error', '已缴税项目新增失败');
+			}
 
 			return redirect()->route('tax.list');
 		}
+
+		return back()->withErrors();
 	}
 
 	public function getEdit($id) {
@@ -66,6 +81,15 @@ class PaidController extends Controller {
 	}
 
 	public function putUpdate(Request $request, $id) {
+		$this->validate($request, [
+			'project_name' => 'required',
+			'lot_name'     => 'required',
+			'lot_type'     => 'required',
+			'amount'       => 'required|numeric',
+			'total'        => 'required|numeric',
+			'file'         => 'file|mimes:doc,docx,zip,rar,jpg,png',
+		]);
+
 		$inputs = $request->all();
 
 		if ($request->isMethod('put')) {
@@ -90,18 +114,38 @@ class PaidController extends Controller {
 				$file->storeAs('public/' . $this->upload, $filename);
 			}
 
-			$paid->save();
+			if ($paid->save()) {
+				$request->session()->flash('success', '已缴税项目更新成功');
+			} else {
+				$request->session()->flash('error', '已缴税项目更新失败');
+			}
 
 			return redirect()->route('tax.list');
 		}
+
+		return back()->withErrors();
 	}
 
 	public function deleteDelete(Request $request, $id) {
 		if ($request->isMethod('delete')) {
-			$paid = Paid::find($id);
-			$paid->delete();
+			$paid = Declaration::whereId($id)
+				->whereUserId(Auth::user()->id)
+				->first();
+
+			if (is_null($paid)) {
+				$request->session()->flash('error', '该已缴税项目不存在');
+
+				return back();
+			} elseif (
+				$paid->delete()) {
+				$request->session()->flash('success', '已缴税项目' . $paid->id . '删除成功');
+			} else {
+				$request->session()->flash('error', '已缴税项目' . $paid->id . '删除失败');
+			}
 
 			return redirect()->route('tax.list');
 		}
+
+		return back()->withErrors();
 	}
 }
