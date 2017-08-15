@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
-@section('title', '新增自行申报资源税项目')
+@section('title', '新增完工进度')
 
 @section('content')
-<form method="post" action="{{ route('declaration.save') }}" class="form-horizontal form-label-left">
+<form method="post" action="{{ route('completion.save') }}" class="form-horizontal form-label-left">
 	{{ csrf_field() }}
 
 	<div class="form-group">
@@ -27,19 +27,21 @@
 		</div>
 	</div>
 	<div class="form-group">
-		<label for="tax_name" class="control-label col-md-3 col-sm-3 col-xs-12">税目 <span class="required">*</span></label>
+		<label for="completion_before" class="control-label col-md-3 col-sm-3 col-xs-12">改革前完工比例 <span class="required">*</label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
-			<select id="tax_name" name="tax_name" class="form-control col-md-7 col-xs-12">
-				@foreach ($rates as $rate)
-					<option value="{{ $rate->name }}">{{ $rate->name }}</option>
-				@endforeach
-			</select>
+			<div class="input-group">
+				<input type="text" class="form-control col-md-7 col-xs-12" id="completion_before" name="completion_before" value="{{ old('completion_before') }}"  placeholder="改革前完工比例" required>
+				<span class="input-group-addon">%</span>
+			</div>
 		</div>
 	</div>
 	<div class="form-group">
-		<label for="total" class="control-label col-md-3 col-sm-3 col-xs-12">金额 <span class="required">*</span></label>
+		<label for="completion_after" class="control-label col-md-3 col-sm-3 col-xs-12">改革后完工比例 <span class="required">*</label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
-			<input type="text" class="form-control col-md-7 col-xs-12" id="total" name="total" value="{{ old('total') }}"  placeholder="金额" required>
+			<div class="input-group">
+				<input type="text" class="form-control col-md-7 col-xs-12" id="completion_after" name="completion_after" value="{{ old('completion_after') }}"  placeholder="改革后完工比例" required>
+				<span class="input-group-addon">%</span>
+			</div>
 		</div>
 	</div>
 	<div class="ln_solid"></div>

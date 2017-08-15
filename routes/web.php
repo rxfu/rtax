@@ -88,3 +88,12 @@ Route::prefix('policy')->group(function () {
 	Route::name('policy.update')->put('{id}/update', 'PolicyController@putUpdate');
 	Route::name('policy.delete')->delete('{id}/delete', 'PolicyController@deleteDelete');
 });
+
+Route::prefix('completion')->group(function () {
+	Route::name('completion.list')->get('list', 'CompletionController@getList');
+	Route::name('completion.create')->get('create', 'CompletionController@getCreate');
+	Route::name('completion.save')->post('save', 'CompletionController@postSave');
+	Route::name('completion.edit')->get('{id}/edit', 'CompletionController@getEdit');
+	Route::name('completion.update')->put('{id}/update', 'CompletionController@putUpdate');
+	Route::name('completion.delete')->delete('{id}/delete', 'CompletionController@deleteDelete');
+});

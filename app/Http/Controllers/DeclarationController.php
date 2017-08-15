@@ -31,7 +31,6 @@ class DeclarationController extends Controller {
 		$this->validate($request, [
 			'project_name' => 'required',
 			'lot_name'     => 'required',
-			'lot_type'     => 'required',
 			'total'        => 'required|numeric',
 		]);
 
@@ -44,7 +43,6 @@ class DeclarationController extends Controller {
 			// 获取项目ID
 			$project = Project::whereProjectName($inputs['project_name'])
 				->whereLotName($inputs['lot_name'])
-				->whereLotType($inputs['lot_type'])
 				->first();
 
 			if (is_null($project)) {
@@ -81,7 +79,6 @@ class DeclarationController extends Controller {
 		$this->validate($request, [
 			'project_name' => 'required',
 			'lot_name'     => 'required',
-			'lot_type'     => 'required',
 			'total'        => 'required|numeric',
 		]);
 
@@ -94,7 +91,6 @@ class DeclarationController extends Controller {
 			// 获取项目ID
 			$project = Project::whereProjectName($inputs['project_name'])
 				->whereLotName($inputs['lot_name'])
-				->whereLotType($inputs['lot_type'])
 				->first();
 
 			if (is_null($project)) {

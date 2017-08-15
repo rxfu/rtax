@@ -70,6 +70,21 @@
                 <ul class="nav side-menu">
                     <li>
                         <a>
+                            <i class="fa fa-road"></i> 完工进度管理 <span class="fa fa-chevron-down"></span>
+                        </a>
+                        <ul class="nav child_menu">
+                            <li>
+                                <a href="{{ route('completion.list') }}">完工进度列表</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('completion.create') }}">新增完工进度</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav side-menu">
+                    <li>
+                        <a>
                             <i class="fa fa-user"></i> 税率管理 <span class="fa fa-chevron-down"></span>
                         </a>
                         <ul class="nav child_menu">

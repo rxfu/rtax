@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
-@section('title', '编辑自行申报资源税项目')
+@section('title', '编辑完工进度')
 
 @section('content')
-<form method="post" action="{{ route('declaration.update', $declaration->id) }}" class="form-horizontal form-label-left">
+<form method="post" action="{{ route('completion.update', $completion->id) }}" class="form-horizontal form-label-left">
 	{{ method_field('put') }}
 	{{ csrf_field() }}
 
@@ -12,7 +12,7 @@
 		<div class="col-md-6 col-sm-6 col-xs-12">
 			<select id="project_name" name="project_name" class="form-control col-md-7 col-xs-12">
 				@foreach ($projects->pluck('project_name')->unique() as $project_name)
-					<option value="{{ $project_name }}"{{ $project_name === $declaration->project_name ? ' selected' : ''}}>{{ $project_name }}</option>
+					<option value="{{ $project_name }}"{{ $project_name === $completion->project_name ? ' selected' : ''}}>{{ $project_name }}</option>
 				@endforeach
 			</select>
 		</div>
@@ -22,25 +22,27 @@
 		<div class="col-md-6 col-sm-6 col-xs-12">
 			<select id="lot_name" name="lot_name" class="form-control col-md-7 col-xs-12">
 				@foreach ($projects->pluck('lot_name')->unique() as $lot_name)
-					<option value="{{ $lot_name }}"{{ $lot_name === $declaration->lot_name ? ' selected' : ''}}>{{ $lot_name }}</option>
+					<option value="{{ $lot_name }}"{{ $lot_name === $completion->lot_name ? ' selected' : ''}}>{{ $lot_name }}</option>
 				@endforeach
 			</select>
 		</div>
 	</div>
 	<div class="form-group">
-		<label for="tax_name" class="control-label col-md-3 col-sm-3 col-xs-12">税目 <span class="required">*</span></label>
+		<label for="completion_before" class="control-label col-md-3 col-sm-3 col-xs-12">改革前完工比例 <span class="required">*</label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
-			<select id="tax_name" name="tax_name" class="form-control col-md-7 col-xs-12">
-				@foreach ($rates as $rate)
-					<option value="{{ $rate->name }}"{{ $rate->name === $tax->tax_name ? ' selected' : ''}}>{{ $rate->name }}</option>
-				@endforeach
-			</select>
+			<div class="input-group">
+				<input type="text" class="form-control col-md-7 col-xs-12" id="completion_before" name="completion_before" value="{{ $tax->completion_before }}"  placeholder="改革前完工比例" required>
+				<span class="input-group-addon">%</span>
+			</div>
 		</div>
 	</div>
 	<div class="form-group">
-		<label for="total" class="control-label col-md-3 col-sm-3 col-xs-12">金额 <span class="required">*</span></label>
+		<label for="completion_after" class="control-label col-md-3 col-sm-3 col-xs-12">改革后完工比例 <span class="required">*</label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
-			<input type="text" class="form-control col-md-7 col-xs-12" id="total" name="total" value="{{ $declaration->total }}"  placeholder="金额" required>
+			<div class="input-group">
+				<input type="text" class="form-control col-md-7 col-xs-12" id="completion_after" name="completion_after" value="{{ $tax->completion_after }}"  placeholder="改革后完工比例" required>
+				<span class="input-group-addon">%</span>
+			</div>
 		</div>
 	</div>
 	<div class="ln_solid"></div>

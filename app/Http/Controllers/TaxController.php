@@ -11,7 +11,6 @@ use Auth;
 use DB;
 use Excel;
 use Illuminate\Http\Request;
-use JavaScript;
 
 class TaxController extends Controller {
 
@@ -183,53 +182,51 @@ class TaxController extends Controller {
 			$paid        = Paid::whereIn('project_id', $results->pluck('project_id')->all())->sum('total');
 			$declaration = Declaration::whereIn('project_id', $results->pluck('project_id')->all())->sum('total');
 		}
+/*
+$lot_names = $results->pluck('lot_name')->unique()->values();
+$tax_names = $results->pluck('tax_name')->unique()->values();
+$bardata   = [];
+$piedata   = [];
 
-		$lot_names = $results->pluck('lot_name')->unique()->values();
-		$tax_names = $results->pluck('tax_name')->unique()->values();
-		$bardata   = [];
-		$piedata   = [];
+foreach ($tax_names as $name) {
+$taxRecords = $results->where('tax_name', $name);
 
-		// Bar chart
-		foreach ($tax_names as $name) {
-			$taxRecords = $results->where('tax_name', $name);
+$data = [];
+foreach ($results->pluck('lot_name')->unique() as $lotName) {
+$data[] = $taxRecords->where('lot_name', $lotName)->sum('total');
+}
 
-			$data = [];
-			foreach ($results->pluck('lot_name')->unique() as $lotName) {
-				$data[] = $taxRecords->where('lot_name', $lotName)->sum('total');
-			}
+$bardata[] = [
+'label'           => $name,
+'data'            => $data,
+'backgroundColor' => '#' . dechex(rand(0x000000, 0xffffff)),
+];
+}
 
-			$bardata[] = [
-				'label'           => $name,
-				'data'            => $data,
-				'backgroundColor' => '#' . dechex(rand(0x000000, 0xffffff)),
-			];
-		}
+foreach ($lot_names as $name) {
+$lotRecords = $results->where('lot_name', $name);
 
-		// Pie chart
-		foreach ($lot_names as $name) {
-			$lotRecords = $results->where('lot_name', $name);
+$data     = [];
+$bgcolors = [];
+foreach ($lotRecords->groupBy('tax_name') as $tax) {
+$data[]     = $tax->sum('total');
+$bgcolors[] = '#' . dechex(rand(0x000000, 0xffffff));
+}
 
-			$data     = [];
-			$bgcolors = [];
-			foreach ($lotRecords->groupBy('tax_name') as $tax) {
-				$data[]     = $tax->sum('total');
-				$bgcolors[] = '#' . dechex(rand(0x000000, 0xffffff));
-			}
+$piedata[] = [
+'data'            => $data,
+'backgroundColor' => $bgcolors,
+'label'           => $name,
+];
+}
 
-			$piedata[] = [
-				'data'            => $data,
-				'backgroundColor' => $bgcolors,
-				'label'           => $name,
-			];
-		}
-
-		JavaScript::put([
-			'lot_names' => $lot_names,
-			'tax_names' => $tax_names,
-			'bardata'   => $bardata,
-			'piedata'   => $piedata,
-		]);
-
+JavaScript::put([
+'lot_names' => $lot_names,
+'tax_names' => $tax_names,
+'bardata'   => $bardata,
+'piedata'   => $piedata,
+]);
+ */
 		return view('tax.search', compact('searched', 'results', 'payable', 'paid', 'declaration'));
 	}
 
