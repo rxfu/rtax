@@ -22,7 +22,7 @@ class PolicyController extends Controller {
 	public function postSave(Request $request) {
 		$this->validate($request, [
 			'name' => 'required',
-			'file' => 'required|file|mimes:doc,docx,zip,rar',
+			'file' => 'required|file|mimes:doc,docx,pdf,zip,rar',
 		]);
 
 		$inputs = $request->all();
@@ -41,9 +41,9 @@ class PolicyController extends Controller {
 			}
 
 			if ($policy->save()) {
-				$request->session()->flash('success', '政策文件新增成功');
+				$request->session()->flash('success', '政策文件上传成功');
 			} else {
-				$request->session()->flash('error', '政策文件新增失败');
+				$request->session()->flash('error', '政策文件上传失败');
 			}
 
 			return redirect()->route('policy.list');
@@ -59,6 +59,10 @@ class PolicyController extends Controller {
 	}
 
 	public function putUpdate(Request $request, $id) {
+		$this->validate($request, [
+			'name' => 'required',
+		]);
+
 		$inputs = $request->all();
 
 		if ($request->isMethod('put')) {
@@ -74,18 +78,36 @@ class PolicyController extends Controller {
 				$file->storeAs('public/' . $this->upload, $filename);
 			}
 
-			$policy->save();
+			if ($policy->save()) {
+				$request->session()->flash('success', '政策文件更新成功');
+			} else {
+				$request->session()->flash('error', '政策文件更新失败');
+			}
 
 			return redirect()->route('policy.list');
 		}
+
+		return back()->withErrors();
 	}
 
 	public function deleteDelete(Request $request, $id) {
 		if ($request->isMethod('delete')) {
 			$policy = Policy::find($id);
-			$policy->delete();
+
+			if (is_null($policy)) {
+				$request->session()->flash('error', '该政策文件不存在');
+
+				return back();
+			} elseif (
+				$policy->delete()) {
+				$request->session()->flash('success', '政策文件' . $policy->id . '删除成功');
+			} else {
+				$request->session()->flash('error', '政策文件' . $policy->id . '删除失败');
+			}
 
 			return redirect()->route('policy.list');
 		}
+
+		return back()->withErrors();
 	}
 }

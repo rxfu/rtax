@@ -14,9 +14,9 @@
 		</div>
 	</div>
 	<div class="form-group">
-		<label for="file" class="control-label col-md-3 col-sm-3 col-xs-12">政策文件 <span class="required">*</label>
+		<label for="file" class="control-label col-md-3 col-sm-3 col-xs-12">政策文件</label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
-			<input type="file" class="form-control col-md-7 col-xs-12" id="file" name="file" placeholder="政策文件" value="{{ $policy->pathname }}" required>
+			<input type="file" class="form-control col-md-7 col-xs-12" id="file" name="file" placeholder="政策文件" value="{{ $policy->pathname }}">
 			<br><br>
 			<p class="help-block">
 				下载：<a href="{{ asset('storage/' . $policy->pathname) }}" title="{{ $policy->name }}">{{ $policy->name }}</a> <i class="fa fa-download"></i>
