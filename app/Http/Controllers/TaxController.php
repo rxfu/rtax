@@ -8,6 +8,7 @@ use App\Project;
 use App\Rate;
 use App\Tax;
 use Auth;
+use DB;
 use Excel;
 use Illuminate\Http\Request;
 use JavaScript;
@@ -145,21 +146,38 @@ class TaxController extends Controller {
 		if ($request->isMethod('get')) {
 			$searched = $request->input('flag');
 
-			if (empty($request->input('keywords'))) {
-				if (Auth::user()->is_admin) {
-					$results = Tax::all();
-				} else {
-					$results = Tax::whereUserId(Auth::user()->id)->get();
-				}
+			// 查询数据
+			if (Auth::user()->is_admin) {
+				$tax = DB::table('taxes');
 			} else {
-				if (Auth::user()->is_admin) {
-					$results = Tax::where('project_name', 'like', '%' . $request->input('keywords') . '%')->get();
-				} else {
-					$results = Tax::where('project_name', 'like', '%' . $request->input('keywords') . '%')
-						->whereUserId(Auth::user()->id)
-						->get();
-				}
+				$tax = DB::table('taxes')->whereUserId(Auth::user()->id);
 			}
+
+			if (!empty($request->input('project_name'))) {
+				$tax = $tax->where('project_name', 'like', '%' . $request->input('project_name') . '%');
+			}
+
+			if (!empty($request->input('lot_name'))) {
+				$tax = $tax->where('lot_name', 'like', '%' . $request->input('lot_name') . '%');
+			}
+
+			if (!empty($request->input('lot_type'))) {
+				$tax = $tax->where('lot_type', 'like', '%' . $request->input('lot_type') . '%');
+			}
+
+			if (!empty($request->input('specification_name'))) {
+				$tax = $tax->where('specification_name', 'like', '%' . $request->input('specification_name') . '%');
+			}
+
+			if (!empty($request->input('tax_name'))) {
+				$tax = $tax->where('tax_name', 'like', '%' . $request->input('tax_name') . '%');
+			}
+
+			if ('all' !== $request->input('flag')) {
+				$tax = $tax->whereFlag($request->input('flag'));
+			}
+
+			$results = $tax->get();
 
 			$payable     = $results->sum('total');
 			$paid        = Paid::whereIn('project_id', $results->pluck('project_id')->all())->sum('total');
