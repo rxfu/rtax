@@ -49,6 +49,12 @@ class PaidController extends Controller {
 				->whereLotType($inputs['lot_type'])
 				->first();
 
+			if (is_null($project)) {
+				$request->session()->flash('error', '该标段不存在');
+
+				return back();
+			}
+
 			$paid->project_id = $project->id;
 			$paid->user_id    = Auth::user()->id;
 
@@ -101,6 +107,12 @@ class PaidController extends Controller {
 				->whereLotName($inputs['lot_name'])
 				->whereLotType($inputs['lot_type'])
 				->first();
+
+			if (is_null($project)) {
+				$request->session()->flash('error', '该标段不存在');
+
+				return back();
+			}
 
 			$paid->project_id = $project->id;
 			$paid->user_id    = Auth::user()->id;

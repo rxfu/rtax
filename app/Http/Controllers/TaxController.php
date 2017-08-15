@@ -38,16 +38,37 @@ class TaxController extends Controller {
 	}
 
 	public function postSave(Request $request) {
+		$this->validate($request, [
+			'project_name'       => 'required',
+			'lot_name'           => 'required',
+			'lot_type'           => 'required',
+			'specification_name' => 'required',
+			'tax_name'           => 'required',
+			'unit'               => 'required',
+			'unit_price'         => 'required|numeric',
+			'total_amount'       => 'required|numeric',
+			'flag'               => 'required',
+			'completion_before'  => 'required|numeric',
+			'completion_after'   => 'required|numeric',
+		]);
+
 		$inputs = $request->all();
 
 		if ($request->isMethod('post')) {
 			$tax = new Tax();
 			$tax->fill($inputs);
 			$this->caculateTax($tax, $inputs);
-			$tax->save();
+
+			if ($tax->save()) {
+				$request->session()->flash('success', '评估项目新增成功');
+			} else {
+				$request->session()->flash('error', '评估项目新增失败');
+			}
 
 			return redirect()->route('tax.list');
 		}
+
+		return back()->withErrors();
 	}
 
 	public function getEdit($id) {
@@ -59,25 +80,57 @@ class TaxController extends Controller {
 	}
 
 	public function putUpdate(Request $request, $id) {
+		$this->validate($request, [
+			'project_name'       => 'required',
+			'lot_name'           => 'required',
+			'lot_type'           => 'required',
+			'specification_name' => 'required',
+			'tax_name'           => 'required',
+			'unit'               => 'required',
+			'unit_price'         => 'required|numeric',
+			'total_amount'       => 'required|numeric',
+			'flag'               => 'required',
+			'completion_before'  => 'required|numeric',
+			'completion_after'   => 'required|numeric',
+		]);
+
 		$inputs = $request->all();
 
 		if ($request->isMethod('put')) {
 			$tax = Tax::find($id);
 			$tax->fill($inputs);
 			$this->caculateTax($tax);
-			$tax->save();
+
+			if ($tax->save()) {
+				$request->session()->flash('success', '评估项目更新成功');
+			} else {
+				$request->session()->flash('error', '评估项目更新失败');
+			}
 
 			return redirect()->route('tax.list');
 		}
+
+		return back()->withErrors();
 	}
 
 	public function deleteDelete(Request $request, $id) {
 		if ($request->isMethod('delete')) {
 			$tax = Tax::find($id);
-			$tax->delete();
+
+			if (is_null($tax)) {
+				$request->session()->flash('error', '该评估项目不存在');
+
+				return back();
+			} elseif ($tax->delete()) {
+				$request->session()->flash('success', '评估项目' . $tax->id . '删除成功');
+			} else {
+				$request->session()->flash('error', '评估项目' . $tax->id . '删除失败');
+			}
 
 			return redirect()->route('tax.list');
 		}
+
+		return back()->withErrors();
 	}
 
 	public function getSearch(Request $request) {
@@ -165,6 +218,10 @@ class TaxController extends Controller {
 	}
 
 	public function postImport(Request $request) {
+		$this->validate($request, [
+			'file' => 'required|file|mimes:xls,xlsx',
+		]);
+
 		if ($request->isMethod('post')) {
 
 			if ($request->hasFile('file') && $request->file('file')->isValid()) {
@@ -206,7 +263,12 @@ class TaxController extends Controller {
 								$project->lot_type     = $result[2];
 								$project->user_id      = Auth::user()->id;
 
-								$project->save();
+								if ($project->save()) {
+									$request->session()->flash('success', '标段新增成功');
+								} else {
+									$request->session()->flash('error', '标段新增失败');
+								}
+
 							}
 
 							$tax = new Tax();
@@ -225,13 +287,21 @@ class TaxController extends Controller {
 						$tax->completion_after   = $result[10];
 
 						$this->caculateTax($tax);
-						$tax->save();
+
+						if ($tax->save()) {
+							$request->session()->flash('success', '评估项目新增成功');
+						} else {
+							$request->session()->flash('error', '评估项目新增失败');
+						}
+
 					}
 				}, 'utf-8');
 			}
 
 			return redirect()->route('tax.excel');
 		}
+
+		return back()->withErrors();
 	}
 
 	private function caculateTax(&$tax) {
@@ -241,6 +311,12 @@ class TaxController extends Controller {
 			->whereLotName($tax->lot_name)
 			->whereLotType($tax->lot_type)
 			->first();
+
+		if (is_null($project)) {
+			$request->session()->flash('error', '该标段不存在');
+
+			return back();
+		}
 
 		$tax->project_id = $project->id;
 
