@@ -138,6 +138,7 @@ class TaxController extends Controller {
 		$payable     = 0;
 		$paid        = 0;
 		$declaration = 0;
+		$condition   = '';
 
 		if ($request->isMethod('get')) {
 			$searched = $request->input('flag');
@@ -151,26 +152,54 @@ class TaxController extends Controller {
 
 			if (!empty($request->input('project_name'))) {
 				$tax = $tax->where('project_name', 'like', '%' . $request->input('project_name') . '%');
+				$condition .= '项目名称包括<strong class="text-danger">' . $request->input('project_name') . '</strong>';
+			} else {
+				$condition .= '<strong class="text-danger">全部</strong>项目名称';
 			}
 
 			if (!empty($request->input('lot_name'))) {
 				$tax = $tax->where('lot_name', 'like', '%' . $request->input('lot_name') . '%');
+				$condition .= ' AND 标段名称包括<strong class="text-danger">' . $request->input('lot_name') . '</strong>';
+			} else {
+				$condition .= ' AND <strong class="text-danger">全部</strong>标段名称';
 			}
 
 			if (!empty($request->input('lot_type'))) {
 				$tax = $tax->where('lot_type', 'like', '%' . $request->input('lot_type') . '%');
+				$condition .= ' AND 标段类型包括<strong class="text-danger">' . $request->input('lot_type') . '</strong>';
+			} else {
+				$condition .= ' AND <strong class="text-danger">全部</strong>标段类型';
 			}
 
 			if (!empty($request->input('specification_name'))) {
 				$tax = $tax->where('specification_name', 'like', '%' . $request->input('specification_name') . '%');
+				$condition .= ' AND 规格名称包括<strong class="text-danger">' . $request->input('specification_name') . '</strong>';
+			} else {
+				$condition .= ' AND <strong class="text-danger">全部</strong>规格名称';
 			}
 
 			if (!empty($request->input('tax_name'))) {
 				$tax = $tax->where('tax_name', 'like', '%' . $request->input('tax_name') . '%');
+				$condition .= ' AND 税目包括<strong class="text-danger">' . $request->input('tax_name') . '</strong>';
+			} else {
+				$condition .= ' AND <strong class="text-danger">全部</strong>税目';
 			}
 
 			if ('all' !== $request->input('flag')) {
 				$tax = $tax->whereFlag($request->input('flag'));
+				$condition .= ' AND 资源税改革标记包括<strong class="text-danger">' . $request->input('flag') . '</strong>';
+			} else {
+				$condition .= ' AND <strong class="text-danger">全部</strong>资源税改革标记';
+			}
+
+			if (!empty($request->input('completion_before'))) {
+				$tax = $tax->where('completion_before', $request->input('completion_before_condition'), $request->input('completion_before'));
+				$condition .= ' AND 改革前完工比例<strong class="text-danger">' . $request->input('completion_before_condition') . ' ' . $request->input('completion_before') . '</strong>';
+			}
+
+			if (!empty($request->input('completion_after'))) {
+				$tax = $tax->where('completion_after', $request->input('completion_after_condition'), $request->input('completion_after'));
+				$condition .= ' AND 改革后完工比例<strong class="text-danger">' . $request->input('completion_after_condition') . ' ' . $request->input('completion_after') . '</strong>';
 			}
 
 			$results = $tax->get();
@@ -179,52 +208,8 @@ class TaxController extends Controller {
 			$paid        = Paid::whereIn('project_id', $results->pluck('project_id')->all())->sum('total');
 			$declaration = Declaration::whereIn('project_id', $results->pluck('project_id')->all())->sum('total');
 		}
-/*
-$lot_names = $results->pluck('lot_name')->unique()->values();
-$tax_names = $results->pluck('tax_name')->unique()->values();
-$bardata   = [];
-$piedata   = [];
 
-foreach ($tax_names as $name) {
-$taxRecords = $results->where('tax_name', $name);
-
-$data = [];
-foreach ($results->pluck('lot_name')->unique() as $lotName) {
-$data[] = $taxRecords->where('lot_name', $lotName)->sum('total');
-}
-
-$bardata[] = [
-'label'           => $name,
-'data'            => $data,
-'backgroundColor' => '#' . dechex(rand(0x000000, 0xffffff)),
-];
-}
-
-foreach ($lot_names as $name) {
-$lotRecords = $results->where('lot_name', $name);
-
-$data     = [];
-$bgcolors = [];
-foreach ($lotRecords->groupBy('tax_name') as $tax) {
-$data[]     = $tax->sum('total');
-$bgcolors[] = '#' . dechex(rand(0x000000, 0xffffff));
-}
-
-$piedata[] = [
-'data'            => $data,
-'backgroundColor' => $bgcolors,
-'label'           => $name,
-];
-}
-
-JavaScript::put([
-'lot_names' => $lot_names,
-'tax_names' => $tax_names,
-'bardata'   => $bardata,
-'piedata'   => $piedata,
-]);
- */
-		return view('tax.search', compact('searched', 'results', 'payable', 'paid', 'declaration'));
+		return view('tax.search', compact('searched', 'results', 'payable', 'paid', 'declaration', 'condition'));
 	}
 
 	public function getImport() {

@@ -8,7 +8,7 @@
     <div class="col-md-12">
         <div class="x_panel">
             <div class="x_title">
-                <h2>查询结果</h2>
+                <h2>查询</h2>
 
                 <div class="clearfix"></div>
             </div>
@@ -58,6 +58,38 @@
 							</select>
 						</div>
 					</div>
+					<div class="form-group">
+						<label for="completion_before" class="control-label col-md-3 col-sm-3 col-xs-12">改革前完工比例</label>
+						<div class="col-md-6 col-sm-6 col-xs-12">
+							<div class="input-group">
+								<span class="input-group-addon">
+									<select id="completion_before_condition" name="completion_before_condition">
+										<option value="=" selected>=</option>
+										<option value=">">></option>
+										<option value="<"><</option>
+									</select>
+								</span>
+								<input type="text" class="form-control col-md-7 col-xs-12" id="completion_before" name="completion_before" placeholder="改革前完工比例" value="{{ old('completion_before') }}">
+								<span class="input-group-addon">%</span>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="completion_after" class="control-label col-md-3 col-sm-3 col-xs-12">改革后完工比例</label>
+						<div class="col-md-6 col-sm-6 col-xs-12">
+							<div class="input-group">
+								<span class="input-group-addon">
+									<select id="completion_after_condition" name="completion_after_condition">
+										<option value="=" selected>=</option>
+										<option value=">">></option>
+										<option value="<"><</option>
+									</select>
+								</span>
+								<input type="text" class="form-control col-md-7 col-xs-12" id="completion_after" name="completion_after" placeholder="改革后完工比例" value="{{ old('completion_after') }}">
+								<span class="input-group-addon">%</span>
+							</div>
+						</div>
+					</div>
 					<div class="ln_solid"></div>
 					<div class="form-group">
 						<div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
@@ -67,6 +99,7 @@
 				</form>
 
 				@if ($searched)
+					<p>查询条件：{!! $condition !!}</p>
 					<table id="search-result" class="table table-striped">
 						<thead>
 							<tr>
@@ -76,6 +109,8 @@
 								<th>标段类型</th>
 								<th>规格名称</th>
 								<th>税目</th>
+								<th>改革前完工</th>
+								<th>改革后完工</th>
 								<th>应纳资源税</th>
 							</tr>
 						</thead>
@@ -92,6 +127,8 @@
 								<td>{{ $result->lot_type}}</td>
 								<td>{{ $result->specification_name }}</td>
 								<td>{{ $result->tax_name }}</td>
+								<td>{{ $result->completion_before }}%</td>
+								<td>{{ $result->completion_after }}%</td>
 								<td>{{ $result->total }}</td>
 							</tr>
 							@endforeach
@@ -99,7 +136,7 @@
 
 						<tfoot>
 							<tr>
-								<td colspan="6">
+								<td colspan="9">
 									<strong>合计</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									应纳资源税：{{ $results->sum('total') }} 元&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									可抵资源税：{{ $paid }} 元&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
