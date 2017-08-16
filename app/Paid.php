@@ -12,7 +12,7 @@ class Paid extends Model {
 	 * @var array
 	 */
 	protected $fillable = [
-		'project_id', 'amount', 'total', 'name', 'pathname', 'ext',
+		'project_id', 'tax_name', 'unit', 'amount', 'total', 'name', 'pathname', 'ext',
 	];
 
 	public function project() {

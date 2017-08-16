@@ -39,7 +39,7 @@
 	<div class="form-group">
 		<label for="unit" class="control-label col-md-3 col-sm-3 col-xs-12">单位 <span class="required">*</label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
-			<input type="text" class="form-control col-md-7 col-xs-12" id="unit" name="unit" value="立方米"  placeholder="单位" required>
+			<input type="text" class="form-control col-md-7 col-xs-12" id="unit" name="unit" value="{{ old('unit') }}"  placeholder="单位" required>
 		</div>
 	</div>
 	<div class="form-group">

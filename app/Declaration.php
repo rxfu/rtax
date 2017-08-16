@@ -12,7 +12,7 @@ class Declaration extends Model {
 	 * @var array
 	 */
 	protected $fillable = [
-		'project_id', 'total',
+		'project_id', 'tax_name', 'total',
 	];
 
 	public function project() {

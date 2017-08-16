@@ -17,7 +17,7 @@ class CreatePaidsTable extends Migration {
 			$table->integer('project_id')->unsigned()->comment('项目ID');
 			$table->string('tax_name', 100)->comment('税目');
 			$table->string('unit')->comment('单位');
-			$table->integer('amount')->unsigned()->comment('数量');
+			$table->decimal('amount', 15, 2)->comment('数量');
 			$table->decimal('total', 15, 2)->comment('金额');
 			$table->string('name', 100)->nullable()->comment('文件名');
 			$table->string('pathname', 100)->nullable()->comment('文件路径');

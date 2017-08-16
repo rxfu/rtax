@@ -21,7 +21,7 @@ class CreateTaxesTable extends Migration {
 			$table->string('tax_name', 100)->comment('税目');
 			$table->string('unit')->comment('单位');
 			$table->decimal('unit_price', 5, 2)->comment('单价');
-			$table->integer('total_amount')->unsigned()->comment('总数量');
+			$table->decimal('total_amount', 15, 2)->comment('总数量');
 			$table->string('flag', 10)->comment('资源税改革标记');
 			$table->string('taxunit_before')->comment('课税单位（改革前）');
 			$table->decimal('taxamount_before', 15, 2)->comment('课税数量（改革前）');

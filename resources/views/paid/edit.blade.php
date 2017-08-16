@@ -12,7 +12,7 @@
 		<div class="col-md-6 col-sm-6 col-xs-12">
 			<select id="project_name" name="project_name" class="form-control col-md-7 col-xs-12">
 				@foreach ($projects->pluck('project_name')->unique() as $project_name)
-					<option value="{{ $project_name }}"{{ $project_name === $paid->project_name ? ' selected' : ''}}>{{ $project_name }}</option>
+					<option value="{{ $project_name }}"{{ $project_name === $paid->project->project_name ? ' selected' : ''}}>{{ $project_name }}</option>
 				@endforeach
 			</select>
 		</div>
@@ -22,7 +22,7 @@
 		<div class="col-md-6 col-sm-6 col-xs-12">
 			<select id="lot_name" name="lot_name" class="form-control col-md-7 col-xs-12">
 				@foreach ($projects->pluck('lot_name')->unique() as $lot_name)
-					<option value="{{ $lot_name }}"{{ $lot_name === $paid->lot_name ? ' selected' : ''}}>{{ $lot_name }}</option>
+					<option value="{{ $lot_name }}"{{ $lot_name === $paid->project->lot_name ? ' selected' : ''}}>{{ $lot_name }}</option>
 				@endforeach
 			</select>
 		</div>
@@ -32,7 +32,7 @@
 		<div class="col-md-6 col-sm-6 col-xs-12">
 			<select id="tax_name" name="tax_name" class="form-control col-md-7 col-xs-12">
 				@foreach ($rates as $rate)
-					<option value="{{ $rate->name }}"{{ $rate->name === $tax->tax_name ? ' selected' : ''}}>{{ $rate->name }}</option>
+					<option value="{{ $rate->name }}"{{ $rate->name === $paid->tax_name ? ' selected' : ''}}>{{ $rate->name }}</option>
 				@endforeach
 			</select>
 		</div>

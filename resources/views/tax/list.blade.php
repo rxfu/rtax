@@ -118,7 +118,7 @@
 								<td>{{ $paid->amount }}</td>
 								<td>{{ $paid->total }}</td>
 								<td>
-									<a href="{{ asset('storage/' . $paid->pathname) }}" title="{{ $paid->name }}">{{ $paid->name }}</a> <i class="fa fa-download"></i>
+									<a href="{{ asset('storage/' . $paid->pathname) }}" title="{{ $paid->name }}">{{ $paid->name }}</a>
 								</td>
 								<td>
 									<p data-placement="top" data-toggle="tooltip" title="编辑">
