@@ -1,8 +1,9 @@
 <?php
 
 return [
-	'name'        => '资源税评估系统',
+	'name'        => '贺州市地方税务局道路工程资源税风险管理系统',
+	'slug'        => '资源税风险管理',
 	'author'      => 'Fu Rongxin',
-	'description' => 'Admin Boilerplate Based on Laravel and Gentelella',
-	'keywords'    => 'Admin Boilerplate, Laravel, Gentelella, Bootstrap',
+	'description' => '道路工程资源税风险管理',
+	'keywords'    => '资源税, 道路工程, 风险管理',
 ];

@@ -2,7 +2,7 @@
     <div class="left_col scroll-view">
         <div class="navbar nav_title" style="border: 0">
             <a href="{{ route('home') }}" class="site_title">
-                <i class="fa fa-paw"></i> <span>{{ config('setting.name') }}</span>
+                <i class="fa fa-paw"></i> <span>{{ config('setting.slug') }}</span>
             </a>
         </div>
 
