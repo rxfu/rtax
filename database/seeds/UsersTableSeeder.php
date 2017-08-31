@@ -15,13 +15,14 @@ class UsersTableSeeder extends Seeder {
 		DB::statement('TRUNCATE TABLE users');
 
 		DB::table('users')->insert([
-			'username'   => 'admin',
-			'email'      => 'admin@test.com',
-			'password'   => bcrypt('123456'),
-			'name'       => '系统管理员',
-			'is_admin'   => true,
-			'created_at' => Carbon::now(),
-			'updated_at' => Carbon::now(),
+			'username'      => 'admin',
+			'password'      => bcrypt('123456'),
+			'department_id' => 1,
+			'name'          => '系统管理员',
+			'phone'         => '13601458742',
+			'is_admin'      => true,
+			'created_at'    => Carbon::now(),
+			'updated_at'    => Carbon::now(),
 		]);
 
 		DB::statement('SET FOREIGN_KEY_CHECKS=1');

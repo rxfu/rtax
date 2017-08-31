@@ -7,8 +7,10 @@
 	<tr>
 		<th>ID</th>
 		<th>用户名</th>
-		<th>Email</th>
+		<th>所在单位</th>
 		<th>真实姓名</th>
+		<th>联系电话</th>
+		<th>身份</th>
 		<th>创建时间</th>
 		<th>编辑</th>
 		<th>删除</th>
@@ -21,8 +23,10 @@
 		<tr>
 			<td>{{ $user->id }}</td>
 			<td>{{ $user->username }}</td>
-			<td>{{ $user->email }}</td>
+			<td>{{ $user->department->name }}</td>
 			<td>{{ $user->name }}</td>
+			<td>{{ $user->phone }}</td>
+			<td>{{ $user->is_admin ? '系统管理员' : '普通用户' }}</td>
 			<td>{{ $user->created_at }}</td>
 			<td>
 				<p data-placement="top" data-toggle="tooltip" title="编辑">

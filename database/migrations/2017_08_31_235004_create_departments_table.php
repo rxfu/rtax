@@ -16,7 +16,7 @@ class CreateDepartmentsTable extends Migration {
 			$table->increments('id');
 			$table->string('name', 100)->comment('单位名称');
 			$table->boolean('is_activated')->default(true)->comment('启用标志，0是未启用，1是启用');
-			$table->clob('description')->comment('备注');
+			$table->text('description')->nullable()->comment('备注');
 		});
 	}
 

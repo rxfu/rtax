@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', '重置密码')
+@section('title', '重置用户' . $user->username . '密码')
 
 @section('content')
 <form method="post" action="{{ route('user.reset', $user->id) }}" class="form-horizontal form-label-left">

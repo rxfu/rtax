@@ -14,15 +14,25 @@
 		</div>
 	</div>
 	<div class="form-group">
-		<label for="email" class="control-label col-md-3 col-sm-3 col-xs-12">Email <span class="required">*</span></label>
+		<label for="department_id" class="control-label col-md-3 col-sm-3 col-xs-12">单位 <span class="required">*</span></label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
-			<input type="email" class="form-control col-md-7 col-xs-12" id="email" name="email" placeholder="Email" value="{{ $user->email }}" required>
+			<select id="department_id" name="department_id" class="form-control col-md-7 col-xs-12">
+				@foreach ($departments as $department)
+					<option value="{{ $department->id }}"{{ $department->id === $user->department_id ? ' selected' : ''}}>{{ $department->name }}</option>
+				@endforeach
+			</select>
 		</div>
 	</div>
 	<div class="form-group">
 		<label for="name" class="control-label col-md-3 col-sm-3 col-xs-12">姓名</label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
 			<input type="text" class="form-control col-md-7 col-xs-12" id="name" name="name" value="{{ $user->name }}" placeholder="姓名">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="phone" class="control-label col-md-3 col-sm-3 col-xs-12">联系电话</label>
+		<div class="col-md-6 col-sm-6 col-xs-12">
+			<input type="text" class="form-control col-md-7 col-xs-12" id="phone" name="phone" value="{{ $user->phone }}"  placeholder="联系电话">
 		</div>
 	</div>
 	<div class="form-group">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Department;
 use App\User;
 use Auth;
 use Illuminate\Http\Request;
@@ -9,21 +10,23 @@ use Illuminate\Http\Request;
 class UserController extends Controller {
 
 	public function getList() {
-		$users = User::all();
+		$users = User::with('department')->get();
 
 		return view('user.list', compact('users'));
 	}
 
 	public function getCreate() {
-		return view('user.create');
+		$departments = Department::whereIsActivated(true)->get();
+
+		return view('user.create', compact('departments'));
 	}
 
 	public function postSave(Request $request) {
 		$this->validate($request, [
-			'username' => 'required|string|max:255|unique:username',
-			'email'    => 'required|string|email|max:255|unique:users',
-			'password' => 'required|string|min:6',
-			'is_admin' => 'required',
+			'username'      => 'required|string|max:255|unique:users',
+			'password'      => 'required|string|min:6',
+			'department_id' => 'required',
+			'is_admin'      => 'required',
 		]);
 
 		$inputs = $request->all();
@@ -45,16 +48,17 @@ class UserController extends Controller {
 	}
 
 	public function getEdit($id) {
-		$user = User::find($id);
+		$user        = User::find($id);
+		$departments = Department::whereIsActivated(true)->get();
 
-		return view('user.edit', compact('user'));
+		return view('user.edit', compact('user', 'departments'));
 	}
 
 	public function putUpdate(Request $request, $id) {
 		$this->validate($request, [
-			'username' => 'required|string|max:255|unique:username',
-			'email'    => 'required|string|email|max:255|unique:users',
-			'is_admin' => 'required',
+			'username'      => 'required|string|max:255',
+			'department_id' => 'required',
+			'is_admin'      => 'required',
 		]);
 
 		$inputs = $request->all();

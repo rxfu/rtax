@@ -16,7 +16,7 @@ class CreateUsersTable extends Migration {
 			$table->increments('id');
 			$table->string('username', 50)->unique()->comment('用户名');
 			$table->string('password', 128)->comment('密码');
-			$table->integer('department_id')->comment('单位ID');
+			$table->integer('department_id')->unsigned()->comment('单位ID');
 			$table->string('name', 50)->nullable()->comment('真实姓名');
 			$table->string('phone', 50)->nullable()->comment('电话号码');
 			$table->boolean('is_admin')->default(false)->comment('是否系统管理员');
