@@ -30,23 +30,41 @@
                 <ul class="nav side-menu">
                     <li>
                         <a>
-                            <i class="fa fa-money"></i> 评估项目管理 <span class="fa fa-chevron-down"></span>
+                            <i class="fa fa-money"></i> 资源税风险管理 <span class="fa fa-chevron-down"></span>
                         </a>
                         <ul class="nav child_menu">
                             <li>
                                 <a href="{{ route('tax.list') }}">评估项目列表</a>
                             </li>
                             <li>
-                                <a href="{{ route('tax.create') }}">新增评估项目</a>
+                                <a href="{{ route('tax.create') }}">新增使用资源明细</a>
                             </li>
                             <li>
-                                <a href="{{ route('paid.create') }}">新增可抵税项目</a>
+                                <a href="{{ route('paid.create') }}">新增资源税管理证明</a>
                             </li>
                             <li>
-                                <a href="{{ route('declaration.create') }}">新增自行申报税项目</a>
+                                <a href="{{ route('declaration.create') }}">新增自行申报税</a>
                             </li>
                             <li>
                                 <a href="{{ route('tax.search') }}">成果查询</a>
+                            </li>
+                            <li>
+                                <a href="#">统计分析</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav side-menu">
+                    <li>
+                        <a>
+                            <i class="fa fa-road"></i> 完工进度管理 <span class="fa fa-chevron-down"></span>
+                        </a>
+                        <ul class="nav child_menu">
+                            <li>
+                                <a href="{{ route('completion.list') }}">完工进度列表</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('completion.create') }}">新增完工进度</a>
                             </li>
                         </ul>
                     </li>
@@ -63,21 +81,6 @@
                             </li>
                             <li>
                                 <a href="{{ route('project.create') }}">新增标段</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-                <ul class="nav side-menu">
-                    <li>
-                        <a>
-                            <i class="fa fa-road"></i> 完工进度管理 <span class="fa fa-chevron-down"></span>
-                        </a>
-                        <ul class="nav child_menu">
-                            <li>
-                                <a href="{{ route('completion.list') }}">完工进度列表</a>
-                            </li>
-                            <li>
-                                <a href="{{ route('completion.create') }}">新增完工进度</a>
                             </li>
                         </ul>
                     </li>
@@ -104,7 +107,7 @@
                         </a>
                         <ul class="nav child_menu">
                             <li>
-                                <a href="{{ route('policy.list') }}">政策支持</a>
+                                <a href="{{ route('policy.list') }}">政策列表</a>
                             </li>
                             <li>
                                 <a href="{{ route('policy.create') }}">新增政策</a>
