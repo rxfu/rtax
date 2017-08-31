@@ -39,10 +39,10 @@
 		<label for="is_admin" class="control-label col-md-3 col-sm-3 col-xs-12">是否系统管理员 <span class="required">*</span></label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
 			<div id="is_admin" class="btn-group" data-toggle="buttons">
-				<label for="is_admin" class="btn{{ $user->is_admin ? ' btn-primary' : ' btn-default' }}">
+				<label for="is_admin" class="btn {{ $user->is_admin ? 'btn-primary' : 'btn-default' }}">
 					<input type="radio" name="is_admin" value='1' autocomplete="off"{{ $user->is_admin ? ' checked' : '' }}>是</input>
 				</label>
-				<label for="is_admin" class="btn{{ $user->is_admin ? ' btn-default' : ' btn-primary' }}">
+				<label for="is_admin" class="btn {{ $user->is_admin ? 'btn-default' : 'btn-primary' }}">
 					<input type="radio" name="is_admin" value='0' autocomplete="off"{{ $user->is_admin ? '' : ' checked' }}>否</input>
 				</label>
 			</div>

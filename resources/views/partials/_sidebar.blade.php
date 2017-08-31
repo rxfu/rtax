@@ -138,6 +138,21 @@
                         </ul>
                     </li>
                 </ul>
+                <ul class="nav side-menu">
+                    <li>
+                        <a>
+                            <i class="fa fa-building"></i> 单位管理 <span class="fa fa-chevron-down"></span>
+                        </a>
+                        <ul class="nav child_menu">
+                            <li>
+                                <a href="{{ route('department.list') }}">单位列表</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('department.create') }}">新增单位</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
                 @endif
                 <ul class="nav side-menu">
                     <li>
