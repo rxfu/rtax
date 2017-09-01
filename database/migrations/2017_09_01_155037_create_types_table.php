@@ -16,7 +16,6 @@ class CreateTypesTable extends Migration {
 			$table->increments('id');
 			$table->string('name', 100)->comment('标段类型名称');
 			$table->text('note')->nullable()->comment('备注');
-			$table->timestamps();
 
 			$table->index('name');
 		});

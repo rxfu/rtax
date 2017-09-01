@@ -14,4 +14,6 @@ class Type extends Model {
 	protected $fillable = [
 		'name', 'note',
 	];
+
+	public $timestamps = false;
 }
