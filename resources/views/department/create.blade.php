@@ -28,7 +28,7 @@
 	<div class="form-group">
 		<label for="description" class="control-label col-md-3 col-sm-3 col-xs-12">备注</label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
-			<textarea class="form-control col-md-7 col-xs-12" id="description" name="description" placeholder="备注">{{ old('description') }}</textarea>
+			<textarea class="form-control col-md-7 col-xs-12" rows="5" id="description" name="description" placeholder="备注">{{ old('description') }}</textarea>
 		</div>
 	</div>
 	<div class="ln_solid"></div>

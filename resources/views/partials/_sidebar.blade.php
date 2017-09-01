@@ -57,7 +57,7 @@
                 <ul class="nav side-menu">
                     <li>
                         <a>
-                            <i class="fa fa-road"></i> 完工进度管理 <span class="fa fa-chevron-down"></span>
+                            <i class="fa fa-cube"></i> 完工进度管理 <span class="fa fa-chevron-down"></span>
                         </a>
                         <ul class="nav child_menu">
                             <li>
@@ -70,6 +70,51 @@
                     </li>
                 </ul>
                 @if (Auth::user()->is_admin)
+                <ul class="nav side-menu">
+                    <li>
+                        <a>
+                            <i class="fa fa-table"></i> 项目管理 <span class="fa fa-chevron-down"></span>
+                        </a>
+                        <ul class="nav child_menu">
+                            <li>
+                                <a href="{{ route('project.list') }}">项目列表</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('project.create') }}">新增项目</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav side-menu">
+                    <li>
+                        <a>
+                            <i class="fa fa-shield"></i> 标段类型管理 <span class="fa fa-chevron-down"></span>
+                        </a>
+                        <ul class="nav child_menu">
+                            <li>
+                                <a href="{{ route('type.list') }}">标段类型列表</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('type.create') }}">新增标段类型</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav side-menu">
+                    <li>
+                        <a>
+                            <i class="fa fa-road"></i> 标段管理 <span class="fa fa-chevron-down"></span>
+                        </a>
+                        <ul class="nav child_menu">
+                            <li>
+                                <a href="{{ route('section.list') }}">标段列表</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('section.create') }}">新增标段</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
                 <ul class="nav side-menu">
                     <li>
                         <a>

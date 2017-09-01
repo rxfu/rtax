@@ -50,6 +50,24 @@ Route::prefix('project')->group(function () {
 	Route::name('project.delete')->delete('{id}/delete', 'ProjectController@deleteDelete');
 });
 
+Route::prefix('type')->group(function () {
+	Route::name('type.list')->get('list', 'TypeController@getList');
+	Route::name('type.create')->get('create', 'TypeController@getCreate');
+	Route::name('type.save')->post('save', 'TypeController@postSave');
+	Route::name('type.edit')->get('{id}/edit', 'TypeController@getEdit');
+	Route::name('type.update')->put('{id}/update', 'TypeController@putUpdate');
+	Route::name('type.delete')->delete('{id}/delete', 'TypeController@deleteDelete');
+});
+
+Route::prefix('section')->group(function () {
+	Route::name('section.list')->get('list', 'SectionController@getList');
+	Route::name('section.create')->get('create', 'SectionController@getCreate');
+	Route::name('section.save')->post('save', 'SectionController@postSave');
+	Route::name('section.edit')->get('{id}/edit', 'SectionController@getEdit');
+	Route::name('section.update')->put('{id}/update', 'SectionController@putUpdate');
+	Route::name('section.delete')->delete('{id}/delete', 'SectionController@deleteDelete');
+});
+
 Route::prefix('tax')->group(function () {
 	Route::name('tax.list')->get('list', 'TaxController@getList');
 	Route::name('tax.create')->get('create', 'TaxController@getCreate');
