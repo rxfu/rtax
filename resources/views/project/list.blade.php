@@ -1,6 +1,6 @@
 @extends('layouts.list')
 
-@section('title', '标段列表')
+@section('title', '项目列表')
 
 @section('content')
 <thead>
