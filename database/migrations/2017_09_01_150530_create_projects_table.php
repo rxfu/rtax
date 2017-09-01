@@ -26,7 +26,7 @@ class CreateProjectsTable extends Migration {
 			$table->date('endtime')->comment('完工时间');
 			$table->string('authority', 50)->comment('主管税务机关');
 			$table->string('bureau', 50)->comment('主管税务分局');
-			$table->string('finance', 50)->commment('财务负责人');
+			$table->string('finance', 50)->comment('财务负责人');
 			$table->string('finance_phone', 50)->comment('财务负责人联系电话');
 			$table->text('note')->nullable()->comment('备注');
 			$table->timestamps();

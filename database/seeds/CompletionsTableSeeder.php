@@ -15,45 +15,55 @@ class CompletionsTableSeeder extends Seeder {
 
 		DB::table('completions')->insert([
 			[
-				'project_id'        => 1,
+				'section_id'        => 1,
 				'completion_before' => 58,
 				'completion_after'  => 42,
+				'user_id'           => 1,
 			], [
-				'project_id'        => 2,
+				'section_id'        => 2,
 				'completion_before' => 64,
 				'completion_after'  => 36,
+				'user_id'           => 1,
 			], [
-				'project_id'        => 3,
+				'section_id'        => 3,
 				'completion_before' => 55,
 				'completion_after'  => 45,
+				'user_id'           => 1,
 			], [
-				'project_id'        => 4,
+				'section_id'        => 4,
 				'completion_before' => 58,
 				'completion_after'  => 42,
+				'user_id'           => 1,
 			], [
-				'project_id'        => 5,
+				'section_id'        => 5,
 				'completion_before' => 54,
 				'completion_after'  => 46,
+				'user_id'           => 1,
 			], [
-				'project_id'        => 6,
+				'section_id'        => 6,
 				'completion_before' => 65,
 				'completion_after'  => 35,
+				'user_id'           => 1,
 			], [
-				'project_id'        => 7,
+				'section_id'        => 7,
 				'completion_before' => 62,
 				'completion_after'  => 38,
+				'user_id'           => 1,
 			], [
-				'project_id'        => 8,
+				'section_id'        => 8,
 				'completion_before' => 0,
 				'completion_after'  => '100',
+				'user_id'           => 1,
 			], [
-				'project_id'        => 9,
+				'section_id'        => 9,
 				'completion_before' => 0,
 				'completion_after'  => '100',
+				'user_id'           => 1,
 			], [
-				'project_id'        => 10,
+				'section_id'        => 10,
 				'completion_before' => 0,
 				'completion_after'  => '100',
+				'user_id'           => 1,
 			],
 		]);
 

@@ -12,10 +12,6 @@ class Declaration extends Model {
 	 * @var array
 	 */
 	protected $fillable = [
-		'project_id', 'tax_name', 'total',
+		'section_id', 'tax_name', 'total', 'number', 'issue_time', 'name', 'pathname', 'ext', 'user_id', 'year',
 	];
-
-	public function project() {
-		return $this->belongsTo('App\Project');
-	}
 }

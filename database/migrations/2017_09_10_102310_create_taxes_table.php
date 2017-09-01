@@ -13,10 +13,7 @@ class CreateTaxesTable extends Migration {
 	public function up() {
 		Schema::create('taxes', function (Blueprint $table) {
 			$table->increments('id');
-			$table->integer('project_id')->unsigned()->comment('项目ID');
-			$table->string('project_name', 100)->comment('项目名称');
-			$table->string('lot_name', 100)->comment('标段名称');
-			$table->string('lot_type', 20)->comment('标段类型');
+			$table->integer('section_id')->unsigned()->comment('标段ID');
 			$table->string('specification_name', 50)->comment('规格名称');
 			$table->string('tax_name', 100)->comment('税目');
 			$table->string('unit')->comment('单位');
@@ -38,10 +35,10 @@ class CreateTaxesTable extends Migration {
 			$table->string('year', 4)->comment('年度');
 			$table->timestamps();
 
+			$table->foreign('section_id')->references('id')->on('sections')->onUpdate('cascade')->onDelete('cascade');
 			$table->foreign('user_id')->references('id')->on('users');
-			$table->foreign('project_id')->references('id')->on('projects');
 
-			$table->index('project_name');
+			$table->index('specification_name');
 		});
 	}
 

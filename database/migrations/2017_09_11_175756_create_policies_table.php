@@ -18,6 +18,8 @@ class CreatePoliciesTable extends Migration {
 			$table->string('pathname', 100)->comment('文件路径');
 			$table->string('ext', 10)->comment('文件扩展名');
 			$table->timestamps();
+
+			$table->index('name');
 		});
 	}
 

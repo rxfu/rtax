@@ -26,7 +26,7 @@ class CreateSectionsTable extends Migration {
 			$table->date('endtime')->comment('完工时间');
 			$table->string('authority', 50)->comment('主管税务机关');
 			$table->string('bureau', 50)->comment('主管税务分局');
-			$table->string('finance', 50)->commment('财务负责人');
+			$table->string('finance', 50)->comment('财务负责人');
 			$table->string('finance_phone', 50)->comment('财务负责人联系电话');
 			$table->string('bank', 50)->comment('开户银行');
 			$table->string('bank_name', 50)->comment('开户行名称');
@@ -37,7 +37,7 @@ class CreateSectionsTable extends Migration {
 			$table->index('name');
 
 			$table->foreign('project_id')->references('id')->on('projects')->onUpdate('cascade')->onDelete('cascade');
-			$table->foreign('type_id')->references('id')->on('types')->onUpdate('cascade')->onDelete('cascade');
+			$table->foreign('type_id')->references('id')->on('types')->onUpdate('cascade');
 		});
 	}
 

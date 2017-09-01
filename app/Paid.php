@@ -12,10 +12,7 @@ class Paid extends Model {
 	 * @var array
 	 */
 	protected $fillable = [
-		'project_id', 'tax_name', 'unit', 'amount', 'total', 'name', 'pathname', 'ext',
+		'section_id', 'tax_name', 'unit', 'amount', 'total', 'issue_time', 'authority', 'sale', 'name', 'pathname', 'ext', 'user_id', 'year',
 	];
 
-	public function project() {
-		return $this->belongsTo('App\Project');
-	}
 }

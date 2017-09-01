@@ -19,6 +19,9 @@ class CreateRatesTable extends Migration {
 			$table->string('name', 100)->comment('税目');
 			$table->string('unit', 10)->comment('计量单位');
 			$table->decimal('rate', 15, 2)->comment('税率');
+
+			$table->index('name');
+			$table->index('unit');
 		});
 	}
 

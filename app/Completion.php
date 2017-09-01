@@ -12,12 +12,7 @@ class Completion extends Model {
 	 * @var array
 	 */
 	protected $fillable = [
-		'project_id', 'completion_before', 'completion_after',
+		'section_id', 'completion_before', 'completion_after', 'user_id',
 	];
 
-	public $timestamps = false;
-
-	public function project() {
-		return $this->belongsTo('App\Project');
-	}
 }
