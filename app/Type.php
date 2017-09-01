@@ -12,6 +12,6 @@ class Type extends Model {
 	 * @var array
 	 */
 	protected $fillable = [
-		'project_name', 'building', 'building_number', 'roadbed_amount', 'road_amount', 'investment', 'kilometre', 'address', 'begtime', 'endtime', 'authority', 'bureau', 'finance', 'finance_phone', 'note',
+		'name', 'note',
 	];
 }

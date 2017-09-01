@@ -14,7 +14,7 @@ class CreateTypesTable extends Migration {
 	public function up() {
 		Schema::create('types', function (Blueprint $table) {
 			$table->increments('id');
-			$table->string('name', 100)->comment('类型名称');
+			$table->string('name', 100)->comment('标段类型名称');
 			$table->text('note')->nullable()->comment('备注');
 			$table->timestamps();
 
