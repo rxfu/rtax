@@ -28,6 +28,7 @@ class CreateProjectsTable extends Migration {
 			$table->string('bureau', 50)->comment('主管税务分局');
 			$table->string('finance', 50)->comment('财务负责人');
 			$table->string('finance_phone', 50)->comment('财务负责人联系电话');
+			$table->text('description')->nullable()->comment('概述');
 			$table->text('note')->nullable()->comment('备注');
 			$table->timestamps();
 
