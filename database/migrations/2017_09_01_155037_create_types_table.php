@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDepartmentsTable extends Migration {
+class CreateTypesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,11 +12,11 @@ class CreateDepartmentsTable extends Migration {
 	 * @return void
 	 */
 	public function up() {
-		Schema::create('departments', function (Blueprint $table) {
+		Schema::create('types', function (Blueprint $table) {
 			$table->increments('id');
-			$table->string('name', 100)->comment('单位名称');
-			$table->boolean('is_activated')->default(true)->comment('启用标志，0是未启用，1是启用');
-			$table->text('description')->nullable()->comment('备注');
+			$table->string('name', 100)->comment('类型名称');
+			$table->text('note')->nullable()->comment('备注');
+			$table->timestamps();
 
 			$table->index('name');
 		});
@@ -30,7 +30,7 @@ class CreateDepartmentsTable extends Migration {
 	public function down() {
 		DB::statement('SET FOREIGN_KEY_CHECKS=0');
 
-		Schema::dropIfExists('departments');
+		Schema::dropIfExists('types');
 
 		DB::statement('SET FOREIGN_KEY_CHECKS=1');
 	}
