@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Project;
-use Auth;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller {
@@ -20,9 +19,20 @@ class ProjectController extends Controller {
 
 	public function postSave(Request $request) {
 		$this->validate($request, [
-			'project_name' => 'required',
-			'lot_name'     => 'required',
-			'lot_type'     => 'required',
+			'name'            => 'required',
+			'building'        => 'required',
+			'building_number' => 'required',
+			'roadbed_amount'  => 'required|numeric',
+			'road_amount'     => 'required|numeric',
+			'investment'      => 'required|numeric',
+			'kilometre'       => 'required|numeric',
+			'address'         => 'required',
+			'begtime'         => 'required|date',
+			'endtime'         => 'required|date',
+			'authority'       => 'required',
+			'bureau'          => 'required',
+			'finance'         => 'required',
+			'finance_phone'   => 'required',
 		]);
 
 		$inputs = $request->all();
@@ -30,12 +40,11 @@ class ProjectController extends Controller {
 		if ($request->isMethod('post')) {
 			$project = new Project();
 			$project->fill($inputs);
-			$project->user_id = Auth::user()->id;
 
 			if ($project->save()) {
-				$request->session()->flash('success', '标段新增成功');
+				$request->session()->flash('success', '项目新增成功');
 			} else {
-				$request->session()->flash('error', '标段新增失败');
+				$request->session()->flash('error', '项目新增失败');
 			}
 
 			return redirect()->route('project.list');
@@ -52,9 +61,20 @@ class ProjectController extends Controller {
 
 	public function putUpdate(Request $request, $id) {
 		$this->validate($request, [
-			'project_name' => 'required',
-			'lot_name'     => 'required',
-			'lot_type'     => 'required',
+			'name'            => 'required',
+			'building'        => 'required',
+			'building_number' => 'required',
+			'roadbed_amount'  => 'required|numeric',
+			'road_amount'     => 'required|numeric',
+			'investment'      => 'required|numeric',
+			'kilometre'       => 'required|numeric',
+			'address'         => 'required',
+			'begtime'         => 'required|date',
+			'endtime'         => 'required|date',
+			'authority'       => 'required',
+			'bureau'          => 'required',
+			'finance'         => 'required',
+			'finance_phone'   => 'required',
 		]);
 
 		$inputs = $request->all();
@@ -62,12 +82,11 @@ class ProjectController extends Controller {
 		if ($request->isMethod('put')) {
 			$project = Project::find($id);
 			$project->fill($inputs);
-			$project->user_id = Auth::user()->id;
 
 			if ($project->save()) {
-				$request->session()->flash('success', '标段更新成功');
+				$request->session()->flash('success', '项目更新成功');
 			} else {
-				$request->session()->flash('error', '标段更新失败');
+				$request->session()->flash('error', '项目更新失败');
 			}
 
 			return redirect()->route('project.list');
@@ -81,13 +100,13 @@ class ProjectController extends Controller {
 			$project = Project::find($id);
 
 			if (is_null($project)) {
-				$request->session()->flash('error', '该标段不存在');
+				$request->session()->flash('error', '该项目不存在');
 
 				return back();
 			} elseif ($project->delete()) {
-				$request->session()->flash('success', '标段' . $project->id . '删除成功');
+				$request->session()->flash('success', '项目' . $project->id . '删除成功');
 			} else {
-				$request->session()->flash('error', '标段' . $project->id . '删除失败');
+				$request->session()->flash('error', '项目' . $project->id . '删除失败');
 			}
 
 			return redirect()->route('project.list');

@@ -7,8 +7,19 @@
 	<tr>
 		<th>ID</th>
 		<th>项目名称</th>
-		<th>标段名称</th>
-		<th>标段类型</th>
+		<th>建设方</th>
+		<th>建设方纳税人识别号</th>
+		<th>路基标数量</th>
+		<th>路面标数量</th>
+		<th>总投资额</th>
+		<th>总里程数</th>
+		<th>工程地址</th>
+		<th>开工时间</th>
+		<th>完工时间</th>
+		<th>主管税务机关</th>
+		<th>主管税务分局</th>
+		<th>财务负责人</th>
+		<th>财务负责人联系电话</th>
 		<th>编辑</th>
 		<th>删除</th>
 	</tr>
@@ -18,9 +29,20 @@
 	@foreach ($projects as $project)
 		<tr>
 			<td>{{ $project->id }}</td>
-			<td>{{ $project->project_name }}</td>
-			<td>{{ $project->lot_name }}</td>
-			<td>{{ $project->lot_type }}</td>
+			<td>{{ $project->name }}</td>
+			<td>{{ $project->building }}</td>
+			<td>{{ $project->building_number }}</td>
+			<td>{{ $project->roadbed_amount }}</td>
+			<td>{{ $project->road_amount }}</td>
+			<td>{{ $project->investment }}</td>
+			<td>{{ $project->kilometre }}</td>
+			<td>{{ $project->address }}</td>
+			<td>{{ $project->begtime }}</td>
+			<td>{{ $project->endtime }}</td>
+			<td>{{ $project->authority }}</td>
+			<td>{{ $project->bureau }}</td>
+			<td>{{ $project->finance }}</td>
+			<td>{{ $project->finance_phone }}</td>
 			<td>
 				<p data-placement="top" data-toggle="tooltip" title="编辑">
 					<a href="{{ route('project.edit', $project->id) }}" class="btn btn-primary btn-xs" role="button">
@@ -45,7 +67,7 @@
 
 <tfoot>
 	<tr>
-		<td colspan="6">
+		<td colspan="17">
 			<a href="{{ route('project.create') }}" class="btn btn-success"><i class="fa fa-plus"></i> 新增</a>
 		</td>
 	</tr>
