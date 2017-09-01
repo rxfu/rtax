@@ -12,6 +12,14 @@ class Section extends Model {
 	 * @var array
 	 */
 	protected $fillable = [
-		'name', 'building', 'constructor', 'investment', 'kilometre', 'address', 'begtime', 'endtime', 'authority', 'bureau', 'finance', 'finance_phone', 'bank', 'bank_name', 'bank_account', 'note',
+		'project_id', 'type_id', 'name', 'building', 'constructor', 'investment', 'kilometre', 'address', 'begtime', 'endtime', 'authority', 'bureau', 'finance', 'finance_phone', 'bank', 'bank_name', 'bank_account', 'note',
 	];
+
+	public function project() {
+		return $this->belongsTo('App\Project');
+	}
+
+	public function type() {
+		return $this->belongsTo('App\Type');
+	}
 }

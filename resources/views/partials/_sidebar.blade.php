@@ -118,22 +118,7 @@
                 <ul class="nav side-menu">
                     <li>
                         <a>
-                            <i class="fa fa-road"></i> 标段管理 <span class="fa fa-chevron-down"></span>
-                        </a>
-                        <ul class="nav child_menu">
-                            <li>
-                                <a href="{{ route('project.list') }}">标段列表</a>
-                            </li>
-                            <li>
-                                <a href="{{ route('project.create') }}">新增标段</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-                <ul class="nav side-menu">
-                    <li>
-                        <a>
-                            <i class="fa fa-user"></i> 税率管理 <span class="fa fa-chevron-down"></span>
+                            <i class="fa fa-cny"></i> 税率管理 <span class="fa fa-chevron-down"></span>
                         </a>
                         <ul class="nav child_menu">
                             <li>

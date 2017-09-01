@@ -15,8 +15,8 @@ class CreateSectionsTable extends Migration {
 		Schema::create('sections', function (Blueprint $table) {
 			$table->increments('id');
 			$table->integer('project_id')->unsigned()->comment('项目ID');
-			$table->string('name', 100)->comment('标段名称');
 			$table->integer('type_id')->unsigned()->comment('标段类型ID');
+			$table->string('name', 100)->comment('标段名称');
 			$table->string('building', 50)->comment('建设方');
 			$table->string('constructor', 50)->comment('施工方');
 			$table->decimal('investment', 15, 2)->comment('投资额');

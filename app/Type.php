@@ -16,4 +16,8 @@ class Type extends Model {
 	];
 
 	public $timestamps = false;
+
+	public function sections() {
+		return $this->hasMany('App\Section');
+	}
 }
