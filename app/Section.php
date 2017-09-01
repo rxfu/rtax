@@ -12,6 +12,6 @@ class Section extends Model {
 	 * @var array
 	 */
 	protected $fillable = [
-		'name', 'building', 'building_number', 'roadbed_amount', 'road_amount', 'investment', 'kilometre', 'address', 'begtime', 'endtime', 'authority', 'bureau', 'finance', 'finance_phone', 'note',
+		'name', 'building', 'constructor', 'investment', 'kilometre', 'address', 'begtime', 'endtime', 'authority', 'bureau', 'finance', 'finance_phone', 'bank', 'bank_name', 'bank_account', 'note',
 	];
 }
