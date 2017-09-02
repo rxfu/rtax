@@ -1,6 +1,6 @@
 @extends('layouts.list')
 
-@section('title', '完工进度列表')
+@section('title', '完工比例列表')
 
 @section('content')
 <thead>

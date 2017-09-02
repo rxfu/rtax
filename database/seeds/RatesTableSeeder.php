@@ -10,6 +10,7 @@ class RatesTableSeeder extends Seeder {
 	 * @return void
 	 */
 	public function run() {
+		DB::statement('SET FOREIGN_KEY_CHECKS=0');
 		DB::statement('TRUNCATE TABLE rates');
 
 		DB::table('rates')->insert([
@@ -56,5 +57,7 @@ class RatesTableSeeder extends Seeder {
 				'rate'     => 0.06,
 			],
 		]);
+
+		DB::statement('SET FOREIGN_KEY_CHECKS=1');
 	}
 }

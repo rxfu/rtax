@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', '新增完工进度')
+@section('title', '新增完工比例')
 
 @section('content')
 <form method="post" action="{{ route('completion.save') }}" class="form-horizontal form-label-left">

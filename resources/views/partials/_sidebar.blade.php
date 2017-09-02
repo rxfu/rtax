@@ -57,14 +57,14 @@
                 <ul class="nav side-menu">
                     <li>
                         <a>
-                            <i class="fa fa-cube"></i> 完工进度管理 <span class="fa fa-chevron-down"></span>
+                            <i class="fa fa-cube"></i> 完工比例管理 <span class="fa fa-chevron-down"></span>
                         </a>
                         <ul class="nav child_menu">
                             <li>
-                                <a href="{{ route('completion.list') }}">完工进度列表</a>
+                                <a href="{{ route('completion.list') }}">完工比例列表</a>
                             </li>
                             <li>
-                                <a href="{{ route('completion.create') }}">新增完工进度</a>
+                                <a href="{{ route('completion.create') }}">新增完工比例</a>
                             </li>
                         </ul>
                     </li>
