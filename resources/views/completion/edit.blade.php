@@ -8,21 +8,31 @@
 	{{ csrf_field() }}
 
 	<div class="form-group">
-		<label for="project_name" class="control-label col-md-3 col-sm-3 col-xs-12">项目名称 <span class="required">*</span></label>
+		<label for="project" class="control-label col-md-3 col-sm-3 col-xs-12">项目名称 <span class="required">*</span></label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
-			<select id="project_name" name="project_name" class="form-control col-md-7 col-xs-12">
-				@foreach ($projects->pluck('project_name')->unique() as $project_name)
-					<option value="{{ $project_name }}"{{ $project_name === $completion->project_name ? ' selected' : ''}}>{{ $project_name }}</option>
+			<select id="project" name="project" class="form-control col-md-7 col-xs-12">
+				@foreach ($projects as $project)
+					<option value="project-{{ $project->id }}"{{ $project->id === $completion->section->project->id ? ' selected' : ''}}>{{ $project->name }}</option>
 				@endforeach
 			</select>
 		</div>
 	</div>
 	<div class="form-group">
-		<label for="lot_name" class="control-label col-md-3 col-sm-3 col-xs-12">标段名称 <span class="required">*</span></label>
+		<label for="type" class="control-label col-md-3 col-sm-3 col-xs-12">标段类型 <span class="required">*</span></label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
-			<select id="lot_name" name="lot_name" class="form-control col-md-7 col-xs-12">
-				@foreach ($projects->pluck('lot_name')->unique() as $lot_name)
-					<option value="{{ $lot_name }}"{{ $lot_name === $completion->lot_name ? ' selected' : ''}}>{{ $lot_name }}</option>
+			<select id="type" name="type" class="form-control col-md-7 col-xs-12">
+				@foreach ($types as $type)
+					<option value="type-{{ $type->id }}"{{ $type->id === $completion->section->type->id ? ' selected' : ''}}>{{ $type->name }}</option>
+				@endforeach
+			</select>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="section_id" class="control-label col-md-3 col-sm-3 col-xs-12">标段名称 <span class="required">*</span></label>
+		<div class="col-md-6 col-sm-6 col-xs-12">
+			<select id="section_id" name="section_id" class="form-control col-md-7 col-xs-12">
+				@foreach ($sections as $section)
+					<option value="{{ $section->id }}" data-chained="project-{{ $section->project_id }}+type-{{ $section->type_id }}"{{ $section->id === $completion->section_id ? ' selected' : ''}}>{{ $section->name }}</option>
 				@endforeach
 			</select>
 		</div>

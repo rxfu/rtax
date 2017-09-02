@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Completion;
 use App\Project;
+use App\Section;
+use App\Type;
+use Auth;
 use Illuminate\Http\Request;
 
 class CompletionController extends Controller {
@@ -17,15 +20,14 @@ class CompletionController extends Controller {
 	public function getCreate() {
 		$projects = Project::select('id', 'name')->get();
 		$types    = Type::select('id', 'name')->get();
-		$sections = Section::select('id', 'name')->get();
+		$sections = Section::select('id', 'name', 'project_id', 'type_id')->get();
 
-		return view('completion.create', compact('projects'));
+		return view('completion.create', compact('projects', 'types', 'sections'));
 	}
 
 	public function postSave(Request $request) {
 		$this->validate($request, [
-			'project_name'      => 'required',
-			'lot_name'          => 'required',
+			'section_id'        => 'required',
 			'completion_before' => 'required|numeric',
 			'completion_after'  => 'required|numeric',
 		]);
@@ -35,19 +37,7 @@ class CompletionController extends Controller {
 		if ($request->isMethod('post')) {
 			$completion = new Completion();
 			$completion->fill($inputs);
-
-			// 获取项目ID
-			$project = Project::whereProjectName($inputs['project_name'])
-				->whereLotName($inputs['lot_name'])
-				->first();
-
-			if (is_null($project)) {
-				$request->session()->flash('error', '该标段不存在');
-
-				return back();
-			}
-
-			$completion->project_id = $project->id;
+			$completion->user_id = Auth::user()->id;
 
 			if ($completion->save()) {
 				$request->session()->flash('success', '完工进度新增成功');
@@ -63,15 +53,16 @@ class CompletionController extends Controller {
 
 	public function getEdit($id) {
 		$completion = Completion::find($id);
-		$projects   = Project::all();
+		$projects   = Project::select('id', 'name')->get();
+		$types      = Type::select('id', 'name')->get();
+		$sections   = Section::select('id', 'name', 'project_id', 'type_id')->get();
 
-		return view('completion.edit', compact('completion', 'projects'));
+		return view('completion.edit', compact('completion', 'projects', 'types', 'sections'));
 	}
 
 	public function putUpdate(Request $request, $id) {
 		$this->validate($request, [
-			'project_name'      => 'required',
-			'lot_name'          => 'required',
+			'section_id'        => 'required',
 			'completion_before' => 'required|numeric',
 			'completion_after'  => 'required|numeric',
 		]);
@@ -81,19 +72,6 @@ class CompletionController extends Controller {
 		if ($request->isMethod('put')) {
 			$completion = Completion::find($id);
 			$completion->fill($inputs);
-
-			// 获取项目ID
-			$project = Project::whereProjectName($inputs['project_name'])
-				->whereLotName($inputs['lot_name'])
-				->first();
-
-			if (is_null($project)) {
-				$request->session()->flash('error', '该标段不存在');
-
-				return back();
-			}
-
-			$completion->project_id = $project->id;
 
 			if ($completion->save()) {
 				$request->session()->flash('success', '完工进度更新成功');
