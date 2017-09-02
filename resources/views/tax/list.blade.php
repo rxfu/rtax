@@ -19,9 +19,9 @@
 						<tr>
 							<th>ID</th>
 							<th>项目名称</th>
-							<th>标段名称</th>
 							<th>标段类型</th>
-							<th>税种</th>
+							<th>标段名称</th>
+							<th>规格名称</th>
 							<th>税目</th>
 							<th>课税单价</th>
 							<th>课税数量</th>
@@ -35,9 +35,9 @@
 						@foreach ($taxes as $tax)
 							<tr>
 								<td>{{ $tax->id }}</td>
-								<td>{{ $tax->project_name }}</td>
-								<td>{{ $tax->lot_name }}</td>
-								<td>{{ $tax->lot_type }}</td>
+								<td>{{ $tax->section->project->name }}</td>
+								<td>{{ $tax->section->type->name }}</td>
+								<td>{{ $tax->section->name }}</td>
 								<td>{{ $tax->specification_name }}</td>
 								<td>{{ $tax->tax_name }}</td>
 								<td>{{ $tax->unit_price }}</td>
@@ -67,7 +67,7 @@
 
 					<tfoot>
 						<tr>
-							<td colspan="10">
+							<td colspan="11">
 								<a href="{{ route('tax.create') }}" class="btn btn-success"><i class="fa fa-plus"></i> 新增</a>
 								<a href="{{ route('tax.excel') }}" class="btn btn-info"><i class="fa fa-upload"></i> 导入</a>
 							</td>
@@ -85,7 +85,7 @@
     <div class="col-md-12">
         <div class="x_panel">
             <div class="x_title">
-                <h2>可抵资源税</h2>
+                <h2>资源税管理证明</h2>
 
                 <div class="clearfix"></div>
             </div>
@@ -96,11 +96,15 @@
 						<tr>
 							<th>ID</th>
 							<th>项目名称</th>
-							<th>标段名称</th>
 							<th>标段类型</th>
+							<th>标段名称</th>
 							<th>税目</th>
+							<th>计量单位</th>
 							<th>数量</th>
-							<th>金额</th>
+							<th>税款金额</th>
+							<th>开具时间</th>
+							<th>开具证明税务机关</th>
+							<th>销售单位名称</th>
 							<th>证明材料</th>
 							<th>编辑</th>
 							<th>删除</th>
@@ -111,12 +115,16 @@
 						@foreach ($paids as $paid)
 							<tr>
 								<td>{{ $paid->id }}</td>
-								<td>{{ $paid->project->project_name }}</td>
-								<td>{{ $paid->project->lot_name }}</td>
-								<td>{{ $paid->project->lot_type }}</td>
+								<td>{{ $paid->section->project->name }}</td>
+								<td>{{ $paid->section->type->name }}</td>
+								<td>{{ $paid->section->name }}</td>
 								<td>{{ $paid->tax_name }}</td>
+								<td>{{ $paid->unit }}</td>
 								<td>{{ $paid->amount }}</td>
 								<td>{{ $paid->total }}</td>
+								<td>{{ $paid->issue_time }}</td>
+								<td>{{ $paid->authority }}</td>
+								<td>{{ $paid->sale }}</td>
 								<td>
 									<a href="{{ asset('storage/' . $paid->pathname) }}" title="{{ $paid->name }}">{{ $paid->name }}</a>
 								</td>
@@ -144,7 +152,7 @@
 
 					<tfoot>
 						<tr>
-							<td colspan="9">
+							<td colspan="14">
 								<a href="{{ route('paid.create') }}" class="btn btn-success"><i class="fa fa-plus"></i> 新增</a>
 							</td>
 						</tr>
@@ -161,7 +169,7 @@
     <div class="col-md-12">
         <div class="x_panel">
             <div class="x_title">
-                <h2>自行申报资源税</h2>
+                <h2>自行申报税</h2>
 
                 <div class="clearfix"></div>
             </div>
@@ -172,10 +180,13 @@
 						<tr>
 							<th>ID</th>
 							<th>项目名称</th>
-							<th>标段名称</th>
 							<th>标段类型</th>
+							<th>标段名称</th>
 							<th>税目</th>
-							<th>金额</th>
+							<th>税款金额</th>
+							<th>开具时间</th>
+							<th>税票号码</th>
+							<th>证明材料</th>
 							<th>编辑</th>
 							<th>删除</th>
 						</tr>
@@ -185,11 +196,16 @@
 						@foreach ($declarations as $declaration)
 							<tr>
 								<td>{{ $declaration->id }}</td>
-								<td>{{ $declaration->project->project_name }}</td>
-								<td>{{ $declaration->project->lot_name }}</td>
-								<td>{{ $declaration->project->lot_type }}</td>
+								<td>{{ $declaration->section->project->name }}</td>
+								<td>{{ $declaration->section->type->name }}</td>
+								<td>{{ $declaration->section->name }}</td>
 								<td>{{ $declaration->tax_name }}</td>
 								<td>{{ $declaration->total }}</td>
+								<td>{{ $declaration->issue_time }}</td>
+								<td>{{ $declaration->number }}</td>
+								<td>
+									<a href="{{ asset('storage/' . $declaration->pathname) }}" title="{{ $declaration->name }}">{{ $declaration->name }}</a>
+								</td>
 								<td>
 									<p data-placement="top" data-toggle="tooltip" title="编辑">
 										<a href="{{ route('declaration.edit', $declaration->id) }}" class="btn btn-primary btn-xs" role="button">
@@ -214,7 +230,7 @@
 
 					<tfoot>
 						<tr>
-							<td colspan="7">
+							<td colspan="11">
 								<a href="{{ route('declaration.create') }}" class="btn btn-success"><i class="fa fa-plus"></i> 新增</a>
 							</td>
 						</tr>

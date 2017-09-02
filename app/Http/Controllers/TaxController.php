@@ -19,9 +19,9 @@ class TaxController extends Controller {
 
 	public function getList() {
 		if (Auth::user()->is_admin) {
-			$taxes        = Tax::all();
-			$paids        = Paid::with('project')->get();
-			$declarations = Declaration::with('project')->get();
+			$taxes        = Tax::with('section', 'section.project', 'section.type')->get();
+			$paids        = Paid::with('section', 'section.project', 'section.type')->get();
+			$declarations = Declaration::with('section', 'section.project', 'section.type')->get();
 		} else {
 			$taxes        = Tax::whereUserId(Auth::user()->id)->get();
 			$paids        = Paid::with('project')->whereUserId(Auth::user()->id)->get();
