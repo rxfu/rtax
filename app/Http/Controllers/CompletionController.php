@@ -9,13 +9,15 @@ use Illuminate\Http\Request;
 class CompletionController extends Controller {
 
 	public function getList() {
-		$completions = Completion::all();
+		$completions = Completion::with('section', 'section.project', 'section.type', 'user')->get();
 
 		return view('completion.list', compact('completions'));
 	}
 
 	public function getCreate() {
-		$projects = Project::all();
+		$projects = Project::select('id', 'name')->get();
+		$types    = Type::select('id', 'name')->get();
+		$sections = Section::select('id', 'name')->get();
 
 		return view('completion.create', compact('projects'));
 	}

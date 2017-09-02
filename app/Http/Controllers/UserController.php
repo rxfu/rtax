@@ -16,7 +16,7 @@ class UserController extends Controller {
 	}
 
 	public function getCreate() {
-		$departments = Department::whereIsActivated(true)->get();
+		$departments = Department::whereIsActivated(true)->select('id', 'name')->get();
 
 		return view('user.create', compact('departments'));
 	}
@@ -49,7 +49,7 @@ class UserController extends Controller {
 
 	public function getEdit($id) {
 		$user        = User::find($id);
-		$departments = Department::whereIsActivated(true)->get();
+		$departments = Department::whereIsActivated(true)->select('id', 'name')->get();
 
 		return view('user.edit', compact('user', 'departments'));
 	}

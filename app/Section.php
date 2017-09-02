@@ -22,4 +22,8 @@ class Section extends Model {
 	public function type() {
 		return $this->belongsTo('App\Type');
 	}
+
+	public function completion() {
+		return $this->hasOne('App\Completion');
+	}
 }

@@ -108,12 +108,12 @@ Route::prefix('policy')->group(function () {
 });
 
 Route::prefix('completion')->group(function () {
-	Route::name('completion.list')->get('list', 'DepartmentController@getList');
-	Route::name('completion.create')->get('create', 'DepartmentController@getCreate');
-	Route::name('completion.save')->post('save', 'DepartmentController@postSave');
-	Route::name('completion.edit')->get('{id}/edit', 'DepartmentController@getEdit');
-	Route::name('completion.update')->put('{id}/update', 'DepartmentController@putUpdate');
-	Route::name('completion.delete')->delete('{id}/delete', 'DepartmentController@deleteDelete');
+	Route::name('completion.list')->get('list', 'CompletionController@getList');
+	Route::name('completion.create')->get('create', 'CompletionController@getCreate');
+	Route::name('completion.save')->post('save', 'CompletionController@postSave');
+	Route::name('completion.edit')->get('{id}/edit', 'CompletionController@getEdit');
+	Route::name('completion.update')->put('{id}/update', 'CompletionController@putUpdate');
+	Route::name('completion.delete')->delete('{id}/delete', 'CompletionController@deleteDelete');
 });
 
 Route::prefix('department')->group(function () {

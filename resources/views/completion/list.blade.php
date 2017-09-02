@@ -21,10 +21,12 @@
 	@foreach ($completions as $completion)
 		<tr>
 			<td>{{ $completion->id }}</td>
-			<td>{{ $completion->project->project_name }}</td>
-			<td>{{ $completion->project->lot_name }}</td>
+			<td>{{ $completion->section->project->name }}</td>
+			<td>{{ $completion->section->type->name }}</td>
+			<td>{{ $completion->section->name }}</td>
 			<td>{{ $completion->completion_before }}%</td>
 			<td>{{ $completion->completion_after }}%</td>
+			<td>{{ $completion->user->username }}({{ $completion->user->name }})</td>
 			<td>
 				<p data-placement="top" data-toggle="tooltip" title="编辑">
 					<a href="{{ route('completion.edit', $completion->id) }}" class="btn btn-primary btn-xs" role="button">
@@ -49,7 +51,7 @@
 
 <tfoot>
 	<tr>
-		<td colspan="6">
+		<td colspan="9">
 			<a href="{{ route('completion.create') }}" class="btn btn-success"><i class="fa fa-plus"></i> 新增</a>
 		</td>
 	</tr>

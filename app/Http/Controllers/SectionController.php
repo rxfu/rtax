@@ -16,8 +16,8 @@ class SectionController extends Controller {
 	}
 
 	public function getCreate() {
-		$projects = Project::all();
-		$types    = Type::all();
+		$projects = Project::select('id', 'name')->get();
+		$types    = Type::select('id', 'name')->get();
 
 		return view('section.create', compact('projects', 'types'));
 	}
@@ -63,8 +63,8 @@ class SectionController extends Controller {
 
 	public function getEdit($id) {
 		$section  = Section::find($id);
-		$projects = Project::all();
-		$types    = Type::all();
+		$projects = Project::select('id', 'name')->get();
+		$types    = Type::select('id', 'name')->get();
 
 		return view('section.edit', compact('section', 'projects', 'types'));
 	}
