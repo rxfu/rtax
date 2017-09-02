@@ -118,7 +118,7 @@
         @foreach ($errors->all() as $error)
         new PNotify({
             title: '验证错误!',
-            text: '{{ $error }}',
+            text: '{{ trans($error) }}',
             type: 'error',
             styling: 'bootstrap3',
             addclass: 'stack-bar-bottom',
