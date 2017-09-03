@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', '编辑可抵资源税项目')
+@section('title', '编辑资源税管理证明')
 
 @section('content')
 <form method="post" action="{{ route('paid.update', $paid->id) }}" class="form-horizontal form-label-left" enctype="multipart/form-data">

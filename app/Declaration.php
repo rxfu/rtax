@@ -14,4 +14,8 @@ class Declaration extends Model {
 	protected $fillable = [
 		'section_id', 'tax_name', 'total', 'number', 'issue_time', 'name', 'pathname', 'ext', 'user_id', 'year',
 	];
+
+	public function section() {
+		return $this->belongsTo('App\Section');
+	}
 }

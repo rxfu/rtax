@@ -15,13 +15,7 @@ class PaidController extends Controller {
 	private $upload = 'files';
 
 	public function getList() {
-		if (Auth::user()->is_admin) {
-			$paids = Paid::all();
-		} else {
-			$paids = Paid::whereUserId(Auth::user()->id)->get();
-		}
-
-		return view('tax.list', compact('paids'));
+		return view('tax.list');
 	}
 
 	public function getCreate() {
@@ -36,6 +30,7 @@ class PaidController extends Controller {
 	public function postSave(Request $request) {
 		$this->validate($request, [
 			'section_id' => 'required',
+			'tax_name'   => 'required',
 			'amount'     => 'required|numeric',
 			'total'      => 'required|numeric',
 			'issue_time' => 'required|date',
@@ -124,9 +119,7 @@ class PaidController extends Controller {
 
 	public function deleteDelete(Request $request, $id) {
 		if ($request->isMethod('delete')) {
-			$paid = Declaration::whereId($id)
-				->whereUserId(Auth::user()->id)
-				->first();
+			$paid = Paid::find($id);
 
 			if (is_null($paid)) {
 				$request->session()->flash('error', '该资源税管理证明不存在');

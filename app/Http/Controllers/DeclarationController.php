@@ -5,33 +5,36 @@ namespace App\Http\Controllers;
 use App\Declaration;
 use App\Project;
 use App\Rate;
+use App\Section;
+use App\Type;
 use Auth;
 use Illuminate\Http\Request;
 
 class DeclarationController extends Controller {
 
-	public function getList() {
-		if (Auth::user()->is_admin) {
-			$declarations = Declaration::all();
-		} else {
-			$declarations = Declaration::whereUserId(Auth::user()->id)->get();
-		}
+	private $upload = 'files';
 
-		return view('tax.list', compact('declarations'));
+	public function getList() {
+		return view('tax.list');
 	}
 
 	public function getCreate() {
-		$projects = Project::all();
+		$projects = Project::select('id', 'name')->get();
+		$types    = Type::select('id', 'name')->get();
+		$sections = Section::select('id', 'name', 'project_id', 'type_id')->get();
 		$rates    = Rate::select('name')->distinct()->get();
 
-		return view('declaration.create', compact('projects', 'rates'));
+		return view('declaration.create', compact('projects', 'types', 'sections', 'rates'));
 	}
 
 	public function postSave(Request $request) {
 		$this->validate($request, [
-			'project_name' => 'required',
-			'lot_name'     => 'required',
-			'total'        => 'required|numeric',
+			'section_id' => 'required',
+			'tax_name'   => 'required',
+			'total'      => 'required|numeric',
+			'issue_time' => 'required|date',
+			'number'     => 'required',
+			'file'       => 'required|image',
 		]);
 
 		$inputs = $request->all();
@@ -40,25 +43,22 @@ class DeclarationController extends Controller {
 			$declaration = new Declaration();
 			$declaration->fill($inputs);
 
-			// 获取项目ID
-			$project = Project::whereProjectName($inputs['project_name'])
-				->whereLotName($inputs['lot_name'])
-				->first();
+			$declaration->user_id = Auth::user()->id;
+			$declaration->year    = date('Y');
 
-			if (is_null($project)) {
-				$request->session()->flash('error', '该标段不存在');
-
-				return back();
+			if ($request->hasFile('file') && $request->file('file')->isValid()) {
+				$file                  = $request->file('file');
+				$filename              = time() . '.' . $file->getClientOriginalExtension();
+				$declaration->name     = $file->getClientOriginalName();
+				$declaration->ext      = $file->getClientOriginalExtension();
+				$declaration->pathname = $this->upload . '/' . $filename;
+				$file->storeAs('public/' . $this->upload, $filename);
 			}
 
-			$declaration->project_id = $project->id;
-			$declaration->user_id    = Auth::user()->id;
-			$declaration->year       = date('Y');
-
 			if ($declaration->save()) {
-				$request->session()->flash('success', '自行申报项目新增成功');
+				$request->session()->flash('success', '自行申报税新增成功');
 			} else {
-				$request->session()->flash('error', '自行申报项目新增失败');
+				$request->session()->flash('error', '自行申报税新增失败');
 			}
 
 			return redirect()->route('tax.list');
@@ -69,17 +69,22 @@ class DeclarationController extends Controller {
 
 	public function getEdit($id) {
 		$declaration = Declaration::find($id);
-		$projects    = Project::all();
+		$projects    = Project::select('id', 'name')->get();
+		$types       = Type::select('id', 'name')->get();
+		$sections    = Section::select('id', 'name', 'project_id', 'type_id')->get();
 		$rates       = Rate::select('name')->distinct()->get();
 
-		return view('declaration.edit', compact('declaration', 'projects', 'rates'));
+		return view('declaration.edit', compact('declaration', 'projects', 'types', 'sections', 'rates'));
 	}
 
 	public function putUpdate(Request $request, $id) {
 		$this->validate($request, [
-			'project_name' => 'required',
-			'lot_name'     => 'required',
-			'total'        => 'required|numeric',
+			'section_id' => 'required',
+			'tax_name'   => 'required',
+			'total'      => 'required|numeric',
+			'issue_time' => 'required|date',
+			'number'     => 'required',
+			'file'       => 'image',
 		]);
 
 		$inputs = $request->all();
@@ -88,24 +93,19 @@ class DeclarationController extends Controller {
 			$declaration = Declaration::find($id);
 			$declaration->fill($inputs);
 
-			// 获取项目ID
-			$project = Project::whereProjectName($inputs['project_name'])
-				->whereLotName($inputs['lot_name'])
-				->first();
-
-			if (is_null($project)) {
-				$request->session()->flash('error', '该标段不存在');
-
-				return back();
+			if ($request->hasFile('file') && $request->file('file')->isValid()) {
+				$file                  = $request->file('file');
+				$filename              = time() . '.' . $file->getClientOriginalExtension();
+				$declaration->name     = $file->getClientOriginalName();
+				$declaration->ext      = $file->getClientOriginalExtension();
+				$declaration->pathname = $this->upload . '/' . $filename;
+				$file->storeAs('public/' . $this->upload, $filename);
 			}
 
-			$declaration->project_id = $project->id;
-			$declaration->user_id    = Auth::user()->id;
-
 			if ($declaration->save()) {
-				$request->session()->flash('success', '自行申报项目更新成功');
+				$request->session()->flash('success', '自行申报税更新成功');
 			} else {
-				$request->session()->flash('error', '自行申报项目更新失败');
+				$request->session()->flash('error', '自行申报税更新失败');
 			}
 
 			return redirect()->route('tax.list');
@@ -116,18 +116,16 @@ class DeclarationController extends Controller {
 
 	public function deleteDelete(Request $request, $id) {
 		if ($request->isMethod('delete')) {
-			$declaration = Declaration::whereId($id)
-				->whereUserId(Auth::user()->id)
-				->first();
+			$declaration = Declaration::find($id);
 
 			if (is_null($declaration)) {
-				$request->session()->flash('error', '该自行申报项目不存在');
+				$request->session()->flash('error', '该自行申报税不存在');
 
 				return back();
 			} elseif ($declaration->delete()) {
-				$request->session()->flash('success', '自行申报项目' . $declaration->id . '删除成功');
+				$request->session()->flash('success', '自行申报税' . $declaration->id . '删除成功');
 			} else {
-				$request->session()->flash('error', '自行申报项目' . $declaration->id . '删除失败');
+				$request->session()->flash('error', '自行申报税' . $declaration->id . '删除失败');
 			}
 
 			return redirect()->route('tax.list');
