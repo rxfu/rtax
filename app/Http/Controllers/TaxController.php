@@ -328,7 +328,7 @@ class TaxController extends Controller {
 		$tax->payabletax_before = $tax->taxamount_before * $before['rate'];
 
 		// 改革后税额计算
-		$tax->rate_id_after    = $before['id'];
+		$tax->rate_id_after    = $after['id'];
 		$tax->payabletax_after = $tax->taxamount_after * $after['rate'];
 
 		// 应缴纳税额
