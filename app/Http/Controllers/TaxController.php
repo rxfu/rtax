@@ -260,7 +260,7 @@ class TaxController extends Controller {
 							}
 						}
 
-						$request->session()->flash('error', '评估项目导入失败，文件格式不符合要求，请检查文件数据第' . ($i + 1) . '行' . $field . '不符合要求');
+						$request->session()->flash('error', '评估项目导入失败，文件格式不符合要求，请检查文件数据第' . ($i + 1) . '行“' . $field . '”列');
 						return back();
 					}
 
