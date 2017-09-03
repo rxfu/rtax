@@ -24,8 +24,8 @@
 			<td>{{ $completion->section->project->name }}</td>
 			<td>{{ $completion->section->type->name }}</td>
 			<td>{{ $completion->section->name }}</td>
-			<td>{{ $completion->completion_before }}%</td>
-			<td>{{ $completion->completion_after }}%</td>
+			<td>{{ $completion->before }}%</td>
+			<td>{{ $completion->after }}%</td>
 			<td>{{ $completion->user->username }}({{ $completion->user->name }})</td>
 			<td>
 				<p data-placement="top" data-toggle="tooltip" title="编辑">

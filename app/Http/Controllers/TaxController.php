@@ -11,7 +11,6 @@ use App\Section;
 use App\Tax;
 use App\Type;
 use Auth;
-use DB;
 use Excel;
 use Illuminate\Http\Request;
 
@@ -154,7 +153,7 @@ class TaxController extends Controller {
 			$searched = $request->input('flag');
 
 			// 查询数据
-			$tax = DB::table('taxes');
+			$tax = Tax::with('section', 'section.project', 'section.type', 'completion');
 
 			if ('全部' === $request->input('project')) {
 				$pids = Project::all()->pluck('id');
@@ -168,7 +167,7 @@ class TaxController extends Controller {
 			} else {
 				$tids = Type::whereName($request->input('type'))->pluck('id');
 			}
-			$condition .= '标段类型包括<strong class="text-danger">' . $request->input('type') . '</strong>';
+			$condition .= ' 标段类型包括<strong class="text-danger">' . $request->input('type') . '</strong>';
 
 			if ('全部' === $request->input('section')) {
 				$sids = Section::whereIn('project_id', $pids)
@@ -180,15 +179,15 @@ class TaxController extends Controller {
 					->whereName($request->input('section'))
 					->pluck('id');
 			}
-			$condition .= '标段名称包括<strong class="text-danger">' . $request->input('section') . '</strong>';
+			$condition .= ' 标段名称包括<strong class="text-danger">' . $request->input('section') . '</strong>';
 
 			if ('全部' === $request->input('tax_name')) {
-				$tax = Tax::whereIn('section_id', $sids);
+				$tax = $tax->whereIn('section_id', $sids);
 			} else {
-				$tax = Tax::whereIn('section_id', $sids)
+				$tax = $tax->whereIn('section_id', $sids)
 					->whereTaxName($request->input('tax_name'));
 			}
-			$condition .= '税目包括<strong class="text-danger">' . $request->input('tax_name') . '</strong>';
+			$condition .= ' 税目包括<strong class="text-danger">' . $request->input('tax_name') . '</strong>';
 
 			$results = $tax->get();
 
@@ -274,8 +273,8 @@ class TaxController extends Controller {
 		// 获取完工进度
 		$completion         = Completion::whereSectionId($tax->section_id)->first();
 		$tax->completion_id = $completion->id;
-		$completion_before  = $completion->completion_before;
-		$completion_after   = $completion->completion_after;
+		$completion_before  = $completion->before;
+		$completion_after   = $completion->after;
 
 		// 获取税率
 		$rates  = Rate::whereName($tax->tax_name)->get();

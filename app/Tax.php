@@ -18,4 +18,8 @@ class Tax extends Model {
 	public function section() {
 		return $this->belongsTo('App\Section');
 	}
+
+	public function completion() {
+		return $this->belongsTo('App\Completion');
+	}
 }

@@ -15,8 +15,8 @@ class CreateCompletionsTable extends Migration {
 		Schema::create('completions', function (Blueprint $table) {
 			$table->increments('id');
 			$table->integer('section_id')->unsigned()->comment('标段ID');
-			$table->decimal('completion_before', 5, 2)->comment('改革前完工比例%');
-			$table->decimal('completion_after', 5, 2)->comment('改革后完工比例%');
+			$table->decimal('before', 5, 2)->comment('改革前完工比例%');
+			$table->decimal('after', 5, 2)->comment('改革后完工比例%');
 			$table->integer('user_id')->unsigned()->comment('用户ID');
 			$table->timestamps();
 

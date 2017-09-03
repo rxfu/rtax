@@ -76,8 +76,8 @@
 							<tr>
 								<th><i>#</i></th>
 								<th>项目名称</th>
-								<th>标段名称</th>
 								<th>标段类型</th>
+								<th>标段名称</th>
 								<th>规格名称</th>
 								<th>税目</th>
 								<th>改革前完工</th>
@@ -87,19 +87,16 @@
 						</thead>
 
 						<tbody>
-							@php
-								$i = 0
-							@endphp
 							@foreach ($results as $result)
 							<tr>
-								<td><i>{{ ++$i }}</i></td>
-								<td>{{ $result->project_name }}</td>
-								<td>{{ $result->lot_name }}</td>
-								<td>{{ $result->lot_type}}</td>
+								<td><i>{{ $loop->index + 1 }}</i></td>
+								<td>{{ $result->section->project->name }}</td>
+								<td>{{ $result->section->type->name }}</td>
+								<td>{{ $result->section->name }}</td>
 								<td>{{ $result->specification_name }}</td>
 								<td>{{ $result->tax_name }}</td>
-								<td>{{ $result->completion_before }}%</td>
-								<td>{{ $result->completion_after }}%</td>
+								<td>{{ $result->completion->before }}%</td>
+								<td>{{ $result->completion->after }}%</td>
 								<td>{{ $result->total }}</td>
 							</tr>
 							@endforeach
@@ -107,7 +104,7 @@
 
 						<tfoot>
 							<tr>
-								<td colspan="9">
+								<td colspan="9" style="font-size: larger">
 									<strong>合计</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									应纳资源税：{{ $results->sum('total') }} 元&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									可抵资源税：{{ $paid }} 元&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

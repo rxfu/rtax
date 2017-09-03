@@ -27,9 +27,9 @@ class CompletionController extends Controller {
 
 	public function postSave(Request $request) {
 		$this->validate($request, [
-			'section_id'        => 'required',
-			'completion_before' => 'required|numeric',
-			'completion_after'  => 'required|numeric',
+			'section_id' => 'required',
+			'before'     => 'required|numeric',
+			'after'      => 'required|numeric',
 		]);
 
 		$inputs = $request->all();
@@ -40,9 +40,9 @@ class CompletionController extends Controller {
 			$completion->user_id = Auth::user()->id;
 
 			if ($completion->save()) {
-				$request->session()->flash('success', '完工进度新增成功');
+				$request->session()->flash('success', '完工比例新增成功');
 			} else {
-				$request->session()->flash('error', '完工进度新增失败');
+				$request->session()->flash('error', '完工比例新增失败');
 			}
 
 			return redirect()->route('completion.list');
@@ -62,9 +62,9 @@ class CompletionController extends Controller {
 
 	public function putUpdate(Request $request, $id) {
 		$this->validate($request, [
-			'section_id'        => 'required',
-			'completion_before' => 'required|numeric',
-			'completion_after'  => 'required|numeric',
+			'section_id' => 'required',
+			'before'     => 'required|numeric',
+			'after'      => 'required|numeric',
 		]);
 
 		$inputs = $request->all();
@@ -74,9 +74,9 @@ class CompletionController extends Controller {
 			$completion->fill($inputs);
 
 			if ($completion->save()) {
-				$request->session()->flash('success', '完工进度更新成功');
+				$request->session()->flash('success', '完工比例更新成功');
 			} else {
-				$request->session()->flash('error', '完工进度更新失败');
+				$request->session()->flash('error', '完工比例更新失败');
 			}
 
 			return redirect()->route('completion.list');
@@ -90,13 +90,13 @@ class CompletionController extends Controller {
 			$completion = Completion::find($id);
 
 			if (is_null($completion)) {
-				$request->session()->flash('error', '该完工进度不存在');
+				$request->session()->flash('error', '该完工比例不存在');
 
 				return back();
 			} elseif ($completion->delete()) {
-				$request->session()->flash('success', '完工进度' . $completion->id . '删除成功');
+				$request->session()->flash('success', '完工比例' . $completion->id . '删除成功');
 			} else {
-				$request->session()->flash('error', '完工进度' . $completion->id . '删除失败');
+				$request->session()->flash('error', '完工比例' . $completion->id . '删除失败');
 			}
 
 			return redirect()->route('completion.list');
