@@ -220,18 +220,66 @@ class TaxController extends Controller {
 
 					$results = $excel->skip(1)->all();
 
+					// 检测文件内容是否符合要求
+					$i = 0;
 					foreach ($results as $result) {
-						$exist = Tax::whereProjectName($result[0])
-							->whereLotName($result[1])
-							->whereLotType($result[2])
+						++$i;
+
+						$hasProject = Project::whereName($result[0])->exists();
+						$field      = '项目名称';
+
+						if ($hasProject) {
+							$hasType = Type::whereName($result[2])->exists();
+							$field   = '标段类型';
+
+							if ($hasType) {
+								$pid        = Project::whereName($results[0])->first()->id;
+								$tid        = Type::whereName($result[2])->first()->id;
+								$hasSection = Section::whereName($result[1])
+									->whereProjectId($pid)
+									->whereTypeId($tid)
+									->exists();
+								$field = '标段名称';
+
+								if ($hasSection) {
+									$hasTaxName = Rate::whereName($result[4])->exists();
+									$field      = '税目';
+
+									if ($hasTaxName) {
+										$hasUnit = Rate::whereUnit($result[5])->exists();
+										$field   = '单位';
+
+										if ($hasUnit) {
+											$field = '资源税改革标记';
+											if (in_array($result[8], ['前', '后', '跨'])) {
+												continue;
+											}
+										}
+									}
+								}
+							}
+						}
+
+						$request->session()->flash('error', '评估项目导入失败，文件格式不符合要求，请检查文件数据第' . ($i + 1) . '行' . $field . '不符合要求');
+						return back();
+					}
+
+					// 导入文件
+					foreach ($results as $result) {
+						$pid     = Project::whereName($results[0])->first()->id;
+						$tid     = Type::whereName($result[2])->first()->id;
+						$section = Section::whereName($result[1])
+							->whereProjectId($pid)
+							->whereTypeId($tid)
+							->first();
+
+						$exist = Tax::whereSectionId($section->id)
 							->whereSpecificationName($result[3])
 							->whereTaxName($result[4])
 							->exists();
 
 						if ($exist) {
-							$tax = Tax::whereProjectName($result[0])
-								->whereLotName($result[1])
-								->whereLotType($result[2])
+							$tax = Tax::whereSectionId($section->id)
 								->whereSpecificationName($result[3])
 								->whereTaxName($result[4])
 								->first();
@@ -239,9 +287,7 @@ class TaxController extends Controller {
 							$tax = new Tax();
 						}
 
-						$tax->project_name       = $result[0];
-						$tax->lot_name           = $result[1];
-						$tax->lot_type           = $result[2];
+						$tax->section_id         = $section->id;
 						$tax->specification_name = $result[3];
 						$tax->tax_name           = $result[4];
 						$tax->unit               = $result[5];
@@ -249,6 +295,7 @@ class TaxController extends Controller {
 						$tax->total_amount       = $result[7];
 						$tax->flag               = $result[8];
 						$tax->year               = date('Y');
+						$tax->user_id            = Auth::user()->id;
 
 						$this->caculateTax($tax);
 
