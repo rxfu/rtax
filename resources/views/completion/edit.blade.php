@@ -63,3 +63,10 @@
 	</div>
 </form>
 @stop
+
+@push('scripts')
+<script src="{{ asset('js/jquery.chained.js') }}"></script>
+<script>
+	$('#section_id').chained('#project, #type');
+</script>
+@endpush

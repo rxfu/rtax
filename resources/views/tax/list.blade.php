@@ -8,7 +8,7 @@
     <div class="col-md-12">
         <div class="x_panel">
             <div class="x_title">
-                <h2>应纳资源税</h2>
+                <h2>使用资源明细</h2>
 
                 <div class="clearfix"></div>
             </div>

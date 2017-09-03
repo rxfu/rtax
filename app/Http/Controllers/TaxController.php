@@ -7,7 +7,9 @@ use App\Declaration;
 use App\Paid;
 use App\Project;
 use App\Rate;
+use App\Section;
 use App\Tax;
+use App\Type;
 use Auth;
 use DB;
 use Excel;
@@ -32,17 +34,18 @@ class TaxController extends Controller {
 	}
 
 	public function getCreate() {
-		$projects = Project::all();
+		$projects = Project::select('id', 'name')->get();
+		$types    = Type::select('id', 'name')->get();
+		$sections = Section::select('id', 'name', 'project_id', 'type_id')->get();
 		$rates    = Rate::select('name')->distinct()->get();
+		$units    = Rate::select('unit')->distinct()->get();
 
-		return view('tax.create', compact('projects', 'rates'));
+		return view('tax.create', compact('projects', 'types', 'sections', 'rates', 'units'));
 	}
 
 	public function postSave(Request $request) {
 		$this->validate($request, [
-			'project_name'       => 'required',
-			'lot_name'           => 'required',
-			'lot_type'           => 'required',
+			'section_id'         => 'required',
 			'specification_name' => 'required',
 			'tax_name'           => 'required',
 			'unit'               => 'required',
@@ -58,7 +61,8 @@ class TaxController extends Controller {
 			$tax->fill($inputs);
 			$this->caculateTax($tax, $inputs);
 
-			$tax->year = date('Y');
+			$tax->user_id = Auth::user()->id;
+			$tax->year    = date('Y');
 
 			if ($tax->save()) {
 				$request->session()->flash('success', '评估项目新增成功');
@@ -74,17 +78,18 @@ class TaxController extends Controller {
 
 	public function getEdit($id) {
 		$tax      = Tax::find($id);
-		$projects = Project::all();
+		$projects = Project::select('id', 'name')->get();
+		$types    = Type::select('id', 'name')->get();
+		$sections = Section::select('id', 'name', 'project_id', 'type_id')->get();
 		$rates    = Rate::select('name')->distinct()->get();
+		$units    = Rate::select('unit')->distinct()->get();
 
-		return view('tax.edit', compact('tax', 'projects', 'rates'));
+		return view('tax.edit', compact('tax', 'projects', 'types', 'sections', 'rates', 'units'));
 	}
 
 	public function putUpdate(Request $request, $id) {
 		$this->validate($request, [
-			'project_name'       => 'required',
-			'lot_name'           => 'required',
-			'lot_type'           => 'required',
+			'section_id'         => 'required',
 			'specification_name' => 'required',
 			'tax_name'           => 'required',
 			'unit'               => 'required',
@@ -283,24 +288,11 @@ class TaxController extends Controller {
 
 	private function caculateTax(&$tax) {
 
-		// 获取项目ID
-		$project = Project::whereProjectName($tax->project_name)
-			->whereLotName($tax->lot_name)
-			->whereLotType($tax->lot_type)
-			->first();
-
-		if (is_null($project)) {
-			$request->session()->flash('error', '该标段不存在');
-
-			return back();
-		}
-
-		$tax->project_id = $project->id;
-
 		// 获取完工进度
-		$completion             = Completion::whereProjectId($tax->project_id)->first();
-		$tax->completion_before = $completion->completion_before;
-		$tax->completion_after  = $completion->completion_after;
+		$completion         = Completion::whereSectionId($tax->section_id)->first();
+		$tax->completion_id = $completion->id;
+		$completion_before  = $completion->completion_before;
+		$completion_after   = $completion->completion_after;
 
 		// 获取税率
 		$rates  = Rate::whereName($tax->tax_name)->get();
@@ -332,18 +324,14 @@ class TaxController extends Controller {
 		}
 
 		// 改革前税额计算
-		$tax->taxunit_before    = $before['unit'];
-		$tax->unittax_before    = $before['rate'];
-		$tax->payabletax_before = $tax->taxamount_before * $tax->unittax_before;
+		$tax->rate_id_before    = $before['id'];
+		$tax->payabletax_before = $tax->taxamount_before * $before['rate'];
 
 		// 改革后税额计算
-		$tax->taxunit_after    = $after['unit'];
-		$tax->unittax_after    = $after['rate'];
-		$tax->payabletax_after = $tax->taxamount_after * $tax->unittax_after;
+		$tax->rate_id_after    = $before['id'];
+		$tax->payabletax_after = $tax->taxamount_after * $after['rate'];
 
 		// 应缴纳税额
-		$tax->total = $tax->payabletax_before * $tax->completion_before / 100 + $tax->payabletax_after * $tax->completion_after / 100;
-
-		$tax->user_id = Auth::user()->id;
+		$tax->total = $tax->payabletax_before * $completion_before / 100 + $tax->payabletax_after * $completion_after / 100;
 	}
 }

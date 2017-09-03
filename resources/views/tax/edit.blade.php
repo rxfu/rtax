@@ -8,31 +8,31 @@
 	{{ csrf_field() }}
 
 	<div class="form-group">
-		<label for="project_name" class="control-label col-md-3 col-sm-3 col-xs-12">项目名称 <span class="required">*</span></label>
+		<label for="project" class="control-label col-md-3 col-sm-3 col-xs-12">项目名称 <span class="required">*</span></label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
-			<select id="project_name" name="project_name" class="form-control col-md-7 col-xs-12">
-				@foreach ($projects->pluck('project_name')->unique() as $project_name)
-					<option value="{{ $project_name }}"{{ $project_name === $tax->project_name ? ' selected' : ''}}>{{ $project_name }}</option>
+			<select id="project" name="project" class="form-control col-md-7 col-xs-12">
+				@foreach ($projects as $project)
+					<option value="project-{{ $project->id }}"{{ $project->id === $tax->section->project->id ? ' selected' : ''}}>{{ $project->name }}</option>
 				@endforeach
 			</select>
 		</div>
 	</div>
 	<div class="form-group">
-		<label for="lot_name" class="control-label col-md-3 col-sm-3 col-xs-12">标段名称 <span class="required">*</span></label>
+		<label for="type" class="control-label col-md-3 col-sm-3 col-xs-12">标段类型 <span class="required">*</span></label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
-			<select id="lot_name" name="lot_name" class="form-control col-md-7 col-xs-12">
-				@foreach ($projects->pluck('lot_name')->unique() as $lot_name)
-					<option value="{{ $lot_name }}"{{ $lot_name === $tax->lot_name ? ' selected' : ''}}>{{ $lot_name }}</option>
+			<select id="type" name="type" class="form-control col-md-7 col-xs-12">
+				@foreach ($types as $type)
+					<option value="type-{{ $type->id }}"{{ $type->id === $tax->section->type->id ? ' selected' : ''}}>{{ $type->name }}</option>
 				@endforeach
 			</select>
 		</div>
 	</div>
 	<div class="form-group">
-		<label for="lot_type" class="control-label col-md-3 col-sm-3 col-xs-12">标段类型 <span class="required">*</span></label>
+		<label for="section_id" class="control-label col-md-3 col-sm-3 col-xs-12">标段名称 <span class="required">*</span></label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
-			<select id="lot_type" name="lot_type" class="form-control col-md-7 col-xs-12">
-				@foreach ($projects->pluck('lot_type')->unique() as $lot_type)
-					<option value="{{ $lot_type }}"{{ $lot_type === $tax->lot_type ? ' selected' : ''}}>{{ $lot_type }}</option>
+			<select id="section_id" name="section_id" class="form-control col-md-7 col-xs-12">
+				@foreach ($sections as $section)
+					<option value="{{ $section->id }}" data-chained="project-{{ $section->project_id }}+type-{{ $section->type_id }}"{{ $section->id === $tax->section_id ? ' selected' : ''}}>{{ $section->name }}</option>
 				@endforeach
 			</select>
 		</div>
@@ -56,7 +56,11 @@
 	<div class="form-group">
 		<label for="unit" class="control-label col-md-3 col-sm-3 col-xs-12">单位 <span class="required">*</label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
-			<input type="text" class="form-control col-md-7 col-xs-12" id="unit" name="unit" value="立方米"  placeholder="单位" required>
+			<select id="unit" name="unit" class="form-control col-md-7 col-xs-12">
+				@foreach ($units as $unit)
+					<option value="{{ $unit->unit }}"{{ $unit->unit === $tax->unit ? ' selected' : ''}}>{{ $unit->unit }}</option>
+				@endforeach
+			</select>
 		</div>
 	</div>
 	<div class="form-group">
@@ -89,3 +93,10 @@
 	</div>
 </form>
 @stop
+
+@push('scripts')
+<script src="{{ asset('js/jquery.chained.js') }}"></script>
+<script>
+	$('#section_id').chained('#project, #type');
+</script>
+@endpush
