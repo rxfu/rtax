@@ -138,6 +138,11 @@ class TaxController extends Controller {
 	}
 
 	public function getSearch(Request $request) {
+		$projects = Project::select('id', 'name')->get();
+		$types    = Type::select('id', 'name')->get();
+		$sections = Section::select('id', 'name')->distinct()->get();
+		$rates    = Rate::select('name')->distinct()->get();
+
 		$searched    = false;
 		$results     = [];
 		$payable     = 0;
@@ -149,72 +154,50 @@ class TaxController extends Controller {
 			$searched = $request->input('flag');
 
 			// 查询数据
-			if (Auth::user()->is_admin) {
-				$tax = DB::table('taxes');
+			$tax = DB::table('taxes');
+
+			if ('全部' === $request->input('project')) {
+				$pids = Project::all()->pluck('id');
 			} else {
-				$tax = DB::table('taxes')->whereUserId(Auth::user()->id);
+				$pids = Project::whereName($request->input('project'))->pluck('id');
 			}
+			$condition .= '项目名称包括<strong class="text-danger">' . $request->input('project') . '</strong>';
 
-			if (!empty($request->input('project_name'))) {
-				$tax = $tax->where('project_name', 'like', '%' . $request->input('project_name') . '%');
-				$condition .= '项目名称包括<strong class="text-danger">' . $request->input('project_name') . '</strong>';
+			if ('全部' === $request->input('type')) {
+				$tids = Type::all()->pluck('id');
 			} else {
-				$condition .= '<strong class="text-danger">全部</strong>项目名称';
+				$tids = Type::whereName($request->input('type'))->pluck('id');
 			}
+			$condition .= '标段类型包括<strong class="text-danger">' . $request->input('type') . '</strong>';
 
-			if (!empty($request->input('lot_name'))) {
-				$tax = $tax->where('lot_name', 'like', '%' . $request->input('lot_name') . '%');
-				$condition .= ' AND 标段名称包括<strong class="text-danger">' . $request->input('lot_name') . '</strong>';
+			if ('全部' === $request->input('section')) {
+				$sids = Section::whereIn('project_id', $pids)
+					->whereIn('type_id', $tids)
+					->pluck('id');
 			} else {
-				$condition .= ' AND <strong class="text-danger">全部</strong>标段名称';
+				$sids = Section::whereIn('project_id', $pids)
+					->whereIn('type_id', $tids)
+					->whereName($request->input('section'))
+					->pluck('id');
 			}
+			$condition .= '标段名称包括<strong class="text-danger">' . $request->input('section') . '</strong>';
 
-			if (!empty($request->input('lot_type'))) {
-				$tax = $tax->where('lot_type', 'like', '%' . $request->input('lot_type') . '%');
-				$condition .= ' AND 标段类型包括<strong class="text-danger">' . $request->input('lot_type') . '</strong>';
+			if ('全部' === $request->input('tax_name')) {
+				$tax = Tax::whereIn('section_id', $sids);
 			} else {
-				$condition .= ' AND <strong class="text-danger">全部</strong>标段类型';
+				$tax = Tax::whereIn('section_id', $sids)
+					->whereTaxName($request->input('tax_name'));
 			}
-
-			if (!empty($request->input('specification_name'))) {
-				$tax = $tax->where('specification_name', 'like', '%' . $request->input('specification_name') . '%');
-				$condition .= ' AND 规格名称包括<strong class="text-danger">' . $request->input('specification_name') . '</strong>';
-			} else {
-				$condition .= ' AND <strong class="text-danger">全部</strong>规格名称';
-			}
-
-			if (!empty($request->input('tax_name'))) {
-				$tax = $tax->where('tax_name', 'like', '%' . $request->input('tax_name') . '%');
-				$condition .= ' AND 税目包括<strong class="text-danger">' . $request->input('tax_name') . '</strong>';
-			} else {
-				$condition .= ' AND <strong class="text-danger">全部</strong>税目';
-			}
-
-			if ('all' !== $request->input('flag')) {
-				$tax = $tax->whereFlag($request->input('flag'));
-				$condition .= ' AND 资源税改革标记包括<strong class="text-danger">' . $request->input('flag') . '</strong>';
-			} else {
-				$condition .= ' AND <strong class="text-danger">全部</strong>资源税改革标记';
-			}
-
-			if (!empty($request->input('completion_before'))) {
-				$tax = $tax->where('completion_before', $request->input('completion_before_condition'), $request->input('completion_before'));
-				$condition .= ' AND 改革前完工比例<strong class="text-danger">' . $request->input('completion_before_condition') . ' ' . $request->input('completion_before') . '</strong>';
-			}
-
-			if (!empty($request->input('completion_after'))) {
-				$tax = $tax->where('completion_after', $request->input('completion_after_condition'), $request->input('completion_after'));
-				$condition .= ' AND 改革后完工比例<strong class="text-danger">' . $request->input('completion_after_condition') . ' ' . $request->input('completion_after') . '</strong>';
-			}
+			$condition .= '税目包括<strong class="text-danger">' . $request->input('tax_name') . '</strong>';
 
 			$results = $tax->get();
 
 			$payable     = $results->sum('total');
-			$paid        = Paid::whereIn('project_id', $results->pluck('project_id')->all())->sum('total');
-			$declaration = Declaration::whereIn('project_id', $results->pluck('project_id')->all())->sum('total');
+			$paid        = Paid::whereIn('section_id', $sids)->sum('total');
+			$declaration = Declaration::whereIn('section_id', $sids)->sum('total');
 		}
 
-		return view('tax.search', compact('searched', 'results', 'payable', 'paid', 'declaration', 'condition'));
+		return view('tax.search', compact('searched', 'projects', 'types', 'sections', 'rates', 'results', 'payable', 'paid', 'declaration', 'condition'));
 	}
 
 	public function getImport() {

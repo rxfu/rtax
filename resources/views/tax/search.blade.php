@@ -18,76 +18,47 @@
 					<input type="hidden" name="flag" value="true">
 
 					<div class="form-group">
-						<label for="project_name" class="control-label col-md-3 col-sm-3 col-xs-12">项目名称</label>
+						<label for="project" class="control-label col-md-3 col-sm-3 col-xs-12">项目名称 <span class="required">*</span></label>
 						<div class="col-md-6 col-sm-6 col-xs-12">
-							<input type="text" class="form-control col-md-7 col-xs-12" id="project_name" name="project_name" placeholder="项目名称" value="{{ old('project_name') }}">
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="lot_name" class="control-label col-md-3 col-sm-3 col-xs-12">标段名称</label>
-						<div class="col-md-6 col-sm-6 col-xs-12">
-							<input type="text" class="form-control col-md-7 col-xs-12" id="lot_name" name="lot_name" placeholder="标段名称" value="{{ old('lot_name') }}">
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="lot_type" class="control-label col-md-3 col-sm-3 col-xs-12">标段类型</label>
-						<div class="col-md-6 col-sm-6 col-xs-12">
-							<input type="text" class="form-control col-md-7 col-xs-12" id="lot_type" name="lot_type" placeholder="标段类型" value="{{ old('lot_type') }}">
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="specification_name" class="control-label col-md-3 col-sm-3 col-xs-12">规格名称</label>
-						<div class="col-md-6 col-sm-6 col-xs-12">
-							<input type="text" class="form-control col-md-7 col-xs-12" id="specification_name" name="specification_name" placeholder="规格名称" value="{{ old('specification_name') }}">
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="tax_name" class="control-label col-md-3 col-sm-3 col-xs-12">税目</label>
-						<div class="col-md-6 col-sm-6 col-xs-12">
-							<input type="text" class="form-control col-md-7 col-xs-12" id="tax_name" name="tax_name" placeholder="税目" value="{{ old('tax_name') }}">
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="flag" class="control-label col-md-3 col-sm-3 col-xs-12">资源税改革标记</label>
-						<div class="col-md-6 col-sm-6 col-xs-12">
-							<select id="flag" name="flag" class="form-control col-md-7 col-xs-12">
-								<option value="all" selected>全部</option>
-								<option value="前">前</option>
-								<option value="后">后</option>
-								<option value="跨">跨</option>
+							<select id="project" name="project" class="form-control col-md-7 col-xs-12">
+								<option value="全部">== 全部 ==</option>
+								@foreach ($projects as $project)
+									<option value="{{ $project->name }}">{{ $project->name }}</option>
+								@endforeach
 							</select>
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="completion_before" class="control-label col-md-3 col-sm-3 col-xs-12">改革前完工比例</label>
+						<label for="type" class="control-label col-md-3 col-sm-3 col-xs-12">标段类型 <span class="required">*</span></label>
 						<div class="col-md-6 col-sm-6 col-xs-12">
-							<div class="input-group">
-								<span class="input-group-addon">
-									<select id="completion_before_condition" name="completion_before_condition">
-										<option value="=" selected>=</option>
-										<option value=">">></option>
-										<option value="<"><</option>
-									</select>
-								</span>
-								<input type="text" class="form-control col-md-7 col-xs-12" id="completion_before" name="completion_before" placeholder="改革前完工比例" value="{{ old('completion_before') }}">
-								<span class="input-group-addon">%</span>
-							</div>
+							<select id="type" name="type" class="form-control col-md-7 col-xs-12">
+								<option value="全部">== 全部 ==</option>
+								@foreach ($types as $type)
+									<option value="{{ $type->name }}">{{ $type->name }}</option>
+								@endforeach
+							</select>
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="completion_after" class="control-label col-md-3 col-sm-3 col-xs-12">改革后完工比例</label>
+						<label for="section" class="control-label col-md-3 col-sm-3 col-xs-12">标段名称 <span class="required">*</span></label>
 						<div class="col-md-6 col-sm-6 col-xs-12">
-							<div class="input-group">
-								<span class="input-group-addon">
-									<select id="completion_after_condition" name="completion_after_condition">
-										<option value="=" selected>=</option>
-										<option value=">">></option>
-										<option value="<"><</option>
-									</select>
-								</span>
-								<input type="text" class="form-control col-md-7 col-xs-12" id="completion_after" name="completion_after" placeholder="改革后完工比例" value="{{ old('completion_after') }}">
-								<span class="input-group-addon">%</span>
-							</div>
+							<select id="section" name="section" class="form-control col-md-7 col-xs-12">
+								<option value="全部">== 全部 ==</option>
+								@foreach ($sections as $section)
+									<option value="{{ $section->name }}">{{ $section->name }}</option>
+								@endforeach
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="tax_name" class="control-label col-md-3 col-sm-3 col-xs-12">税目 <span class="required">*</span></label>
+						<div class="col-md-6 col-sm-6 col-xs-12">
+							<select id="tax_name" name="tax_name" class="form-control col-md-7 col-xs-12">
+								<option value="全部">== 全部 ==</option>
+								@foreach ($rates as $rate)
+									<option value="{{ $rate->name }}">{{ $rate->name }}</option>
+								@endforeach
+							</select>
 						</div>
 					</div>
 					<div class="ln_solid"></div>
