@@ -53,7 +53,7 @@
 		</div>
 	</div>
 	<div class="form-group">
-		<label for="unit" class="control-label col-md-3 col-sm-3 col-xs-12">单位 <span class="required">*</label>
+		<label for="unit" class="control-label col-md-3 col-sm-3 col-xs-12">单位 <span class="required">*</span></label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
 			<select id="unit" name="unit" class="form-control col-md-7 col-xs-12">
 				@foreach ($units as $unit)
@@ -69,7 +69,7 @@
 		</div>
 	</div>
 	<div class="form-group">
-		<label for="total_amount" class="control-label col-md-3 col-sm-3 col-xs-12">数量 <span class="required">*</label>
+		<label for="total_amount" class="control-label col-md-3 col-sm-3 col-xs-12">数量 <span class="required">*</span></label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
 			<input type="text" class="form-control col-md-7 col-xs-12" id="total_amount" name="total_amount" value="{{ old('total_amount') }}"  placeholder="数量" required>
 		</div>
