@@ -136,6 +136,14 @@ class TaxController extends Controller {
 		return back()->withErrors();
 	}
 
+	public function deleteBatchDelete(Request $request) {
+		if ($request->isMethod('delete')) {
+			$ids = $request->input('ids');
+
+			dd($request->all());
+		}
+	}
+
 	public function getSearch(Request $request) {
 		$projects = Project::select('id', 'name')->get();
 		$types    = Type::select('id', 'name')->get();
@@ -160,14 +168,14 @@ class TaxController extends Controller {
 			} else {
 				$pids = Project::whereName($request->input('project'))->pluck('id');
 			}
-			$condition .= '项目名称包括<strong class="text-danger">' . $request->input('project') . '</strong>';
+			$condition .= '项目名称=<strong class="text-danger">' . $request->input('project') . '</strong>';
 
 			if ('全部' === $request->input('type')) {
 				$tids = Type::all()->pluck('id');
 			} else {
 				$tids = Type::whereName($request->input('type'))->pluck('id');
 			}
-			$condition .= ' 标段类型包括<strong class="text-danger">' . $request->input('type') . '</strong>';
+			$condition .= ' 标段类型=<strong class="text-danger">' . $request->input('type') . '</strong>';
 
 			if ('全部' === $request->input('section')) {
 				$sids = Section::whereIn('project_id', $pids)
@@ -179,7 +187,7 @@ class TaxController extends Controller {
 					->whereName($request->input('section'))
 					->pluck('id');
 			}
-			$condition .= ' 标段名称包括<strong class="text-danger">' . $request->input('section') . '</strong>';
+			$condition .= ' 标段名称=<strong class="text-danger">' . $request->input('section') . '</strong>';
 
 			if ('全部' === $request->input('tax_name')) {
 				$tax = $tax->whereIn('section_id', $sids);
@@ -187,7 +195,7 @@ class TaxController extends Controller {
 				$tax = $tax->whereIn('section_id', $sids)
 					->whereTaxName($request->input('tax_name'));
 			}
-			$condition .= ' 税目包括<strong class="text-danger">' . $request->input('tax_name') . '</strong>';
+			$condition .= ' 税目=<strong class="text-danger">' . $request->input('tax_name') . '</strong>';
 
 			$results = $tax->get();
 

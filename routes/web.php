@@ -78,6 +78,7 @@ Route::prefix('tax')->group(function () {
 	Route::name('tax.search')->get('search', 'TaxController@getSearch');
 	Route::name('tax.excel')->get('import', 'TaxController@getImport');
 	Route::name('tax.import')->post('import', 'TaxController@postImport');
+	Route::name('tax.batchDelete')->delete('batchDelete', 'TaxController@deleteBatchDelete');
 });
 
 Route::prefix('paid')->group(function () {
