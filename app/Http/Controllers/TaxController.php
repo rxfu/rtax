@@ -242,6 +242,13 @@ class TaxController extends Controller {
 								$field = '标段名称';
 
 								if ($hasSection) {
+									$sid    = Section::whereName($result[1])->first()->id;
+									$exists = Completion::whereSectionId($sid)->exists();
+									if (!$exists) {
+										$request->session->flash('error', '缺少对应的完工比例，请补充完整');
+										return back();
+									}
+
 									$hasTaxName = Rate::whereName($result[4])->exists();
 									$field      = '税目';
 
@@ -318,6 +325,12 @@ class TaxController extends Controller {
 	private function caculateTax(&$tax) {
 
 		// 获取完工进度
+		$exists = Completion::whereSectionId($tax->section_id)->exists();
+		if (!$exists) {
+			$request->session->flash('error', '缺少对应的完工比例，请补充完整');
+			return back();
+		}
+
 		$completion         = Completion::whereSectionId($tax->section_id)->first();
 		$tax->completion_id = $completion->id;
 		$completion_before  = $completion->before;
