@@ -17,6 +17,9 @@
                 <table id="tax-table" class="table table-striped">
 					<thead>
 						<tr>
+							<th>
+								<input type="checkbox" id="check_all" name="check_all">
+							</th>
 							<th>ID</th>
 							<th>项目名称</th>
 							<th>标段类型</th>
@@ -34,6 +37,9 @@
 					<tbody>
 						@foreach ($taxes as $tax)
 							<tr>
+								<td>
+									<input type="checkbox" name="check_this" value="{{ $tax->id }}">
+								</td>
 								<td>{{ $tax->id }}</td>
 								<td>{{ $tax->section->project->name }}</td>
 								<td>{{ $tax->section->type->name }}</td>
@@ -70,6 +76,7 @@
 							<td colspan="11">
 								<a href="{{ route('tax.create') }}" class="btn btn-success"><i class="fa fa-plus"></i> 新增</a>
 								<a href="{{ route('tax.excel') }}" class="btn btn-info"><i class="fa fa-upload"></i> 导入</a>
+								<a href="#" class="btn btn-danger"><i class="fa fa-remove"></i> 批量删除</a>
 							</td>
 						</tr>
 					</tfoot>
@@ -258,5 +265,8 @@
 				url: "{{ asset('js/i18n/Chinese.json') }}"
 			}
 		});
+		$('#check_all').click(function() {
+			$('input[name="check_this"]').attr('checked', this.checked);
+		})
 	</script>
 @endpush
