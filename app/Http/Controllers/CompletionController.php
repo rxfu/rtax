@@ -7,6 +7,8 @@ use App\Project;
 use App\Section;
 use App\Type;
 use Auth;
+use Carbon\Carbon;
+use DB;
 use Illuminate\Http\Request;
 
 class CompletionController extends Controller {
@@ -78,6 +80,9 @@ class CompletionController extends Controller {
 			} else {
 				$request->session()->flash('error', '完工比例更新失败');
 			}
+
+			// 更新应纳资源税表
+			DB::update('UPDATE taxes SET total = payabletax_before * ' . ($completion->before / 100) . ' + payabletax_after * ' . ($completion->after / 100) . ', updated_at = "' . Carbon::now() . '" WHERE completion_id = ' . $completion->id);
 
 			return redirect()->route('completion.list');
 		}

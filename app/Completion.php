@@ -12,7 +12,7 @@ class Completion extends Model {
 	 * @var array
 	 */
 	protected $fillable = [
-		'section_id', 'completion_before', 'completion_after', 'user_id',
+		'section_id', 'before', 'after', 'user_id',
 	];
 
 	public function section() {
