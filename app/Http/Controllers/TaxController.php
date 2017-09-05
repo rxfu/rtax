@@ -157,7 +157,7 @@ class TaxController extends Controller {
 	public function getSearch(Request $request) {
 		$projects = Project::select('id', 'name')->get();
 		$types    = Type::select('id', 'name')->get();
-		$sections = Section::select('id', 'name')->distinct()->get();
+		$sections = Section::with('type')->select('type_id', 'name')->distinct()->get();
 		$rates    = Rate::select('name')->distinct()->get();
 
 		$searched    = false;
@@ -170,51 +170,60 @@ class TaxController extends Controller {
 		if ($request->isMethod('get')) {
 			$searched = $request->input('flag');
 
-			// 查询数据
-			$tax = Tax::with('section', 'section.project', 'section.type', 'completion');
+			if ($searched) {
+				// 查询数据
+				$tax = Tax::with('section', 'section.project', 'section.type', 'completion');
 
-			if ('全部' === $request->input('project')) {
-				$pids = Project::all()->pluck('id');
-			} else {
-				$pids = Project::whereName($request->input('project'))->pluck('id');
+				$pid = Project::whereName($request->input('project'))->first()->id;
+				$condition .= '项目名称=<strong class="text-danger">' . $request->input('project') . '</strong>';
+
+				if ('全部' === $request->input('type')) {
+					$tids = Type::all()->pluck('id');
+				} else {
+					$tids = Type::whereName($request->input('type'))->pluck('id');
+				}
+				$condition .= ' AND 标段类型=<strong class="text-danger">' . $request->input('type') . '</strong>';
+
+				if ('全部' === $request->input('section')) {
+					$sids = Section::whereProjectId($pid)
+						->whereIn('type_id', $tids)
+						->pluck('id');
+				} else {
+					$sids = Section::whereProjectId($pid)
+						->whereIn('type_id', $tids)
+						->whereName($request->input('section'))
+						->pluck('id');
+				}
+				$condition .= ' AND 标段名称=<strong class="text-danger">' . $request->input('section') . '</strong>';
+
+				if ('全部' === $request->input('tax_name')) {
+					$tax = $tax->whereIn('section_id', $sids);
+				} else {
+					$tax = $tax->whereIn('section_id', $sids)
+						->whereTaxName($request->input('tax_name'));
+				}
+				$condition .= ' AND 税目=<strong class="text-danger">' . $request->input('tax_name') . '</strong>';
+
+				$results = $tax->get();
+
+				$payable     = $results->sum('total');
+				$paid        = Paid::whereIn('section_id', $sids)->sum('total');
+				$declaration = Declaration::whereIn('section_id', $sids)->sum('total');
 			}
-			$condition .= '项目名称=<strong class="text-danger">' . $request->input('project') . '</strong>';
-
-			if ('全部' === $request->input('type')) {
-				$tids = Type::all()->pluck('id');
-			} else {
-				$tids = Type::whereName($request->input('type'))->pluck('id');
-			}
-			$condition .= ' 标段类型=<strong class="text-danger">' . $request->input('type') . '</strong>';
-
-			if ('全部' === $request->input('section')) {
-				$sids = Section::whereIn('project_id', $pids)
-					->whereIn('type_id', $tids)
-					->pluck('id');
-			} else {
-				$sids = Section::whereIn('project_id', $pids)
-					->whereIn('type_id', $tids)
-					->whereName($request->input('section'))
-					->pluck('id');
-			}
-			$condition .= ' 标段名称=<strong class="text-danger">' . $request->input('section') . '</strong>';
-
-			if ('全部' === $request->input('tax_name')) {
-				$tax = $tax->whereIn('section_id', $sids);
-			} else {
-				$tax = $tax->whereIn('section_id', $sids)
-					->whereTaxName($request->input('tax_name'));
-			}
-			$condition .= ' 税目=<strong class="text-danger">' . $request->input('tax_name') . '</strong>';
-
-			$results = $tax->get();
-
-			$payable     = $results->sum('total');
-			$paid        = Paid::whereIn('section_id', $sids)->sum('total');
-			$declaration = Declaration::whereIn('section_id', $sids)->sum('total');
 		}
 
 		return view('tax.search', compact('searched', 'projects', 'types', 'sections', 'rates', 'results', 'payable', 'paid', 'declaration', 'condition'));
+	}
+
+	public function getChart(Request $request) {
+		$projects = Project::select('id', 'name')->get();
+		$types    = Type::select('id', 'name')->get();
+		$sections = Section::with('type')->select('type_id', 'name')->distinct()->get();
+		$rates    = Rate::select('name')->distinct()->get();
+
+		$searched = false;
+
+		return view('tax.chart', compact('searched', 'projects', 'types', 'sections', 'rates'));
 	}
 
 	public function getImport() {
