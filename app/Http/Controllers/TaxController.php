@@ -265,10 +265,29 @@ class TaxController extends Controller {
 				$results = $tax->select('section_id', 'tax_name', DB::raw('SUM(total) AS total_tax'))
 					->groupBy('section_id', 'tax_name')
 					->get();
+
+				// 图表数据
+				$data = [];
+				if ('全部' === $request->input('section')) {
+					foreach ($results as $result) {
+						$data[] = [
+							'name' => $result->section->name,
+							'y'    => $result->total_tax,
+						];
+					}
+				} elseif ('全部' === $request->input('tax_name')) {
+					foreach ($results as $result) {
+						$data[] = [
+							'name' => $result->tax_name,
+							'y'    => $result->total_tax,
+						];
+					}
+				}
+				$data = json_encode($data, JSON_NUMERIC_CHECK);
 			}
 		}
 
-		return view('tax.chart', compact('searched', 'projects', 'types', 'sections', 'rates', 'results', 'condition'));
+		return view('tax.chart', compact('searched', 'projects', 'types', 'sections', 'rates', 'results', 'condition', 'data'));
 	}
 
 	public function getImport() {

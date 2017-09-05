@@ -60,7 +60,7 @@
 
 @if ($searched)
 <p>统计条件：{!! $condition !!}</p>
-<table id="chart-result" class="table table-striped table-bordered">
+<table id="result-table" class="table table-striped table-bordered">
 	<thead>
 		<tr>
 			<th><i>#</i></th>
@@ -95,13 +95,15 @@
     <div class="col-md-6 col-sm-6 col-xs-12">
         <div class="x_panel">
             <div class="x_title">
-                <h2>饼图</h2>
+                <h2>图表分析</h2>
 
                 <div class="clearfix"></div>
             </div>
 
             <div class="x_content">
-				<canvas id="pie-chart"></canvas>
+				<div id="pie-chart"></div>
+				<br>
+				<div id="bar-chart"></div>
             </div>
         </div>
     </div>
@@ -111,13 +113,31 @@
     <div class="col-md-6 col-sm-6 col-xs-12">
         <div class="x_panel">
             <div class="x_title">
-                <h2>柱状图</h2>
+                <h2>表格分析</h2>
 
                 <div class="clearfix"></div>
             </div>
 
             <div class="x_content">
-				<canvas id="bar-chart"></canvas>
+				<table id="chart-result" class="table table-striped">
+					<thead>
+						<tr>
+							<th><i>#</i></th>
+							<th>标段名称</th>
+							<th>税款金额</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						@foreach (json_decode($data) as $d)
+						<tr>
+							<td><i>{{ $loop->index + 1 }}</i></td>
+							<td>{{ $d->name }}</td>
+							<td>{{ $d->y }}</td>
+						</tr>
+						@endforeach
+					</tbody>
+				</table>
             </div>
         </div>
     </div>
@@ -126,7 +146,7 @@
 @endif
 <!-- /Chart -->
 @stop
-{{--
+
 @push('scripts')
 	<script src="{{ asset('js/jquery.chained.js') }}"></script>
 	<script>
@@ -134,82 +154,80 @@
 		$('#section').chained('#type');
 	</script>
 	@if ($searched)
-	<script src="{{ asset('js/Chart.min.js') }}"></script>
+	<script src="{{ asset('js/highcharts.js') }}"></script>
 
 	<script>
-	// Bar chart
-	if ($('#bar-chart').length) {
-		var ctx = document.getElementById("bar-chart");
-		var mybarChart = new Chart(ctx, {
-			type: 'bar',
-			data: {
-				labels: [
-					'应纳资源税',
-					'应补资源税',
-					'可抵资源税',
-					'自行申报资源税'
-				],
-				datasets: [{
-					label: '资源税',
-					data: [
-						{{ $payable }},
-						{{ $payable - $paid - $declaration }},
-						{{ $paid }},
-						{{ $declaration }}
-					],
-					backgroundColor: [
-						'#3498DB',
-						'#455C73',
-						'#26B99A',
-						'#9B59B6'
-					]
-				}]
-			},
-
-			options: {
-				scales: {
-					yAxes: [{
-						 ticks: {
-						 	beginAtZero: true
-						 }
-					}]
-				}
-			}
-		});
-	}
-
 	// Pie chart
-	if ($('#pie-chart').length ){
-		var ctx = document.getElementById("pie-chart");
-		var data = {
-			labels: [
-				'应补资源税',
-				'可抵资源税',
-				'自行申报资源税'
-			],
-			datasets: [{
-				data: [
-					{{ $payable - $paid - $declaration }},
-					{{ $paid }},
-					{{ $declaration }}
-				],
-				backgroundColor: [
-					'#455C73',
-					'#26B99A',
-					'#9B59B6'
-				]
-			}]
-		};
+	Highcharts.chart('pie-chart', {
+	    chart: {
+	        plotBackgroundColor: null,
+	        plotBorderWidth: null,
+	        plotShadow: false,
+	        type: 'pie'
+	    },
+	    title: {
+	        text: '饼图分析'
+	    },
+	    tooltip: {
+	        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+	    },
+	    plotOptions: {
+	        pie: {
+	            allowPointSelect: true,
+	            cursor: 'pointer',
+	            dataLabels: {
+	                enabled: false,
+	                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+	                style: {
+	                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+	                }
+	            },
+	            showInLegend: true
+	        }
+	    },
+	    series: [{
+	        name: '数据分析',
+	        colorByPoint: true,
+	        data: {!! $data !!}
+	    }]
+	});
 
-		var pieChart = new Chart(ctx, {
-			data: data,
-			type: 'pie',
-			otpions: {
-				legend: false
-			}
-		});
-	}
+	// Bar chart
+	Highcharts.chart('bar-chart', {
+	    chart: {
+	        type: 'column'
+	    },
+	    title: {
+	        text: '柱状图分析'
+	    },
+	    xAxis: {
+	        type: 'category'
+	    },
+	    yAxis: {
+	        min: 0,
+	        title: {
+	            text: '税款金额'
+	        }
+	    },
+	    tooltip: {
+	        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+	        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b><br/>'
+	    },
+	    plotOptions: {
+	        series: {
+	            borderWidth: 0,
+	            dataLabels: {
+	                enabled: true,
+	                format: '{point.y:.2f}'
+	            }
+	        }
+	    },
+	    series: [{
+	    	name: '数据分析',
+	    	colorByPoint: true,
+	    	data: {!! $data !!}
+	    }]
+	});
 	</script>
 	@endif
 @endpush
---}}
