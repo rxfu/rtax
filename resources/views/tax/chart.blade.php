@@ -53,12 +53,41 @@
 	<div class="ln_solid"></div>
 	<div class="form-group">
 		<div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-			<button type="submit" class="btn btn-success">查询</button>
+			<button type="submit" class="btn btn-success">统计分析</button>
 		</div>
 	</div>
 </form>
 
 @if ($searched)
+<p>统计条件：{!! $condition !!}</p>
+<table id="chart-result" class="table table-striped table-bordered">
+	<thead>
+		<tr>
+			<th><i>#</i></th>
+			<th>标段名称</th>
+			<th>税目</th>
+			<th>应纳资源税</th>
+			<th>可抵资源税</th>
+			<th>自行申报税</th>
+			<th>应补资源税</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		@foreach ($results as $result)
+		<tr>
+			<td><i>{{ $loop->index + 1 }}</i></td>
+			<td>{{ $result->section->name }}</td>
+			<td>{{ $result->tax_name }}</td>
+			<td>{{ $payable = $result->total_tax }}</td>
+			<td>{{ $paid = App\Paid::whereSectionId($result->section_id)->whereTaxName($result->tax_name)->sum('total') }}</td>
+			<td>{{ $declaration = App\Declaration::whereSectionId($result->section_id)->whereTaxName($result->tax_name)->sum('total') }}</td>
+			<td>{{ $payable - $paid - $declaration }}</td>
+		</tr>
+		@endforeach
+	</tbody>
+</table>
+
 <div class="clearfix"></div>
 <div class="row">
 
@@ -97,7 +126,7 @@
 @endif
 <!-- /Chart -->
 @stop
-
+{{--
 @push('scripts')
 	<script src="{{ asset('js/jquery.chained.js') }}"></script>
 	<script>
@@ -183,3 +212,4 @@
 	</script>
 	@endif
 @endpush
+--}}
