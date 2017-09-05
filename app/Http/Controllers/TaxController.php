@@ -11,6 +11,7 @@ use App\Section;
 use App\Tax;
 use App\Type;
 use Auth;
+use DB;
 use Excel;
 use Illuminate\Http\Request;
 
@@ -137,11 +138,20 @@ class TaxController extends Controller {
 	}
 
 	public function deleteBatchDelete(Request $request) {
-		if ($request->isMethod('delete')) {
+		if ($request->ajax() && $request->isMethod('delete')) {
 			$ids = $request->input('ids');
 
-			dd($request->all());
+			$deleted = DB::table('taxes')->whereIn('id', $ids)->delete();
+			if ($deleted) {
+				$request->session()->flash('success', '评估项目' . join(', ', $ids) . '删除成功');
+				return 'success';
+			} else {
+				$request->session()->flash('success', '评估项目' . join(', ', $ids) . '删除失败');
+				return 'fail';
+			}
 		}
+
+		return back()->withErrors();
 	}
 
 	public function getSearch(Request $request) {

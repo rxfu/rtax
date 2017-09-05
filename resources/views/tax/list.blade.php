@@ -34,53 +34,49 @@
 						</tr>
 					</thead>
 
-					<form id="batchDelete-form" method="post" action="{{ route('tax.batchDelete') }}" style="display: none">
-						{{ method_field('delete') }}
-						{{ csrf_field() }}
-						<tbody>
-							@foreach ($taxes as $tax)
-								<tr>
-									<td>
-										<input type="checkbox" name="ids[]" value="{{ $tax->id }}">
-									</td>
-									<td>{{ $tax->id }}</td>
-									<td>{{ $tax->section->project->name }}</td>
-									<td>{{ $tax->section->type->name }}</td>
-									<td>{{ $tax->section->name }}</td>
-									<td>{{ $tax->specification_name }}</td>
-									<td>{{ $tax->tax_name }}</td>
-									<td>{{ $tax->unit_price }}</td>
-									<td>{{ $tax->total_amount }}</td>
-									<td>{{ $tax->total }}</td>
-									<td>
-										<p data-placement="top" data-toggle="tooltip" title="编辑">
-											<a href="{{ route('tax.edit', $tax->id) }}" class="btn btn-primary btn-xs" role="button">
-												<span class="fa fa-pencil"></span>
-											</a>
-										</p>
-									</td>
-									<td>
-										<p data-placement="top" data-toggle="tooltip" title="删除">
-											<a href="#" class="btn btn-danger btn-xs" role="button" onclick="confirm('你确定要删除这条记录？') ? document.getElementById('delete-tax{{ $tax->id }}-form').submit() : false">
-												<span class="fa fa-trash"></span>
-											</a>
-											<form id="delete-tax{{ $tax->id }}-form" method="post" action="{{ route('tax.delete', $tax->id) }}" style="display: none">
-												{{ method_field('delete') }}
-												{{ csrf_field() }}
-											</form>
-										</p>
-									</td>
-								</tr>
-							@endforeach
-						</tbody>
-					</form>
+					<tbody>
+						@foreach ($taxes as $tax)
+							<tr>
+								<td>
+									<input type="checkbox" name="taxid" value="{{ $tax->id }}">
+								</td>
+								<td>{{ $tax->id }}</td>
+								<td>{{ $tax->section->project->name }}</td>
+								<td>{{ $tax->section->type->name }}</td>
+								<td>{{ $tax->section->name }}</td>
+								<td>{{ $tax->specification_name }}</td>
+								<td>{{ $tax->tax_name }}</td>
+								<td>{{ $tax->unit_price }}</td>
+								<td>{{ $tax->total_amount }}</td>
+								<td>{{ $tax->total }}</td>
+								<td>
+									<p data-placement="top" data-toggle="tooltip" title="编辑">
+										<a href="{{ route('tax.edit', $tax->id) }}" class="btn btn-primary btn-xs" role="button">
+											<span class="fa fa-pencil"></span>
+										</a>
+									</p>
+								</td>
+								<td>
+									<p data-placement="top" data-toggle="tooltip" title="删除">
+										<a href="#" class="btn btn-danger btn-xs" role="button" onclick="confirm('你确定要删除这条记录？') ? document.getElementById('delete-tax{{ $tax->id }}-form').submit() : false">
+											<span class="fa fa-trash"></span>
+										</a>
+										<form id="delete-tax{{ $tax->id }}-form" method="post" action="{{ route('tax.delete', $tax->id) }}" style="display: none">
+											{{ method_field('delete') }}
+											{{ csrf_field() }}
+										</form>
+									</p>
+								</td>
+							</tr>
+						@endforeach
+					</tbody>
 
 					<tfoot>
 						<tr>
 							<td colspan="11">
 								<a href="{{ route('tax.create') }}" class="btn btn-success"><i class="fa fa-plus"></i> 新增</a>
 								<a href="{{ route('tax.excel') }}" class="btn btn-info"><i class="fa fa-upload"></i> 导入</a>
-								<a href="#" class="btn btn-danger" role="button" id="batch-delete"><i class="fa fa-remove"></i> 批量删除</a>
+								<a href="#" class="btn btn-danger" id="batch-delete"><i class="fa fa-remove"></i> 批量删除</a>
 							</td>
 						</tr>
 					</tfoot>
@@ -270,17 +266,25 @@
 			}
 		});
 		$('#check_all').click(function() {
-			$('input[name="ids[]"]').attr('checked', this.checked);
+			$('input[name="taxid"]').attr('checked', this.checked);
 		});
 		$('#batch-delete').click(function() {
 			if (confirm('你确定要删除这些选中的所有记录？删除之后不可恢复！')) {
-				$('#batchDelete-form').submit(function() {
-					alert('submit');
-					$('input[name="ids[]"]:checked').each(function() {
-						alert($(this).val());
-					});
+				var ids = [];
+				$('input[name="taxid"]:checked').each(function() {
+					ids.push($(this).val());
+				});
+
+				$.post("{{ route('tax.batchDelete') }}", {
+					'_method': 'delete',
+					'_token': '{{ csrf_token() }}',
+					'ids[]': ids
+				}, function(data) {
+					if ('success' === data) {
+						window.location.href = '{{ route('tax.list') }}';
+					}
 				});
 			}
-		})
+		});
 	</script>
 @endpush
