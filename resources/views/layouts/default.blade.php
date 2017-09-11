@@ -21,6 +21,7 @@
 
     <!-- Custom theme styles -->
     <link href='{{ asset('css/custom.min.css') }}' rel='stylesheet'>
+    <link href='{{ asset('css/style.css') }}' rel='stylesheet'>
     <style>
     /* Alternate stack initial positioning. This one is done through code,
       to show how it is done. Look down at the stack_bottomright variable

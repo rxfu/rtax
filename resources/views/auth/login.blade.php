@@ -5,13 +5,17 @@
 @section('title','登录')
 
 @section('page')
+<div class="login_title">
+    <strong>{{ config('setting.name') }}</strong>
+</div>
+
 <div class="login_wrapper">
     <div class="animate form login_form">
         <section class="login_content">
             <form class="form-horizontal" method="post" action="{{ route('login') }}">
                 {{ csrf_field() }}
 
-                <h1>登录系统</h1>
+                <h1>用户登录</h1>
                 <div>
                     <input id="username" name="username" type="text" class="form-control" placeholder="用户名" value="{{ old('username') }}" required autofocus>
                 </div>
@@ -31,7 +35,7 @@
                     </div>
                 @endif
                 <div>
-                    <button class="btn btn-default submit" type="submit">登录</button>
+                    <button class="btn btn-success submit" type="submit">登录</button>
                 </div>
 
                 <div class="clearfix"></div>

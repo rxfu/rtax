@@ -1,0 +1,27 @@
+.login {
+	background: url('../images/background.jpg');
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+.login_title {
+	font-size: 42px;
+	text-align: center;
+	margin-top: 6%;
+	color: #286090;
+	letter-spacing: 0.2em;
+}
+.login_wrapper {
+	margin-top: 5%;
+}
+.login_content {
+	border: 5px solid #169F85;
+	padding-left: 25px;
+	padding-right: 25px;
+	background: #f7f7f7;
+	box-shadow: 10px 10px 5px #666;
+	border-radius:25px;
+}
+
+.login_content form input[type="text"]:focus, .login_content form input[type="password"]:focus {
+	border: 1px solid #169F85;
+}
