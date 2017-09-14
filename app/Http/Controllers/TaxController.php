@@ -277,6 +277,7 @@ class TaxController extends Controller {
 						];
 
 						$catname = '标段名称';
+						$chtname = $request->input('tax_name');
 					}
 				} elseif ('全部' === $request->input('tax_name')) {
 					foreach ($results as $result) {
@@ -286,13 +287,14 @@ class TaxController extends Controller {
 						];
 
 						$catname = '税目';
+						$chtname = $request->input('section');
 					}
 				}
 				$data = json_encode($data, JSON_NUMERIC_CHECK);
 			}
 		}
 
-		return view('tax.chart', compact('searched', 'projects', 'types', 'sections', 'rates', 'results', 'condition', 'catname', 'data'));
+		return view('tax.chart', compact('searched', 'projects', 'types', 'sections', 'rates', 'results', 'condition', 'chtname', 'catname', 'data'));
 	}
 
 	public function getImport() {

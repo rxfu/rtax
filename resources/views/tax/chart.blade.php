@@ -166,7 +166,7 @@
 	        type: 'pie'
 	    },
 	    title: {
-	        text: '{{ $catname }}饼图'
+	        text: '{{ $chtname }}饼图'
 	    },
 	    tooltip: {
 	        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -186,7 +186,7 @@
 	        }
 	    },
 	    series: [{
-	        name: '{{ $catname }}数据分析',
+	        name: '{{ $chtname }}数据分析',
 	        colorByPoint: true,
 	        data: {!! $data !!}
 	    }]
@@ -198,7 +198,7 @@
 	        type: 'column'
 	    },
 	    title: {
-	        text: '{{ $catname }}柱状图'
+	        text: '{{ $chtname }}柱状图'
 	    },
 	    xAxis: {
 	        type: 'category'
@@ -223,7 +223,7 @@
 	        }
 	    },
 	    series: [{
-	    	name: '{{ $catname }}数据分析',
+	    	name: '{{ $chtname }}数据分析',
 	    	colorByPoint: true,
 	    	data: {!! $data !!}
 	    }]
