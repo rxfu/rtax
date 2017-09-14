@@ -70,8 +70,15 @@
 		<label for="file" class="control-label col-md-3 col-sm-3 col-xs-12">证明材料 <span class="required">*</span></label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
 			<input type="file" class="form-control col-md-7 col-xs-12" id="file" name="file" placeholder="证明材料" value="{{ $declaration->pathname }}">
+			<p>
+				文件扩展名为：jpg或png
+			</p>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3 col-sm-offset-3">
 			<a href="{{ asset('storage/' . $declaration->pathname) }}" title="{{ $declaration->name }}">
-				<img src="{{ asset('storage/' . $declaration->pathname) }}" alt="{{ $declaration->name }}">
+				<img src="{{ asset('storage/' . $declaration->pathname) }}" alt="{{ $declaration->name }}" width="100%">
 			</a>
 		</div>
 	</div>
