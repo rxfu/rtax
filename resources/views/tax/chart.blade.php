@@ -91,7 +91,7 @@
 <div class="clearfix"></div>
 <div class="row">
 
-	<!-- Pie chart -->
+	<!-- Pie and bar chart -->
     <div class="col-md-6 col-sm-6 col-xs-12">
         <div class="x_panel">
             <div class="x_title">
@@ -107,9 +107,9 @@
             </div>
         </div>
     </div>
-	<!-- /Pie chart -->
+	<!-- /Pie and bar hart -->
 
-	<!-- Bar chart -->
+	<!-- Table -->
     <div class="col-md-6 col-sm-6 col-xs-12">
         <div class="x_panel">
             <div class="x_title">
@@ -123,7 +123,7 @@
 					<thead>
 						<tr>
 							<th><i>#</i></th>
-							<th>标段名称</th>
+							<th>{{ $catname }}</th>
 							<th>税款金额</th>
 						</tr>
 					</thead>
@@ -141,7 +141,7 @@
             </div>
         </div>
     </div>
-	<!-- /Bar chart -->
+	<!-- /Table -->
 </div>
 @endif
 <!-- /Chart -->
@@ -166,7 +166,7 @@
 	        type: 'pie'
 	    },
 	    title: {
-	        text: '饼图分析'
+	        text: '{{ $catname }}饼图'
 	    },
 	    tooltip: {
 	        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -186,7 +186,7 @@
 	        }
 	    },
 	    series: [{
-	        name: '数据分析',
+	        name: '{{ $catname }}数据分析',
 	        colorByPoint: true,
 	        data: {!! $data !!}
 	    }]
@@ -198,7 +198,7 @@
 	        type: 'column'
 	    },
 	    title: {
-	        text: '柱状图分析'
+	        text: '{{ $catname }}柱状图'
 	    },
 	    xAxis: {
 	        type: 'category'
@@ -223,7 +223,7 @@
 	        }
 	    },
 	    series: [{
-	    	name: '数据分析',
+	    	name: '{{ $catname }}数据分析',
 	    	colorByPoint: true,
 	    	data: {!! $data !!}
 	    }]

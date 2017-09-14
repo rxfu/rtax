@@ -267,13 +267,16 @@ class TaxController extends Controller {
 					->get();
 
 				// 图表数据
-				$data = [];
+				$catname = '';
+				$data    = [];
 				if ('全部' === $request->input('section')) {
 					foreach ($results as $result) {
 						$data[] = [
 							'name' => $result->section->name,
 							'y'    => $result->total_tax,
 						];
+
+						$catname = '标段名称';
 					}
 				} elseif ('全部' === $request->input('tax_name')) {
 					foreach ($results as $result) {
@@ -281,13 +284,15 @@ class TaxController extends Controller {
 							'name' => $result->tax_name,
 							'y'    => $result->total_tax,
 						];
+
+						$catname = '税目';
 					}
 				}
 				$data = json_encode($data, JSON_NUMERIC_CHECK);
 			}
 		}
 
-		return view('tax.chart', compact('searched', 'projects', 'types', 'sections', 'rates', 'results', 'condition', 'data'));
+		return view('tax.chart', compact('searched', 'projects', 'types', 'sections', 'rates', 'results', 'condition', 'catname', 'data'));
 	}
 
 	public function getImport() {
