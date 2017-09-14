@@ -10,8 +10,8 @@
 		<label for="file" class="control-label col-md-3 col-sm-3 col-xs-12">上传文件</label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
 			<input type="file" class="form-control col-md-7 col-xs-12" id="file" name="file" placeholder="上传文件">
+			<p class="help-block">文件扩展名为.xls或.xlsx</p>
 		</div>
-		<p class="help-block">文件扩展名为.xls或.xlsx</p>
 	</div>
 	<div class="ln_solid"></div>
 	<div class="form-group">
@@ -21,3 +21,13 @@
 	</div>
 </form>
 @stop
+
+@push('scripts')
+<script>
+	$('form').submit(function() {
+		$(':submit', this).removeClass('btn-success').addClass('btn-danger');
+		$(':submit', this).html('正在导入，请稍候...');
+		$(':submit', this).attr('disabled', 'disabled');
+	})
+</script>
+@endpush

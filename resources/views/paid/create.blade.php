@@ -87,6 +87,9 @@
 		<label for="file" class="control-label col-md-3 col-sm-3 col-xs-12">证明材料 <span class="required">*</span></label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
 			<input type="file" class="form-control col-md-7 col-xs-12" id="file" name="file" placeholder="证明材料" required>
+			<p class="help-block">
+				文件扩展名为jpg或png
+			</p>
 		</div>
 	</div>
 	<div class="ln_solid"></div>
