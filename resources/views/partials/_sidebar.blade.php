@@ -203,6 +203,13 @@
                         </a>
                     </li>
                 </ul>
+                <ul class="nav side-menu">
+                    <li>
+                        <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                            <i class="fa fa-sign-out"></i> 登出系统</span>
+                        </a>
+                    </li>
+                </ul>
             </div>
             <!-- /Menu section -->
         </div>

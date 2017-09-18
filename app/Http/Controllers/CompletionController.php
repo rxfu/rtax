@@ -14,7 +14,13 @@ use Illuminate\Http\Request;
 class CompletionController extends Controller {
 
 	public function getList() {
-		$completions = Completion::with('section', 'section.project', 'section.type', 'user')->get();
+		if (Auth::user()->is_admin) {
+			$completions = Completion::with('section', 'section.project', 'section.type', 'user')->get();
+		} else {
+			$completions = Completion::with('section', 'section.project', 'section.type', 'user')
+				->whereUserId(Auth::user()->id)
+				->get();
+		}
 
 		return view('completion.list', compact('completions'));
 	}
