@@ -36,7 +36,7 @@
 			</td>
 			<td>
 				<p data-placement="top" data-toggle="tooltip" title="删除">
-					<a href="#" class="btn btn-danger btn-xs" role="button" onclick="confirm('你确定要删除这条记录？') ? document.getElementById('delete-{{ $completion->id }}-form').submit() : false">
+					<a href="#" class="btn btn-danger btn-xs" role="button" onclick="confirm('删除完工比例，与此完工比例相关联的使用资源明细项目也会删除，并且不可恢复。你确定要删除这条完工比例？') ? document.getElementById('delete-{{ $completion->id }}-form').submit() : false">
 						<span class="fa fa-trash"></span>
 					</a>
 					<form id="delete-{{ $completion->id }}-form" method="post" action="{{ route('completion.delete', $completion->id) }}" style="display: none">
