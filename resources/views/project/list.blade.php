@@ -20,8 +20,10 @@
 		<th>主管税务分局</th>
 		<th>财务负责人</th>
 		<th>财务负责人联系电话</th>
+		@if (Auth::user()->is_admin)
 		<th>编辑</th>
 		<th>删除</th>
+		@endif
 	</tr>
 </thead>
 
@@ -43,6 +45,7 @@
 			<td>{{ $project->bureau }}</td>
 			<td>{{ $project->finance }}</td>
 			<td>{{ $project->finance_phone }}</td>
+			@if (Auth::user()->is_admin)
 			<td>
 				<p data-placement="top" data-toggle="tooltip" title="编辑">
 					<a href="{{ route('project.edit', $project->id) }}" class="btn btn-primary btn-xs" role="button">
@@ -61,10 +64,12 @@
 					</form>
 				</p>
 			</td>
+			@endif
 		</tr>
 	@endforeach
 </tbody>
 
+@if (Auth::user()->is_admin)
 <tfoot>
 	<tr>
 		<td colspan="17">
@@ -72,4 +77,5 @@
 		</td>
 	</tr>
 </tfoot>
+@endif
 @stop

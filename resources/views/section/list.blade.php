@@ -23,8 +23,10 @@
 		<th>开户银行</th>
 		<th>开户行名称</th>
 		<th>开户行账号</th>
+		@if (Auth::user()->is_admin)
 		<th>编辑</th>
 		<th>删除</th>
+		@endif
 	</tr>
 </thead>
 
@@ -49,6 +51,7 @@
 			<td>{{ $section->bank }}</td>
 			<td>{{ $section->bank_name }}</td>
 			<td>{{ $section->bank_account }}</td>
+			@if (Auth::user()->is_admin)
 			<td>
 				<p data-placement="top" data-toggle="tooltip" title="编辑">
 					<a href="{{ route('section.edit', $section->id) }}" class="btn btn-primary btn-xs" role="button">
@@ -67,10 +70,12 @@
 					</form>
 				</p>
 			</td>
+			@endif
 		</tr>
 	@endforeach
 </tbody>
 
+@if (Auth::user()->is_admin)
 <tfoot>
 	<tr>
 		<td colspan="18">
@@ -78,4 +83,5 @@
 		</td>
 	</tr>
 </tfoot>
+@endif
 @stop

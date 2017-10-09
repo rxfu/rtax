@@ -69,7 +69,6 @@
                         </ul>
                     </li>
                 </ul>
-                @if (Auth::user()->is_admin)
                 <ul class="nav side-menu">
                     <li>
                         <a>
@@ -79,9 +78,11 @@
                             <li>
                                 <a href="{{ route('project.list') }}">项目列表</a>
                             </li>
+                            @if (Auth::user()->is_admin)
                             <li>
                                 <a href="{{ route('project.create') }}">新增项目</a>
                             </li>
+                            @endif
                         </ul>
                     </li>
                 </ul>
@@ -94,9 +95,11 @@
                             <li>
                                 <a href="{{ route('type.list') }}">标段类型列表</a>
                             </li>
+                            @if (Auth::user()->is_admin)
                             <li>
                                 <a href="{{ route('type.create') }}">新增标段类型</a>
                             </li>
+                            @endif
                         </ul>
                     </li>
                 </ul>
@@ -109,9 +112,11 @@
                             <li>
                                 <a href="{{ route('section.list') }}">标段列表</a>
                             </li>
+                            @if (Auth::user()->is_admin)
                             <li>
                                 <a href="{{ route('section.create') }}">新增标段</a>
                             </li>
+                            @endif
                         </ul>
                     </li>
                 </ul>
@@ -124,9 +129,11 @@
                             <li>
                                 <a href="{{ route('rate.list') }}">税率列表</a>
                             </li>
+                            @if (Auth::user()->is_admin)
                             <li>
                                 <a href="{{ route('rate.create') }}">新增税率</a>
                             </li>
+                            @endif
                         </ul>
                     </li>
                 </ul>
@@ -145,7 +152,6 @@
                         </ul>
                     </li>
                 </ul>
-                @endif
             </div>
             <!-- /Menu section -->
 
