@@ -71,16 +71,6 @@
 			<input type="text" class="form-control col-md-7 col-xs-12" id="total_amount" name="total_amount" value="{{ $tax->total_amount }}"  placeholder="数量（立方米）" required>
 		</div>
 	</div>
-	<div class="form-group">
-		<label for="flag" class="control-label col-md-3 col-sm-3 col-xs-12">资源税改革标记 <span class="required">*</span></label>
-		<div class="col-md-6 col-sm-6 col-xs-12">
-			<select id="flag" name="flag" class="form-control col-md-7 col-xs-12">
-				<option value="前"{{ '前' === $tax->flag ? ' selected' : '' }}>前</option>
-				<option value="后"{{ '后' === $tax->flag ? ' selected' : '' }}>后</option>
-				<option value="跨"{{ '跨' === $tax->flag ? ' selected' : '' }}>跨</option>
-			</select>
-		</div>
-	</div>
 	<div class="ln_solid"></div>
 	<div class="form-group">
 		<div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">

@@ -54,7 +54,6 @@ class TaxController extends Controller {
 			'unit'               => 'required',
 			'unit_price'         => 'required|numeric',
 			'total_amount'       => 'required|numeric',
-			'flag'               => 'required',
 		]);
 
 		$inputs = $request->all();
@@ -97,7 +96,6 @@ class TaxController extends Controller {
 			'unit'               => 'required',
 			'unit_price'         => 'required|numeric',
 			'total_amount'       => 'required|numeric',
-			'flag'               => 'required',
 		]);
 
 		$inputs = $request->all();
@@ -357,10 +355,7 @@ class TaxController extends Controller {
 										$field   = '单位';
 
 										if ($hasUnit) {
-											$field = '资源税改革标记';
-											if (in_array($result[8], ['前', '后', '跨'])) {
-												continue;
-											}
+											continue;
 										}
 									}
 								}
@@ -400,7 +395,6 @@ class TaxController extends Controller {
 						$tax->unit               = $result[5];
 						$tax->unit_price         = $result[6];
 						$tax->total_amount       = $result[7];
-						$tax->flag               = $result[8];
 						$tax->year               = date('Y');
 						$tax->user_id            = Auth::user()->id;
 
@@ -435,6 +429,14 @@ class TaxController extends Controller {
 		$tax->completion_id = $completion->id;
 		$completion_before  = $completion->before;
 		$completion_after   = $completion->after;
+
+		if (100 == $completion_before && 0 == $completion_after) {
+			$tax->flag = '前';
+		} elseif (0 == $completion_before && 100 == $completion_after) {
+			$tax->flag = '后';
+		} else {
+			$tax->flag = '跨';
+		}
 
 		// 获取税率
 		$rates  = Rate::whereName($tax->tax_name)->get();
