@@ -22,4 +22,12 @@ class Tax extends Model {
 	public function completion() {
 		return $this->belongsTo('App\Completion');
 	}
+
+	public function beforeRate() {
+		return $this->belongsTo('App\Rate', 'rate_id_before');
+	}
+
+	public function afterRate() {
+		return $this->belongsTo('App\Rate', 'rate_id_after');
+	}
 }

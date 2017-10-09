@@ -26,9 +26,20 @@
 							<th>标段名称</th>
 							<th>规格名称</th>
 							<th>税目</th>
-							<th>课税单价</th>
+							<th>单价</th>
 							<th>数量（立方米）</th>
-							<th>应纳税额</th>
+							<th>资源税改革标记</th>
+							<th>课税单位（改革前）</th>
+							<th>课税数量（改革前）</th>
+							<th>单位税额（改革前）</th>
+							<th>应纳税额（改革前）</th>
+							<th>改革前完工比例</th>
+							<th>课税单位（改革后）</th>
+							<th>课税数量（改革后）</th>
+							<th>单位税额（改革后）</th>
+							<th>应纳税额（改革后）</th>
+							<th>改革后完工比例</th>
+							<th>应纳资源税合计</th>
 							<th>编辑</th>
 							<th>删除</th>
 						</tr>
@@ -48,6 +59,17 @@
 								<td>{{ $tax->tax_name }}</td>
 								<td>{{ $tax->unit_price }}</td>
 								<td>{{ $tax->total_amount }}</td>
+								<td>{{ $tax->flag }}</td>
+								<td>{{ $tax->beforeRate->unit }}</td>
+								<td>{{ $tax->taxamount_before }}</td>
+								<td>{{ $tax->beforeRate->rate }}</td>
+								<td>{{ $tax->payabletax_before }}</td>
+								<td>{{ $tax->completion->before }}%</td>
+								<td>{{ $tax->afterRate->unit }}</td>
+								<td>{{ $tax->taxamount_after }}</td>
+								<td>{{ $tax->afterRate->rate }}</td>
+								<td>{{ $tax->payabletax_after }}</td>
+								<td>{{ $tax->completion->after }}%</td>
 								<td>{{ $tax->total }}</td>
 								<td>
 									<p data-placement="top" data-toggle="tooltip" title="编辑">

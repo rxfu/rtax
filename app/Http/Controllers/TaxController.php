@@ -20,14 +20,18 @@ class TaxController extends Controller {
 	private $upload = 'files';
 
 	public function getList() {
+		$taxes        = Tax::with('section', 'section.project', 'section.type', 'completion', 'beforeRate', 'afterRate');
+		$paids        = Paid::with('section', 'section.project', 'section.type');
+		$declarations = Declaration::with('section', 'section.project', 'section.type');
+
 		if (Auth::user()->is_admin) {
-			$taxes        = Tax::with('section', 'section.project', 'section.type')->get();
-			$paids        = Paid::with('section', 'section.project', 'section.type')->get();
-			$declarations = Declaration::with('section', 'section.project', 'section.type')->get();
+			$taxes        = $taxes->get();
+			$paids        = $paids->get();
+			$declarations = $declarations->get();
 		} else {
-			$taxes        = Tax::whereUserId(Auth::user()->id)->get();
-			$paids        = Paid::with('project')->whereUserId(Auth::user()->id)->get();
-			$declarations = Declaration::with('project')->whereUserId(Auth::user()->id)->get();
+			$taxes        = $taxes->whereUserId(Auth::user()->id)->get();
+			$paids        = $paids->whereUserId(Auth::user()->id)->get();
+			$declarations = $declaration->whereUserId(Auth::user()->id)->get();
 		}
 
 		return view('tax.list', compact('taxes', 'paids', 'declarations'));
