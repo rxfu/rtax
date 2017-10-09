@@ -56,11 +56,7 @@
 	<div class="form-group">
 		<label for="unit" class="control-label col-md-3 col-sm-3 col-xs-12">单位 <span class="required">*</label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
-			<select id="unit" name="unit" class="form-control col-md-7 col-xs-12">
-				@foreach ($units as $unit)
-					<option value="{{ $unit->unit }}"{{ $unit->unit === $tax->unit ? ' selected' : ''}}>{{ $unit->unit }}</option>
-				@endforeach
-			</select>
+			<input type="text" class="form-control col-md-7 col-xs-12" id="unit" name="unit" placeholder="单位" value="{{ $tax->unit }}" required readonly>
 		</div>
 	</div>
 	<div class="form-group">
@@ -70,9 +66,9 @@
 		</div>
 	</div>
 	<div class="form-group">
-		<label for="total_amount" class="control-label col-md-3 col-sm-3 col-xs-12">数量 <span class="required">*</label>
+		<label for="total_amount" class="control-label col-md-3 col-sm-3 col-xs-12">数量（立方米） <span class="required">*</label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
-			<input type="text" class="form-control col-md-7 col-xs-12" id="total_amount" name="total_amount" value="{{ $tax->total_amount }}"  placeholder="数量" required>
+			<input type="text" class="form-control col-md-7 col-xs-12" id="total_amount" name="total_amount" value="{{ $tax->total_amount }}"  placeholder="数量（立方米）" required>
 		</div>
 	</div>
 	<div class="form-group">

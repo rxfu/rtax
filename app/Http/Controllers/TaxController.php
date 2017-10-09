@@ -38,9 +38,8 @@ class TaxController extends Controller {
 		$types    = Type::select('id', 'name')->get();
 		$sections = Section::select('id', 'name', 'project_id', 'type_id')->get();
 		$rates    = Rate::select('name')->distinct()->get();
-		$units    = Rate::select('unit')->distinct()->get();
 
-		return view('tax.create', compact('projects', 'types', 'sections', 'rates', 'units'));
+		return view('tax.create', compact('projects', 'types', 'sections', 'rates'));
 	}
 
 	public function postSave(Request $request) {
@@ -82,9 +81,8 @@ class TaxController extends Controller {
 		$types    = Type::select('id', 'name')->get();
 		$sections = Section::select('id', 'name', 'project_id', 'type_id')->get();
 		$rates    = Rate::select('name')->distinct()->get();
-		$units    = Rate::select('unit')->distinct()->get();
 
-		return view('tax.edit', compact('tax', 'projects', 'types', 'sections', 'rates', 'units'));
+		return view('tax.edit', compact('tax', 'projects', 'types', 'sections', 'rates'));
 	}
 
 	public function putUpdate(Request $request, $id) {
