@@ -274,23 +274,39 @@
 
 @push('styles')
 	<link href="{{ asset('css/dataTables.bootstrap.min.css') }}" rel="stylesheet">
+	<link href="{{ asset('css/buttons.dataTables.min.css') }}" rel="stylesheet">
+	<link href="{{ asset('css/buttons.bootstrap.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('css/icheck/skins/all.css') }}" rel="stylesheet">
 @endpush
 
 @push('scripts')
 	<script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
 	<script src="{{ asset('js/dataTables.bootstrap.min.js') }}"></script>
+	<script src="{{ asset('js/dataTables.buttons.min.js') }}"></script>
+	<script src="{{ asset('js/buttons.flash.min.js') }}"></script>
+	<script src="{{ asset('js/buttons.html5.min.js') }}"></script>
+	<script src="{{ asset('js/buttons.bootstrap.min.js') }}"></script>
 	<script src="{{ asset('js/icheck.min.js') }}"></script>
 	<script>
 		$('#tax-table, #paid-table, #declaration-table').dataTable({
-			iDisplayLength: -1,
+			iDisplayLength: 10,
 			lengthMenu: [
 				[10, 25, 50, -1],
 				[10, 25, 50, '全部']
 			],
 			language: {
 				url: "{{ asset('js/i18n/Chinese.json') }}"
-			}
+			},
+			dom: 'Bfrtip',
+			buttons: [
+				{
+					extend: 'excel',
+					exportOptions: {
+						columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+					},
+					text: '导出成Excel'
+				}
+			]
 		});
 		$('#check_all').click(function() {
 			$('input[name="taxid"]').attr('checked', this.checked);
