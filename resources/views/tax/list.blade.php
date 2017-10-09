@@ -289,7 +289,7 @@
 	<script src="{{ asset('js/icheck.min.js') }}"></script>
 	<script>
 		$('#tax-table, #paid-table, #declaration-table').dataTable({
-			iDisplayLength: 10,
+			iDisplayLength: -1,
 			lengthMenu: [
 				[10, 25, 50, -1],
 				[10, 25, 50, '全部']
