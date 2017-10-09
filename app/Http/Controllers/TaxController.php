@@ -31,7 +31,7 @@ class TaxController extends Controller {
 		} else {
 			$taxes        = $taxes->whereUserId(Auth::user()->id)->get();
 			$paids        = $paids->whereUserId(Auth::user()->id)->get();
-			$declarations = $declaration->whereUserId(Auth::user()->id)->get();
+			$declarations = $declarations->whereUserId(Auth::user()->id)->get();
 		}
 
 		return view('tax.list', compact('taxes', 'paids', 'declarations'));

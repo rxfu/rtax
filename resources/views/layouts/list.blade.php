@@ -17,6 +17,11 @@
 	<script src="{{ asset('js/icheck.min.js') }}"></script>
 	<script>
 		$('#datagrid').dataTable({
+			iDisplayLength: -1,
+			lengthMenu: [
+				[10, 25, 50, -1],
+				[10, 25, 50, '全部']
+			],
 			language: {
 				url: "{{ asset('js/i18n/Chinese.json') }}"
 			}
