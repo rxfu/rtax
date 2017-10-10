@@ -215,6 +215,62 @@ class TaxController extends Controller {
 		return view('tax.search', compact('searched', 'projects', 'types', 'sections', 'rates', 'results', 'payable', 'paid', 'declaration', 'condition'));
 	}
 
+	public function getResult(Request $request) {
+		$projects = Project::select('id', 'name')->get();
+		$types    = Type::select('id', 'name')->get();
+		$sections = Section::with('type')->select('type_id', 'name')->distinct()->get();
+		$rates    = Rate::select('name')->distinct()->get();
+
+		$searched  = false;
+		$results   = [];
+		$condition = '';
+
+		if ($request->isMethod('get')) {
+			$searched = $request->input('flag');
+
+			if ($searched) {
+				// 查询数据
+				$tax = Tax::with('section', 'section.project', 'section.type', 'completion');
+
+				$pid = Project::whereName($request->input('project'))->first()->id;
+				$condition .= '项目名称=<strong class="text-danger">' . $request->input('project') . '</strong>';
+
+				if ('全部' === $request->input('type')) {
+					$tids = Type::all()->pluck('id');
+				} else {
+					$tids = Type::whereName($request->input('type'))->pluck('id');
+				}
+				$condition .= ' AND 标段类型=<strong class="text-danger">' . $request->input('type') . '</strong>';
+
+				if ('全部' === $request->input('section')) {
+					$sids = Section::whereProjectId($pid)
+						->whereIn('type_id', $tids)
+						->pluck('id');
+				} else {
+					$sids = Section::whereProjectId($pid)
+						->whereIn('type_id', $tids)
+						->whereName($request->input('section'))
+						->pluck('id');
+				}
+				$condition .= ' AND 标段名称=<strong class="text-danger">' . $request->input('section') . '</strong>';
+
+				if ('全部' === $request->input('tax_name')) {
+					$tax = $tax->whereIn('section_id', $sids);
+				} else {
+					$tax = $tax->whereIn('section_id', $sids)
+						->whereTaxName($request->input('tax_name'));
+				}
+				$condition .= ' AND 税目=<strong class="text-danger">' . $request->input('tax_name') . '</strong>';
+
+				$results = $tax->select('section_id', 'tax_name', DB::raw('SUM(total) AS total_tax'))
+					->groupBy('section_id', 'tax_name')
+					->get();
+			}
+		}
+
+		return view('tax.chart', compact('searched', 'projects', 'types', 'sections', 'rates', 'results', 'condition'));
+	}
+
 	public function getChart(Request $request) {
 		$projects = Project::select('id', 'name')->get();
 		$types    = Type::select('id', 'name')->get();

@@ -3,8 +3,7 @@
 @section('title', '统计分析')
 
 @section('content')
-<!-- Chart -->
-<form method="get" action="{{ route('tax.chart') }}" class="form-horizontal form-label-left">
+<form method="get" action="{{ route('tax.result') }}" class="form-horizontal form-label-left">
 	<input type="hidden" name="flag" value="true">
 
 	<div class="form-group">
@@ -60,6 +59,7 @@
 
 @if ($searched)
 <p>统计条件：{!! $condition !!}</p>
+<!-- Results -->
 <table id="result-table" class="table table-striped table-bordered">
 	<thead>
 		<tr>
@@ -75,7 +75,7 @@
 
 	<tbody>
 		@foreach ($results as $result)
-		<tr>
+		<tr data-type="{{ $result->section->type->name }}">
 			<td><i>{{ $loop->index + 1 }}</i></td>
 			<td>{{ $result->section->name }}</td>
 			<td>{{ $result->tax_name }}</td>
@@ -87,9 +87,34 @@
 		@endforeach
 	</tbody>
 </table>
-
+<!-- /Results -->
 <div class="clearfix"></div>
+
 <div class="row">
+	<div class="col-md-4 col-sm-4 col-xs-12 col-md-offset-4">
+		<form id="chartForm" method="get" class="form-inline">
+			<div class="radio-inline">
+				<label for="type">
+					<input type="radio" id="type" name="options" value="type" checked> 标段类型
+				</label>
+			</div>
+			<div class="radio-inline">
+				<label for="section">
+					<input type="radio" id="section" name="options" value="section"> 标段名称
+				</label>
+			</div>
+			<div class="radio-inline">
+				<label for="tax_name">
+					<input type="radio" id="tax_name" name="options" value="tax_name"> 税目
+				</label>
+			</div>
+			<button type="submit" class="btn btn-info">生成图表</button>
+		</form>
+	</div>
+</div>
+@endif
+
+<div id="chart" class="row" style="display: none;">
 
 	<!-- Pie and bar chart -->
     <div class="col-md-6 col-sm-6 col-xs-12">
@@ -120,39 +145,100 @@
 
             <div class="x_content">
 				<table id="chart-result" class="table table-striped">
+					<!--
 					<thead>
 						<tr>
 							<th><i>#</i></th>
-							<th>{{ $catname }}</th>
+							<th></th>
 							<th>税款金额</th>
 						</tr>
 					</thead>
 
 					<tbody>
-						@foreach (json_decode($data) as $d)
-						<tr>
-							<td><i>{{ $loop->index + 1 }}</i></td>
-							<td>{{ $d->name }}</td>
-							<td>{{ $d->y }}</td>
-						</tr>
-						@endforeach
 					</tbody>
+				-->
 				</table>
             </div>
         </div>
     </div>
 	<!-- /Table -->
 </div>
-@endif
-<!-- /Chart -->
 @stop
 
 @push('scripts')
 	<script src="{{ asset('js/jquery.chained.js') }}"></script>
+	<script src="{{ asset('js/highcharts.js') }}"></script>
 	<script>
 		// jQuery Chained
 		$('#section').chained('#type');
+
+		// Generate charts
+		$('#chartForm').submit(function(e) {
+			e.preventDefault();
+
+			$('#chart').show();
+
+			var option = $('input:radio[name="options"]:checked').val();
+
+			// Pie chart
+			var chart = {
+		        plotBackgroundColor: null,
+		        plotBorderWidth: null,
+		        plotShadow: false,
+		        type: 'pie'
+		    };
+
+		    var title = {
+		        text: '标段类型饼图'
+		    };
+
+		    var tooltip = {
+		        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+		    };
+
+		    var plotOptions = {
+		        pie: {
+		            allowPointSelect: true,
+		            cursor: 'pointer',
+		            dataLabels: {
+		                enabled: false,
+		                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+		                style: {
+		                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+		                }
+		            },
+		            showInLegend: true
+		        }
+		    };
+
+		    if ('type' == option) {
+		    	var props = ['type'];
+		    	var objs = new Array();
+
+		    	$('#result-table tbody tr').each(function() {
+		    		var obj = new Object();
+		    		var money = $(this).find('td').eq(3).text()
+
+		    		obj[$(this).attr('data-type')] += Number(money);
+		    	});
+		    }
+
+		    var series = [{
+		        name: '标段类型',
+		        colorByPoint: true,
+		        data: data
+		    }];
+
+		    Highcharts.chart('pie-chart', {
+		    	chart: chart,
+		    	title: title,
+		    	tooltip: tooltip,
+		    	plotOptions: plotOptions,
+		    	series: series
+		    });
+		});
 	</script>
+	<!--
 	@if ($searched)
 	<script src="{{ asset('js/highcharts.js') }}"></script>
 
@@ -230,4 +316,5 @@
 	});
 	</script>
 	@endif
+	 -->
 @endpush
