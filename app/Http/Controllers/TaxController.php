@@ -293,10 +293,30 @@ class TaxController extends Controller {
 				$project = $project->where('taxes.tax_name', '=', $conditions['tax_name']);
 			}
 
-			if ('type' === $conditions['filter']) {
+			switch ($conditions['filter']) {
+			case 'type':
 				$results = $project->select('types.name AS name', DB::raw('SUM(taxes.total) AS total'))
 					->groupBy('types.name')
 					->get();
+				break;
+
+			case 'section':
+				$results = $project->select('sections.name AS name', DB::raw('SUM(taxes.total) AS total'))
+					->groupBy('sections.name')
+					->get();
+				break;
+
+			case 'tax_name':
+				$results = $project->select('taxes.tax_name AS name', DB::raw('SUM(taxes.total) AS total'))
+					->groupBy('taxes.tax_name')
+					->get();
+				break;
+
+			default:
+				$results = $project->select('taxes.tax_name AS name', DB::raw('SUM(taxes.total) AS total'))
+					->groupBy('taxes.tax_name')
+					->get();
+				break;
 			}
 
 			// 图表数据
