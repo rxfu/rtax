@@ -35,7 +35,7 @@ class CompletionController extends Controller {
 
 	public function postSave(Request $request) {
 		$this->validate($request, [
-			'section_id' => 'required',
+			'section_id' => 'required|unique:completions,section_id',
 			'before'     => 'required|numeric',
 			'after'      => 'required|numeric',
 		]);
