@@ -74,7 +74,7 @@
 
 	<tbody>
 		@foreach ($results as $result)
-		<tr data-type="{{ $result->section->type->name }}">
+		<tr>
 			<td><i>{{ $loop->index + 1 }}</i></td>
 			<td>{{ $result->section->name }}</td>
 			<td>{{ $result->tax_name }}</td>
@@ -93,18 +93,18 @@
 	<div class="col-md-4 col-sm-4 col-xs-12 col-md-offset-4">
 		<form id="chartForm" method="get" class="form-inline">
 			<div class="radio-inline">
-				<label for="type">
-					<input type="radio" id="type" name="filters" value="type" checked> 标段类型
+				<label>
+					<input type="radio" id="type" name="filters" value="type" checked> <span>标段类型</span>
 				</label>
 			</div>
 			<div class="radio-inline">
-				<label for="section">
-					<input type="radio" id="section" name="filters" value="section"> 标段名称
+				<label>
+					<input type="radio" id="section" name="filters" value="section"> <span>标段名称</span>
 				</label>
 			</div>
 			<div class="radio-inline">
-				<label for="tax_name">
-					<input type="radio" id="tax_name" name="filters" value="tax_name"> 税目
+				<label>
+					<input type="radio" id="tax_name" name="filters" value="tax_name"> <span>税目</span>
 				</label>
 			</div>
 			<button type="submit" class="btn btn-info">生成图表</button>
@@ -142,9 +142,8 @@
                 <div class="clearfix"></div>
             </div>
 
-            <div id="res" class="x_content">
-				<table id="chart-result" class="table table-striped">
-					<!--
+            <div class="x_content">
+				<table id="chart-table" class="table table-striped">
 					<thead>
 						<tr>
 							<th><i>#</i></th>
@@ -155,7 +154,6 @@
 
 					<tbody>
 					</tbody>
-				-->
 				</table>
             </div>
         </div>
@@ -175,8 +173,8 @@
 
 			$('#chart').show();
 
-			var filter = $('input:radio[name="filters"]:checked').val();
-			var options = {
+			var filter = $('input:radio[name="filters"]:checked');
+			var pieOptions = {
 				credits: false,
 				chart: {
 			        plotBackgroundColor: null,
@@ -205,103 +203,76 @@
 			        }
 			    },
 			    series: [{
-			        name: '标段类型',
+			        name: '占百分比',
 			        colorByPoint: true
 			    }]
 			};
+
+			var barOptions = {
+				credits: false,
+			    chart: {
+			        type: 'column'
+			    },
+			    title: {
+			        text: '柱状图'
+			    },
+			    xAxis: {
+			        type: 'category'
+			    },
+			    yAxis: {
+			        min: 0,
+			        title: {
+			            text: '税款金额'
+			        }
+			    },
+			    tooltip: {
+			        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+			        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b><br/>'
+			    },
+			    plotOptions: {
+			        series: {
+			            borderWidth: 0,
+			            dataLabels: {
+			                enabled: true,
+			                format: '{point.y:.2f}'
+			            }
+			        }
+			    },
+			    series: [{
+			    	name: filter.next('span').text(),
+			    	colorByPoint: true
+			    }]
+			}
 
 			$.ajax({
 				url: "{{ route('tax.chart') }}",
 				dataType: 'json',
 				data: {
-					filter: filter,
+					filter: filter.val(),
 					project: "{{ $conditions['project'] }}",
 					type: "{{ $conditions['type'] }}",
 					section: "{{ $conditions['section'] }}",
 					tax_name: "{{ $conditions['tax_name'] }}",
 				},
 				success: function(data) {
-					options.series[0].data = data;
-			    	Highcharts.chart('pie-chart', options);
+					pieOptions.series[0].data = data;
+			    	Highcharts.chart('pie-chart', pieOptions);
+
+					barOptions.series[0].data = data;
+			    	Highcharts.chart('bar-chart', barOptions);
+
+			    	var row = '';
+			    	$('#chart-table thead th:nth-child(2)').html(filter.next('span').text());
+			    	$.each(data, function(i, val) {
+			    		row += '<tr>';
+			    		row += '<td>' + (i + 1) + '</td>';
+			    		row += '<td>' + val.name + '</td>';
+			    		row += '<td>' + val.y + '</td>';
+			    		row += '</tr>';
+			    		$('#chart-table tbody').html(row);
+			    	})
 				}
 			});
 		});
 	</script>
-	<!--
-	<script src="{{ asset('js/highcharts.js') }}"></script>
-
-	<script>
-	// Pie chart
-	Highcharts.chart('pie-chart', {
-	    chart: {
-	        plotBackgroundColor: null,
-	        plotBorderWidth: null,
-	        plotShadow: false,
-	        type: 'pie'
-	    },
-	    title: {
-	        text: '饼图'
-	    },
-	    tooltip: {
-	        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-	    },
-	    plotOptions: {
-	        pie: {
-	            allowPointSelect: true,
-	            cursor: 'pointer',
-	            dataLabels: {
-	                enabled: false,
-	                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-	                style: {
-	                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-	                }
-	            },
-	            showInLegend: true
-	        }
-	    },
-	    series: [{
-	        name: '数据分析',
-	        colorByPoint: true,
-	        data:
-	    }]
-	});
-
-	// Bar chart
-	Highcharts.chart('bar-chart', {
-	    chart: {
-	        type: 'column'
-	    },
-	    title: {
-	        text: '柱状图'
-	    },
-	    xAxis: {
-	        type: 'category'
-	    },
-	    yAxis: {
-	        min: 0,
-	        title: {
-	            text: '税款金额'
-	        }
-	    },
-	    tooltip: {
-	        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-	        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b><br/>'
-	    },
-	    plotOptions: {
-	        series: {
-	            borderWidth: 0,
-	            dataLabels: {
-	                enabled: true,
-	                format: '{point.y:.2f}'
-	            }
-	        }
-	    },
-	    series: [{
-	    	name: '数据分析',
-	    	colorByPoint: true,
-	    	data:
-	    }]
-	});
-	</script>
-	 -->
 @endpush
