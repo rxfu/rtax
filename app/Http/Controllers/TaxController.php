@@ -221,46 +221,39 @@ class TaxController extends Controller {
 		$sections = Section::with('type')->select('type_id', 'name')->distinct()->get();
 		$rates    = Rate::select('name')->distinct()->get();
 
-		$searched  = false;
-		$results   = [];
-		$condition = '';
-
+		$results = [];
 		if ($request->isMethod('get')) {
-			$searched = $request->input('flag');
 
-			if ($searched) {
+			$conditions = $request->all();
+
+			if (true == $conditions['flag']) {
 				// 查询数据
-				$tax = Tax::with('section', 'section.project', 'section.type', 'completion');
+				$tax = Tax::with('section', 'section.project', 'section.type');
 
-				$pid = Project::whereName($request->input('project'))->first()->id;
-				$condition .= '项目名称=<strong class="text-danger">' . $request->input('project') . '</strong>';
-
-				if ('全部' === $request->input('type')) {
+				$pid = Project::whereName($conditions['project'])->first()->id;
+				if ('全部' === $conditions['type']) {
 					$tids = Type::all()->pluck('id');
 				} else {
-					$tids = Type::whereName($request->input('type'))->pluck('id');
+					$tids = Type::whereName($conditions['type'])->pluck('id');
 				}
-				$condition .= ' AND 标段类型=<strong class="text-danger">' . $request->input('type') . '</strong>';
 
-				if ('全部' === $request->input('section')) {
+				if ('全部' === $conditions['section']) {
 					$sids = Section::whereProjectId($pid)
 						->whereIn('type_id', $tids)
 						->pluck('id');
 				} else {
 					$sids = Section::whereProjectId($pid)
 						->whereIn('type_id', $tids)
-						->whereName($request->input('section'))
+						->whereName($conditions['section'])
 						->pluck('id');
 				}
-				$condition .= ' AND 标段名称=<strong class="text-danger">' . $request->input('section') . '</strong>';
 
-				if ('全部' === $request->input('tax_name')) {
+				if ('全部' === $conditions['tax_name']) {
 					$tax = $tax->whereIn('section_id', $sids);
 				} else {
 					$tax = $tax->whereIn('section_id', $sids)
-						->whereTaxName($request->input('tax_name'));
+						->whereTaxName($conditions['tax_name']);
 				}
-				$condition .= ' AND 税目=<strong class="text-danger">' . $request->input('tax_name') . '</strong>';
 
 				$results = $tax->select('section_id', 'tax_name', DB::raw('SUM(total) AS total_tax'))
 					->groupBy('section_id', 'tax_name')
@@ -268,89 +261,54 @@ class TaxController extends Controller {
 			}
 		}
 
-		return view('tax.chart', compact('searched', 'projects', 'types', 'sections', 'rates', 'results', 'condition'));
+		return view('tax.chart', compact('projects', 'types', 'sections', 'rates', 'results', 'conditions'));
 	}
 
 	public function getChart(Request $request) {
-		$projects = Project::select('id', 'name')->get();
-		$types    = Type::select('id', 'name')->get();
-		$sections = Section::with('type')->select('type_id', 'name')->distinct()->get();
-		$rates    = Rate::select('name')->distinct()->get();
-
-		$searched  = false;
-		$results   = [];
-		$condition = '';
-
+		$results = [];
+		$data    = [];
 		if ($request->isMethod('get')) {
-			$searched = $request->input('flag');
 
-			if ($searched) {
-				// 查询数据
-				$tax = Tax::with('section', 'section.project', 'section.type', 'completion');
+			$conditions = $request->all();
 
-				$pid = Project::whereName($request->input('project'))->first()->id;
-				$condition .= '项目名称=<strong class="text-danger">' . $request->input('project') . '</strong>';
+			// 统计数据
+			$project = DB::table('projects')
+				->join('sections', 'projects.id', '=', 'sections.project_id')
+				->join('types', 'types.id', '=', 'sections.type_id')
+				->join('taxes', 'sections.id', '=', 'taxes.section_id');
 
-				if ('全部' === $request->input('type')) {
-					$tids = Type::all()->pluck('id');
-				} else {
-					$tids = Type::whereName($request->input('type'))->pluck('id');
-				}
-				$condition .= ' AND 标段类型=<strong class="text-danger">' . $request->input('type') . '</strong>';
+			if (null !== $conditions['project'] && $conditions['project']) {
+				$project = $project->where('projects.name', '=', $conditions['project']);
+			}
 
-				if ('全部' === $request->input('section')) {
-					$sids = Section::whereProjectId($pid)
-						->whereIn('type_id', $tids)
-						->pluck('id');
-				} else {
-					$sids = Section::whereProjectId($pid)
-						->whereIn('type_id', $tids)
-						->whereName($request->input('section'))
-						->pluck('id');
-				}
-				$condition .= ' AND 标段名称=<strong class="text-danger">' . $request->input('section') . '</strong>';
+			if (null !== $conditions['type'] && ('全部' !== $conditions['type'])) {
+				$project = $project->where('types.name', '=', $conditions['type']);
+			}
 
-				if ('全部' === $request->input('tax_name')) {
-					$tax = $tax->whereIn('section_id', $sids);
-				} else {
-					$tax = $tax->whereIn('section_id', $sids)
-						->whereTaxName($request->input('tax_name'));
-				}
-				$condition .= ' AND 税目=<strong class="text-danger">' . $request->input('tax_name') . '</strong>';
+			if (null !== $conditions['section'] && ('全部' !== $conditions['section'])) {
+				$project = $project->where('sections.name', '=', $conditions['section']);
+			}
 
-				$results = $tax->select('section_id', 'tax_name', DB::raw('SUM(total) AS total_tax'))
-					->groupBy('section_id', 'tax_name')
+			if (null !== $conditions['tax_name'] && ('全部' !== $conditions['tax_name'])) {
+				$project = $project->where('taxes.tax_name', '=', $conditions['tax_name']);
+			}
+
+			if ('type' === $conditions['filter']) {
+				$results = $project->select('types.name AS name', DB::raw('SUM(taxes.total) AS total'))
+					->groupBy('types.name')
 					->get();
+			}
 
-				// 图表数据
-				$catname = '';
-				$data    = [];
-				if ('全部' === $request->input('section')) {
-					foreach ($results as $result) {
-						$data[] = [
-							'name' => $result->section->name,
-							'y'    => $result->total_tax,
-						];
-
-						$catname = '标段名称';
-						$chtname = $request->input('tax_name');
-					}
-				} elseif ('全部' === $request->input('tax_name')) {
-					foreach ($results as $result) {
-						$data[] = [
-							'name' => $result->tax_name,
-							'y'    => $result->total_tax,
-						];
-
-						$catname = '税目';
-						$chtname = $request->input('section');
-					}
-				}
-				$data = json_encode($data, JSON_NUMERIC_CHECK);
+			// 图表数据
+			foreach ($results as $result) {
+				$data[] = [
+					'name' => $result->name,
+					'y'    => $result->total,
+				];
 			}
 		}
 
-		return view('tax.chart', compact('searched', 'projects', 'types', 'sections', 'rates', 'results', 'condition', 'chtname', 'catname', 'data'));
+		return json_encode($data, JSON_NUMERIC_CHECK);
 	}
 
 	public function getImport() {

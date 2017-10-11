@@ -11,7 +11,7 @@
 		<div class="col-md-6 col-sm-6 col-xs-12">
 			<select id="project" name="project" class="form-control col-md-7 col-xs-12">
 				@foreach ($projects as $project)
-					<option value="{{ $project->name }}">{{ $project->name }}</option>
+					<option value="{{ $project->name }}"{{ $project->name === $conditions['project'] ? ' selected' : '' }}>{{ $project->name }}</option>
 				@endforeach
 			</select>
 		</div>
@@ -20,9 +20,9 @@
 		<label for="type" class="control-label col-md-3 col-sm-3 col-xs-12">标段类型 <span class="required">*</span></label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
 			<select id="type" name="type" class="form-control col-md-7 col-xs-12">
-				<option value="全部">== 全部 ==</option>
+				<option value="全部"{{ '全部' === $conditions['type'] ? ' selected' : '' }}>== 全部 ==</option>
 				@foreach ($types as $type)
-					<option value="{{ $type->name }}">{{ $type->name }}</option>
+					<option value="{{ $type->name }}"{{ $type->name === $conditions['type'] ? ' selected' : '' }}>{{ $type->name }}</option>
 				@endforeach
 			</select>
 		</div>
@@ -31,9 +31,9 @@
 		<label for="section" class="control-label col-md-3 col-sm-3 col-xs-12">标段名称 <span class="required">*</span></label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
 			<select id="section" name="section" class="form-control col-md-7 col-xs-12">
-				<option value="全部" data-chained="全部 {{ $types->implode('name', ' ') }}">== 全部 ==</option>
+				<option value="全部" data-chained="全部 {{ $types->implode('name', ' ') }}"{{ '全部' === $conditions['section'] ? ' selected' : '' }}>== 全部 ==</option>
 				@foreach ($sections as $section)
-					<option value="{{ $section->name }}" data-chained="{{ $section->type->name }}">{{ $section->name }}</option>
+					<option value="{{ $section->name }}" data-chained="{{ $section->type->name }}"{{ $section->name === $conditions['section'] ? ' selected' : '' }}>{{ $section->name }}</option>
 				@endforeach
 			</select>
 		</div>
@@ -42,9 +42,9 @@
 		<label for="tax_name" class="control-label col-md-3 col-sm-3 col-xs-12">税目 <span class="required">*</span></label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
 			<select id="tax_name" name="tax_name" class="form-control col-md-7 col-xs-12">
-				<option value="全部">== 全部 ==</option>
+				<option value="全部"{{ '全部' === $conditions['tax_name'] ? ' selected' : '' }}>== 全部 ==</option>
 				@foreach ($rates as $rate)
-					<option value="{{ $rate->name }}">{{ $rate->name }}</option>
+					<option value="{{ $rate->name }}"{{ $rate->name === $conditions['tax_name'] ? ' selected' : '' }}>{{ $rate->name }}</option>
 				@endforeach
 			</select>
 		</div>
@@ -57,8 +57,7 @@
 	</div>
 </form>
 
-@if ($searched)
-<p>统计条件：{!! $condition !!}</p>
+@if (isset($conditions['flag']) && $conditions['flag'])
 <!-- Results -->
 <table id="result-table" class="table table-striped table-bordered">
 	<thead>
@@ -95,17 +94,17 @@
 		<form id="chartForm" method="get" class="form-inline">
 			<div class="radio-inline">
 				<label for="type">
-					<input type="radio" id="type" name="options" value="type" checked> 标段类型
+					<input type="radio" id="type" name="filters" value="type" checked> 标段类型
 				</label>
 			</div>
 			<div class="radio-inline">
 				<label for="section">
-					<input type="radio" id="section" name="options" value="section"> 标段名称
+					<input type="radio" id="section" name="filters" value="section"> 标段名称
 				</label>
 			</div>
 			<div class="radio-inline">
 				<label for="tax_name">
-					<input type="radio" id="tax_name" name="options" value="tax_name"> 税目
+					<input type="radio" id="tax_name" name="filters" value="tax_name"> 税目
 				</label>
 			</div>
 			<button type="submit" class="btn btn-info">生成图表</button>
@@ -143,7 +142,7 @@
                 <div class="clearfix"></div>
             </div>
 
-            <div class="x_content">
+            <div id="res" class="x_content">
 				<table id="chart-result" class="table table-striped">
 					<!--
 					<thead>
@@ -169,77 +168,66 @@
 	<script src="{{ asset('js/jquery.chained.js') }}"></script>
 	<script src="{{ asset('js/highcharts.js') }}"></script>
 	<script>
-		// jQuery Chained
 		$('#section').chained('#type');
 
-		// Generate charts
 		$('#chartForm').submit(function(e) {
 			e.preventDefault();
 
 			$('#chart').show();
 
-			var option = $('input:radio[name="options"]:checked').val();
+			var filter = $('input:radio[name="filters"]:checked').val();
+			var options = {
+				credits: false,
+				chart: {
+			        plotBackgroundColor: null,
+			        plotBorderWidth: null,
+			        plotShadow: false,
+			        type: 'pie'
+			    },
+			    title: {
+		        	text: '饼图'
+			    },
+			    tooltip: {
+			        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+			    },
+			    plotOptions: {
+			        pie: {
+			            allowPointSelect: true,
+			            cursor: 'pointer',
+			            dataLabels: {
+			                enabled: false,
+			                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+			                style: {
+			                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+			                }
+			            },
+			            showInLegend: true
+			        }
+			    },
+			    series: [{
+			        name: '标段类型',
+			        colorByPoint: true
+			    }]
+			};
 
-			// Pie chart
-			var chart = {
-		        plotBackgroundColor: null,
-		        plotBorderWidth: null,
-		        plotShadow: false,
-		        type: 'pie'
-		    };
-
-		    var title = {
-		        text: '标段类型饼图'
-		    };
-
-		    var tooltip = {
-		        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-		    };
-
-		    var plotOptions = {
-		        pie: {
-		            allowPointSelect: true,
-		            cursor: 'pointer',
-		            dataLabels: {
-		                enabled: false,
-		                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-		                style: {
-		                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-		                }
-		            },
-		            showInLegend: true
-		        }
-		    };
-
-		    if ('type' == option) {
-		    	var props = ['type'];
-		    	var objs = new Array();
-
-		    	$('#result-table tbody tr').each(function() {
-		    		var obj = new Object();
-		    		var money = $(this).find('td').eq(3).text()
-
-		    		obj[$(this).attr('data-type')] += Number(money);
-		    	});
-		    }
-
-		    var series = [{
-		        name: '标段类型',
-		        colorByPoint: true,
-		        data: data
-		    }];
-
-		    Highcharts.chart('pie-chart', {
-		    	chart: chart,
-		    	title: title,
-		    	tooltip: tooltip,
-		    	plotOptions: plotOptions,
-		    	series: series
-		    });
+			$.ajax({
+				url: "{{ route('tax.chart') }}",
+				dataType: 'json',
+				data: {
+					filter: filter,
+					project: "{{ $conditions['project'] }}",
+					type: "{{ $conditions['type'] }}",
+					section: "{{ $conditions['section'] }}",
+					tax_name: "{{ $conditions['tax_name'] }}",
+				},
+				success: function(data) {
+					options.series[0].data = data;
+			    	Highcharts.chart('pie-chart', options);
+				}
+			});
 		});
 	</script>
 	<!--
-	@if ($searched)
 	<script src="{{ asset('js/highcharts.js') }}"></script>
 
 	<script>
@@ -252,7 +240,7 @@
 	        type: 'pie'
 	    },
 	    title: {
-	        text: '{{ $chtname }}饼图'
+	        text: '饼图'
 	    },
 	    tooltip: {
 	        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -272,9 +260,9 @@
 	        }
 	    },
 	    series: [{
-	        name: '{{ $chtname }}数据分析',
+	        name: '数据分析',
 	        colorByPoint: true,
-	        data: {!! $data !!}
+	        data:
 	    }]
 	});
 
@@ -284,7 +272,7 @@
 	        type: 'column'
 	    },
 	    title: {
-	        text: '{{ $chtname }}柱状图'
+	        text: '柱状图'
 	    },
 	    xAxis: {
 	        type: 'category'
@@ -309,12 +297,11 @@
 	        }
 	    },
 	    series: [{
-	    	name: '{{ $chtname }}数据分析',
+	    	name: '数据分析',
 	    	colorByPoint: true,
-	    	data: {!! $data !!}
+	    	data:
 	    }]
 	});
 	</script>
-	@endif
 	 -->
 @endpush

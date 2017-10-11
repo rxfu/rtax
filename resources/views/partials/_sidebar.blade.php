@@ -212,7 +212,7 @@
                 <ul class="nav side-menu">
                     <li>
                         <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                            <i class="fa fa-sign-out"></i> 登出系统</span>
+                            <i class="fa fa-sign-out"></i> 登出系统
                         </a>
                     </li>
                 </ul>
