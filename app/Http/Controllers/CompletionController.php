@@ -36,11 +36,15 @@ class CompletionController extends Controller {
 	public function postSave(Request $request) {
 		$this->validate($request, [
 			'section_id' => 'required|unique:completions,section_id',
-			'before'     => 'required|numeric',
-			'after'      => 'required|numeric',
+			'before'     => 'required|numeric|between:0,100',
+			'after'      => 'required|numeric|between:0,100',
 		]);
 
 		$inputs = $request->all();
+		if (100 != $inputs['before'] + $inputs['after']) {
+			$request->session()->flash('error', '前后完工比例相加不等于100%，请检查数据');
+			return back();
+		}
 
 		if ($request->isMethod('post')) {
 			$completion = new Completion();
@@ -71,11 +75,15 @@ class CompletionController extends Controller {
 	public function putUpdate(Request $request, $id) {
 		$this->validate($request, [
 			'section_id' => 'required',
-			'before'     => 'required|numeric',
-			'after'      => 'required|numeric',
+			'before'     => 'required|numeric|between:0,100',
+			'after'      => 'required|numeric|between:0,100',
 		]);
 
 		$inputs = $request->all();
+		if (100 != $inputs['before'] + $inputs['after']) {
+			$request->session()->flash('error', '前后完工比例相加不等于100%，请检查数据');
+			return back();
+		}
 
 		if ($request->isMethod('put')) {
 			$completion = Completion::find($id);
