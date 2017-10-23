@@ -288,7 +288,17 @@
 	<script src="{{ asset('js/buttons.bootstrap.min.js') }}"></script>
 	<script src="{{ asset('js/icheck.min.js') }}"></script>
 	<script>
-		$('#tax-table, #paid-table, #declaration-table').dataTable({
+		$('#paid-table, #declaration-table').dataTable({
+			iDisplayLength: -1,
+			lengthMenu: [
+				[10, 25, 50, -1],
+				[10, 25, 50, '全部']
+			],
+			language: {
+				url: "{{ asset('js/i18n/Chinese.json') }}"
+			}
+		});
+		$('#tax-table').dataTable({
 			iDisplayLength: -1,
 			lengthMenu: [
 				[10, 25, 50, -1],
