@@ -49,7 +49,7 @@
                                 <a href="{{ route('tax.search') }}">成果查询</a>
                             </li>
                             <li>
-                                <a href="{{ route('tax.chart') }}">统计分析</a>
+                                <a href="{{ route('tax.result') }}">统计分析</a>
                             </li>
                         </ul>
                     </li>

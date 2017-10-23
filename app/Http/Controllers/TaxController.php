@@ -224,7 +224,7 @@ class TaxController extends Controller {
 		$results = [];
 		if ($request->isMethod('get')) {
 
-			$conditions = $request->all();
+			$conditions = $request->only(['flag', 'project', 'type', 'section', 'tax_name']);
 
 			if (true == $conditions['flag']) {
 				// 查询数据
@@ -269,7 +269,7 @@ class TaxController extends Controller {
 		$data    = [];
 		if ($request->isMethod('get')) {
 
-			$conditions = $request->all();
+			$conditions = $request->only(['project', 'type', 'section', 'tax_name', 'filter']);
 
 			// 统计数据
 			$project = DB::table('projects')
@@ -277,19 +277,19 @@ class TaxController extends Controller {
 				->join('types', 'types.id', '=', 'sections.type_id')
 				->join('taxes', 'sections.id', '=', 'taxes.section_id');
 
-			if (null !== $conditions['project'] && $conditions['project']) {
+			if ($conditions['project']) {
 				$project = $project->where('projects.name', '=', $conditions['project']);
 			}
 
-			if (null !== $conditions['type'] && ('全部' !== $conditions['type'])) {
+			if ('全部' !== $conditions['type']) {
 				$project = $project->where('types.name', '=', $conditions['type']);
 			}
 
-			if (null !== $conditions['section'] && ('全部' !== $conditions['section'])) {
+			if ('全部' !== $conditions['section']) {
 				$project = $project->where('sections.name', '=', $conditions['section']);
 			}
 
-			if (null !== $conditions['tax_name'] && ('全部' !== $conditions['tax_name'])) {
+			if ('全部' !== $conditions['tax_name']) {
 				$project = $project->where('taxes.tax_name', '=', $conditions['tax_name']);
 			}
 
