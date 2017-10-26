@@ -137,6 +137,7 @@
                         </ul>
                     </li>
                 </ul>
+                @if (Auth::user()->is_admin)
                 <ul class="nav side-menu">
                     <li>
                         <a>
@@ -152,6 +153,7 @@
                         </ul>
                     </li>
                 </ul>
+                @endif
             </div>
             <!-- /Menu section -->
 
@@ -212,7 +214,7 @@
                 <ul class="nav side-menu">
                     <li>
                         <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                            <i class="fa fa-sign-out"></i> 登出系统
+                            <i class="fa fa-sign-out"></i> 退出系统
                         </a>
                     </li>
                 </ul>
@@ -232,7 +234,7 @@
             <a href="#" data-toggle="tooltip" data-placement="top" title="锁定">
                 <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
             </a>
-            <a href="{{ route('logout') }}" data-toggle="tooltip" data-placement="top" title="登出">
+            <a href="{{ route('logout') }}" data-toggle="tooltip" data-placement="top" title="退出">
                 <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
             </a>
         </div>
